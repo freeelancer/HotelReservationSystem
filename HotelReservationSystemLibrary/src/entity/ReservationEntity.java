@@ -7,12 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import util.enumeration.EmployeeAccessRightsEnum;
 
 /**
  *
@@ -25,12 +22,7 @@ public class ReservationEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String password;
-    @Enumerated(EnumType.STRING)
-    private EmployeeAccessRightsEnum accessRightEnum;
+    
 
     public Long getId() {
         return id;

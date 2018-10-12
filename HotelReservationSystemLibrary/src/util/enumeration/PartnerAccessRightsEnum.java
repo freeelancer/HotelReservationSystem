@@ -9,7 +9,7 @@ package util.enumeration;
  *
  * @author Lance
  */
-public enum PartnerAccessRightEnum 
+public enum PartnerAccessRightsEnum 
 {
     EMPLOYEE,
     MANAGER

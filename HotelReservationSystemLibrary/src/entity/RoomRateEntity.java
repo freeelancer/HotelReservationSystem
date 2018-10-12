@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import util.enumeration.RateTypeEnum;
 
 /**
  *
@@ -22,6 +25,11 @@ public class RoomRateEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
+    private RoomTypeEntity roomTypeEntity;
+    private RateTypeEnum rateTypeEnum;
+    private BigDecimal ratePerNight;
+    private Timestamp[] validityPeriod; 
 
     public Long getId() {
         return id;

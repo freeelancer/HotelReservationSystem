@@ -6,10 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import util.enumeration.EmployeeAccessRightsEnum;
 
 /**
  *
@@ -20,8 +24,18 @@ public class EmployeeEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 32, nullable = false)
+    private String firstName;
+    @Column(length = 32, nullable = false)
+    private String lastName;
+    @Column(length = 32, nullable = false, unique = true)
+    private String username;
+    @Column(length = 32, nullable = false, unique = true)
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private EmployeeAccessRightsEnum accessRightEnum;
 
     public Long getId() {
         return id;
@@ -29,6 +43,46 @@ public class EmployeeEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public EmployeeAccessRightsEnum getAccessRightEnum() {
+        return accessRightEnum;
+    }
+
+    public void setAccessRightEnum(EmployeeAccessRightsEnum accessRightEnum) {
+        this.accessRightEnum = accessRightEnum;
     }
 
     @Override

@@ -6,10 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -20,15 +24,65 @@ public class RoomEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(length = 10, nullable = false)
+    private Integer roomNumber;
+    @OneToOne(mappedBy = "roomEntity", optional = true)
+    private ReservationEntity reservationEntity;
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
+    private RoomTypeEntity roomTypeEntity;
+    private Boolean used;
+    private Boolean disabled;
+    
+ 
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public ReservationEntity getReservationEntity() {
+        return reservationEntity;
+    }
+
+    public void setReservationEntity(ReservationEntity reservationEntity) {
+        this.reservationEntity = reservationEntity;
+    }
+
+    public RoomTypeEntity getRoomTypeEntity() {
+        return roomTypeEntity;
+    }
+
+    public void setRoomTypeEntity(RoomTypeEntity roomTypeEntity) {
+        this.roomTypeEntity = roomTypeEntity;
+    }
+
+    public Boolean getUsed() {
+        return used;
+    }
+
+    public void setUsed(Boolean used) {
+        this.used = used;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     @Override
