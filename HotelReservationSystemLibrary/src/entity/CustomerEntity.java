@@ -37,6 +37,21 @@ public class CustomerEntity implements Serializable {
     private String addressLine2;
     @Column(length = 10, nullable = false)
     private String postalCode;    
+    
+    public CustomerEntity() 
+    {
+    }
+    
+    public CustomerEntity(String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) 
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.idNumber = idNumber;
+        this.contactNumber = contactNumber;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.postalCode = postalCode;
+    }
 
     public Long getId() {
         return id;

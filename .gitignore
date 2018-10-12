@@ -11,3 +11,5 @@
 /HoRSReservationClient/dist/
 /HotelReservationSystem-ejb/dist/
 /HotelReservationSystem-ejb/build/
+/dist/
+/build/
