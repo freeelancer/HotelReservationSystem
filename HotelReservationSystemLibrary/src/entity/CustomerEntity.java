@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -19,6 +21,9 @@ import javax.persistence.Id;
 @Entity
 public class CustomerEntity implements Serializable {
 
+    @OneToMany(mappedBy = "customerEntity")
+    private List<ReservationEntity> reservationEntities;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +43,11 @@ public class CustomerEntity implements Serializable {
     @Column(length = 10, nullable = false)
     private String postalCode;    
     
-    public CustomerEntity() 
-    {
+    public CustomerEntity() {
     }
-    
-    public CustomerEntity(String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) 
-    {
+
+    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
+        this.reservationEntities = reservationEntities;
         this.firstName = firstName;
         this.lastName = lastName;
         this.idNumber = idNumber;
@@ -115,6 +119,14 @@ public class CustomerEntity implements Serializable {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public List<ReservationEntity> getReservationEntities() {
+        return reservationEntities;
+    }
+
+    public void setReservationEntities(List<ReservationEntity> reservationEntities) {
+        this.reservationEntities = reservationEntities;
     }
 
     @Override

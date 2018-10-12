@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import util.enumeration.BedTypeEnum;
 
 /**
@@ -23,6 +24,9 @@ import util.enumeration.BedTypeEnum;
  */
 @Entity
 public class RoomTypeEntity implements Serializable {
+
+    @OneToMany(mappedBy = "roomTypeEntity")
+    private List<RoomEntity> roomEntities;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,10 +44,23 @@ public class RoomTypeEntity implements Serializable {
     private Integer capacity;
     @Column(length = 100, nullable = false)
     private String amenities;
-    @OneToMany
-    private List<RoomEntity> roomEntities;  
     private Boolean used;
     private Boolean disable;
+
+    public RoomTypeEntity() {
+    }
+
+    public RoomTypeEntity(List<RoomEntity> roomEntities, String name, String description, String size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
+        this.roomEntities = roomEntities;
+        this.name = name;
+        this.description = description;
+        this.size = size;
+        this.bedTypeEnum = bedTypeEnum;
+        this.capacity = capacity;
+        this.amenities = amenities;
+        this.used = used;
+        this.disable = disable;
+    }
 
     public Long getId() {
         return id;
@@ -101,14 +118,6 @@ public class RoomTypeEntity implements Serializable {
         this.amenities = amenities;
     }
 
-    public List<RoomEntity> getRoomEntities() {
-        return roomEntities;
-    }
-
-    public void setRoomEntities(List<RoomEntity> roomEntities) {
-        this.roomEntities = roomEntities;
-    }
-
     public Boolean getUsed() {
         return used;
     }
@@ -123,6 +132,14 @@ public class RoomTypeEntity implements Serializable {
 
     public void setDisable(Boolean disable) {
         this.disable = disable;
+    }
+
+    public List<RoomEntity> getRoomEntities() {
+        return roomEntities;
+    }
+
+    public void setRoomEntities(List<RoomEntity> roomEntities) {
+        this.roomEntities = roomEntities;
     }
 
     @Override

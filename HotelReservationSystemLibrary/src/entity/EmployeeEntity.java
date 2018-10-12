@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import util.enumeration.EmployeeAccessRightsEnum;
 
 /**
@@ -21,6 +22,9 @@ import util.enumeration.EmployeeAccessRightsEnum;
  */
 @Entity
 public class EmployeeEntity implements Serializable {
+
+    @OneToOne(mappedBy = "employeeEntity")
+    private ReservationEntity reservationEntity;
 
     private static final long serialVersionUID = 1L;
     @Id

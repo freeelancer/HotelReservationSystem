@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -22,21 +21,31 @@ import javax.persistence.OneToOne;
 @Entity
 public class RoomEntity implements Serializable {
 
+    @OneToOne(mappedBy = "roomEntity")
+    private ReservationEntity reservationEntity;
+    @ManyToOne
+    private RoomTypeEntity roomTypeEntity;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 10, nullable = false)
     private Integer roomNumber;
-    @OneToOne(mappedBy = "roomEntity", optional = true)
-    private ReservationEntity reservationEntity;
-    @ManyToOne(optional = true)
-    @JoinColumn(nullable = false)
-    private RoomTypeEntity roomTypeEntity;
     private Boolean used;
     private Boolean disabled;
+
+    public RoomEntity() {
+    }
+
+    public RoomEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, Integer roomNumber, Boolean used, Boolean disabled) {
+        this.reservationEntity = reservationEntity;
+        this.roomTypeEntity = roomTypeEntity;
+        this.roomNumber = roomNumber;
+        this.used = used;
+        this.disabled = disabled;
+    } 
     
- 
     public Long getId() {
         return id;
     }
