@@ -5,17 +5,24 @@
  */
 package horsmanagementclient;
 
+import ejb.session.stateless.EmployeeEntityControllerRemote;
+import javax.ejb.EJB;
+
 /**
  *
  * @author Lance
  */
 public class Main {
 
+    @EJB
+    private static EmployeeEntityControllerRemote employeeEntityController;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ManagementApp managementApp=new ManagementApp(employeeEntityController);
+        managementApp.runApp();
     }
     
 }
