@@ -44,7 +44,9 @@ public class RoomTypeEntity implements Serializable {
     private Integer capacity;
     @Column(length = 100, nullable = false)
     private String amenities;
+    @Column(nullable = false)
     private Boolean used;
+    @Column(nullable = false)
     private Boolean disable;
 
     public RoomTypeEntity() {

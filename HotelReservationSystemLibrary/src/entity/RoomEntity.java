@@ -30,9 +30,11 @@ public class RoomEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false, unique = true)
     private Integer roomNumber;
+    @Column(nullable = false)
     private Boolean used;
+    @Column(nullable = false)
     private Boolean disabled;
 
     public RoomEntity() {
