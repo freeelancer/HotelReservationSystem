@@ -41,6 +41,18 @@ public class EmployeeEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private EmployeeAccessRightsEnum accessRightEnum;
 
+    public EmployeeEntity() {
+    }
+
+    public EmployeeEntity(ReservationEntity reservationEntity, String firstName, String lastName, String username, String password, EmployeeAccessRightsEnum accessRightEnum) {
+        this.reservationEntity = reservationEntity;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.accessRightEnum = accessRightEnum;
+    }
+
     public Long getId() {
         return id;
     }

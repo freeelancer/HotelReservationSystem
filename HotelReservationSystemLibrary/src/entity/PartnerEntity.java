@@ -42,6 +42,18 @@ public class PartnerEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private PartnerAccessRightsEnum accessRightEnum;
 
+    public PartnerEntity() {
+    }
+
+    public PartnerEntity(ReservationEntity reservationEntity, String firstName, String lastName, String username, String password, PartnerAccessRightsEnum accessRightEnum) {
+        this.reservationEntity = reservationEntity;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.accessRightEnum = accessRightEnum;
+    }
+
     public Long getId() {
         return id;
     }
@@ -88,6 +100,14 @@ public class PartnerEntity implements Serializable {
 
     public void setAccessRightEnum(PartnerAccessRightsEnum accessRightEnum) {
         this.accessRightEnum = accessRightEnum;
+    }
+
+    public ReservationEntity getReservationEntity() {
+        return reservationEntity;
+    }
+
+    public void setReservationEntity(ReservationEntity reservationEntity) {
+        this.reservationEntity = reservationEntity;
     }
 
     @Override
