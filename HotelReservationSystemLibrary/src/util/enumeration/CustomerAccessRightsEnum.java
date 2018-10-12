@@ -9,7 +9,7 @@ package util.enumeration;
  *
  * @author Lance
  */
-public enum CustomerAccessRightEnum 
+public enum CustomerAccessRightsEnum 
 {
     VISITOR,
     GUEST
