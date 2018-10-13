@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -31,6 +32,36 @@ public class CustomerEntityController implements CustomerEntityControllerRemote,
 
     public CustomerEntityController() {
     }
+    
+    @Override
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity)
+    {
+        em.persist(newCustomerEntity);
+        em.flush();
+        
+        return newCustomerEntity;
+    }
+    
+    @Override
+    public List<CustomerEntity> retrieveAllCustomers()
+    {
+        Query query = em.createQuery("SELECT c FROM CustomerEntity c");
+        
+        return query.getResultList();
+    }
+    
+    @Override
+    public void updateCustomer(CustomerEntity customerEntity)
+    {
+        em.merge(customerEntity);
+    }
+    
+    @Override
+    public void deleteCustomer(String username) throws CustomerNotFoundException
+    {
+        CustomerEntity customerEntityToRemove = retrieveCustomerByUsername(username);
+        em.remove(customerEntityToRemove);
+    }
 
     @Override
     public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException
@@ -52,8 +83,8 @@ public class CustomerEntityController implements CustomerEntityControllerRemote,
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
-        
     }
+    
     @Override
     public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException
     {
@@ -66,7 +97,8 @@ public class CustomerEntityController implements CustomerEntityControllerRemote,
         }
         catch(NoResultException | NonUniqueResultException ex)
         {
-            throw new CustomerNotFoundException("Customer Username " + username + " does not exist!");
+            throw new CustomerNotFoundException("Customer username " + username + " does not exist!");
         }
     }
+    
 }
