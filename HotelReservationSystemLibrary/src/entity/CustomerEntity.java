@@ -34,8 +34,10 @@ public class CustomerEntity implements Serializable {
     private String lastName;
     @Column(length = 9, nullable = false, unique = true)
     private String idNumber;
-    @Column(length = 15, nullable = false)
+    @Column(length = 15, nullable = false, unique = true)
     private String contactNumber;
+    @Column(length = 32, nullable = false, unique = true)
+    private String email;
     @Column(length = 50, nullable = false)
     private String addressLine1;
     @Column(length = 50, nullable = true)
@@ -44,25 +46,25 @@ public class CustomerEntity implements Serializable {
     private String postalCode;    
     @Column(length = 32, nullable = false, unique = true)
     private String username;
-    @Column(length = 32, nullable = false, unique = true)
+    @Column(length = 32, nullable = false)
     private String password;
     
     public CustomerEntity() {
     }
 
-    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode, String username, String password) {
+    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String email, String addressLine1, String addressLine2, String postalCode, String username, String password) {
         this.reservationEntities = reservationEntities;
         this.firstName = firstName;
         this.lastName = lastName;
         this.idNumber = idNumber;
         this.contactNumber = contactNumber;
+        this.email = email;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
         this.username = username;
         this.password = password;
     }
-
 
     public Long getId() {
         return id;
@@ -102,6 +104,14 @@ public class CustomerEntity implements Serializable {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddressLine1() {
