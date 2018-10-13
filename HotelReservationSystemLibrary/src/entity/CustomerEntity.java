@@ -9,10 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import util.enumeration.CustomerAccessRightsEnum;
 
 /**
  *
@@ -48,11 +51,13 @@ public class CustomerEntity implements Serializable {
     private String username;
     @Column(length = 32, nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
+    private CustomerAccessRightsEnum accessRightEnum;
     
     public CustomerEntity() {
     }
 
-    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String email, String addressLine1, String addressLine2, String postalCode, String username, String password) {
+    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String email, String addressLine1, String addressLine2, String postalCode, String username, String password, CustomerAccessRightsEnum accessRightEnum) {
         this.reservationEntities = reservationEntities;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,7 +69,10 @@ public class CustomerEntity implements Serializable {
         this.postalCode = postalCode;
         this.username = username;
         this.password = password;
+        this.accessRightEnum = accessRightEnum;
     }
+
+    
 
     public Long getId() {
         return id;

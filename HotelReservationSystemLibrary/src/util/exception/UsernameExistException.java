@@ -9,13 +9,13 @@ package util.exception;
  *
  * @author Wai Kin
  */
-public class AccountExistException extends Exception {
+public class UsernameExistException extends Exception {
 
     /**
      * Creates a new instance of <code>AccountExistException</code> without
      * detail message.
      */
-    public AccountExistException() {
+    public UsernameExistException() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class AccountExistException extends Exception {
      *
      * @param msg the detail message.
      */
-    public AccountExistException(String msg) {
+    public UsernameExistException(String msg) {
         super(msg);
     }
 }
