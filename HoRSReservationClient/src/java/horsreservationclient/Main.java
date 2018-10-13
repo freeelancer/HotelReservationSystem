@@ -5,17 +5,21 @@
  */
 package horsreservationclient;
 
+import ejb.session.stateless.CustomerEntityControllerRemote;
+import javax.ejb.EJB;
+
 /**
  *
  * @author Lance
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+    @EJB 
+    private static CustomerEntityControllerRemote customerEntityController;
+    
     public static void main(String[] args) {
-        // TODO code application logic here
+        ReservationApp reservationApp = new ReservationApp(customerEntityController);
+        reservationApp.runApp();
     }
     
 }

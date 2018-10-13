@@ -13,7 +13,6 @@ import util.exception.InvalidLoginCredentialException;
  *
  * @author Lance
  */
-
 public interface EmployeeEntityControllerRemote {
 
     public EmployeeEntity retrieveEmployeeByUsername(String username) throws EmployeeNotFoundException;

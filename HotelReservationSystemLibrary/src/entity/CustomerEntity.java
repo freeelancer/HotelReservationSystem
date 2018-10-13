@@ -42,11 +42,15 @@ public class CustomerEntity implements Serializable {
     private String addressLine2;
     @Column(length = 10, nullable = false)
     private String postalCode;    
+    @Column(length = 32, nullable = false, unique = true)
+    private String username;
+    @Column(length = 32, nullable = false, unique = true)
+    private String password;
     
     public CustomerEntity() {
     }
 
-    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
+    public CustomerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String idNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode, String username, String password) {
         this.reservationEntities = reservationEntities;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,7 +59,10 @@ public class CustomerEntity implements Serializable {
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
+        this.username = username;
+        this.password = password;
     }
+
 
     public Long getId() {
         return id;
@@ -127,6 +134,22 @@ public class CustomerEntity implements Serializable {
 
     public void setReservationEntities(List<ReservationEntity> reservationEntities) {
         this.reservationEntities = reservationEntities;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

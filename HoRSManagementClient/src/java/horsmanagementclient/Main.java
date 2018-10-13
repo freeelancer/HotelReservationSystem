@@ -17,11 +17,8 @@ public class Main {
     @EJB
     private static EmployeeEntityControllerRemote employeeEntityController;
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        ManagementApp managementApp=new ManagementApp(employeeEntityController);
+        ManagementApp managementApp = new ManagementApp(employeeEntityController);
         managementApp.runApp();
     }
     
