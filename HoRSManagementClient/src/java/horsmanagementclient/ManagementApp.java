@@ -51,7 +51,7 @@ class ManagementApp {
                         doLogin();
                         System.out.println("Login successful!\n");    
                         managementModule = new ManagementModule(currentEmployeeEntity,employeeEntityController);
-                        //Run managementModule operations
+                        managementModule.menuEmployeeOperations();
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {
