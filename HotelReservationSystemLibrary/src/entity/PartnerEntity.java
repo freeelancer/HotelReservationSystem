@@ -30,7 +30,7 @@ public class PartnerEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long partnerId;
     @Column(length = 32, nullable = false)
     private String firstName;
     @Column(length = 32, nullable = false)
@@ -52,14 +52,6 @@ public class PartnerEntity implements Serializable {
         this.username = username;
         this.password = password;
         this.accessRightsEnum = accessRightEnum;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -113,18 +105,18 @@ public class PartnerEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (partnerId != null ? partnerId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the partnerId fields are not set
         if (!(object instanceof PartnerEntity)) {
             return false;
         }
         PartnerEntity other = (PartnerEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.partnerId == null && other.partnerId != null) || (this.partnerId != null && !this.partnerId.equals(other.partnerId))) {
             return false;
         }
         return true;
@@ -132,7 +124,7 @@ public class PartnerEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PartnerEntity[ id=" + id + " ]";
+        return "entity.PartnerEntity[ id=" + partnerId + " ]";
     }
     
 }

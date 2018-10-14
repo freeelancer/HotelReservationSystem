@@ -7,8 +7,10 @@ package horsmanagementclient;
 
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import entity.EmployeeEntity;
+import entity.PartnerEntity;
 import java.util.Scanner;
 import util.enumeration.EmployeeAccessRightsEnum;
+import util.enumeration.PartnerAccessRightsEnum;
 
 /**
  *
@@ -121,12 +123,28 @@ class ManagementModule {
         System.out.println("New Employee Created Successfully!: " + newEmployeeEntity.getFirstName() + " " + newEmployeeEntity.getLastName() + "\n");    
     }
         
-    private void createPartnerOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void createPartnerOperation() 
+    {
+        Scanner sc=new Scanner(System.in);
+        PartnerEntity newPartnerEntity = new PartnerEntity();
+        System.out.println("*** System Administrator Operations :: Create New Customer ***\n");
+        System.out.print("Enter First Name> ");
+        newPartnerEntity.setFirstName(sc.nextLine().trim());
+        System.out.print("Enter Last Name> ");
+        newPartnerEntity.setLastName(sc.nextLine().trim());
+        System.out.print("Enter Username> ");
+        newPartnerEntity.setUsername(sc.nextLine().trim());
+        System.out.print("Enter Password> ");
+        newPartnerEntity.setPassword(sc.nextLine().trim());
+        System.out.print("Enter Access Rights Of New Employee\n'1' for System Administrator\n'2' For Operations Manager\n'3' For Sales Manager\n'4' For Guest Relation Officer\n>");
+        newPartnerEntity.setAccessRightsEnum(PartnerAccessRightsEnum.values()[sc.nextInt()-1]);
+        //Require partner session bean
+        System.out.println("New Partner Created Successfully!: " + newPartnerEntity.getFirstName() + " " + newPartnerEntity.getLastName() + "\n");        
     }
 
-    private void viewAllEmployeeOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void viewAllEmployeeOperation() 
+    {
+        
     }
 
     private void viewAllPartnerOperation() {

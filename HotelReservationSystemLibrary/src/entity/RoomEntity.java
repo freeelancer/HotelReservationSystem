@@ -29,7 +29,7 @@ public class RoomEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roomId;
     @Column(length = 10, nullable = false, unique = true)
     private Integer roomNumber;
     @Column(nullable = false)
@@ -47,14 +47,6 @@ public class RoomEntity implements Serializable {
         this.used = used;
         this.disabled = disabled;
     } 
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getRoomNumber() {
         return roomNumber;
@@ -99,18 +91,18 @@ public class RoomEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (roomId != null ? roomId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the roomId fields are not set
         if (!(object instanceof RoomEntity)) {
             return false;
         }
         RoomEntity other = (RoomEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
             return false;
         }
         return true;
@@ -118,7 +110,7 @@ public class RoomEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.RoomEntity[ id=" + id + " ]";
+        return "entity.RoomEntity[ id=" + roomId + " ]";
     }
     
 }
