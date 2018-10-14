@@ -18,5 +18,7 @@ public interface EmployeeEntityControllerRemote {
     public EmployeeEntity retrieveEmployeeByUsername(String username) throws EmployeeNotFoundException;
 
     public EmployeeEntity employeeLogin(String username, String password) throws InvalidLoginCredentialException;
+
+    public EmployeeEntity createNewEmployee(EmployeeEntity newEmployeeEntity);
     
 }

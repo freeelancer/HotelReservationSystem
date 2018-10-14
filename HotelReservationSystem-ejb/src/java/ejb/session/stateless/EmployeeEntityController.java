@@ -70,4 +70,12 @@ public class EmployeeEntityController implements EmployeeEntityControllerRemote,
         }
     }
     
+    @Override
+    public EmployeeEntity createNewEmployee(EmployeeEntity newEmployeeEntity)
+    {
+        em.persist(newEmployeeEntity);
+        em.flush();
+        return newEmployeeEntity;
+    }
+    
 }
