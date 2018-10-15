@@ -72,6 +72,19 @@ public class CustomerEntity implements Serializable {
         this.accessRightEnum = accessRightEnum;
     }
 
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public CustomerAccessRightsEnum getAccessRightEnum() {
+        return accessRightEnum;
+    }
+
+    public void setAccessRightEnum(CustomerAccessRightsEnum accessRightEnum) {
+        this.accessRightEnum = accessRightEnum;
+    }
+    
+
     public String getFirstName() {
         return firstName;
     }
@@ -158,31 +171,6 @@ public class CustomerEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (customerId != null ? customerId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the customerId fields are not set
-        if (!(object instanceof CustomerEntity)) {
-            return false;
-        }
-        CustomerEntity other = (CustomerEntity) object;
-        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.CustomerEntity[ id=" + customerId + " ]";
     }
     
 }

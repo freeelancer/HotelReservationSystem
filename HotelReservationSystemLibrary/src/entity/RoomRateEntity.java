@@ -55,6 +55,10 @@ public class RoomRateEntity implements Serializable {
         this.validityPeriod = validityPeriod;
     }
 
+    public Long getRoomRateId() {
+        return roomRateId;
+    }
+
     public ReservationEntity getReservationEntity() {
         return reservationEntity;
     }
@@ -102,30 +106,4 @@ public class RoomRateEntity implements Serializable {
     public void setValidityPeriod(Timestamp[] validityPeriod) {
         this.validityPeriod = validityPeriod;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (roomRateId != null ? roomRateId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the roomRateId fields are not set
-        if (!(object instanceof RoomRateEntity)) {
-            return false;
-        }
-        RoomRateEntity other = (RoomRateEntity) object;
-        if ((this.roomRateId == null && other.roomRateId != null) || (this.roomRateId != null && !this.roomRateId.equals(other.roomRateId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.RoomRateEntity[ id=" + roomRateId + " ]";
-    }
-    
 }

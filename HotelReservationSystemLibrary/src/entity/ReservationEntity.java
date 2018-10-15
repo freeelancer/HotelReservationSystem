@@ -50,6 +50,10 @@ public class ReservationEntity implements Serializable {
         this.roomEntity = roomEntity;
     }
 
+    public Long getReservationId() {
+        return reservationId;
+    }
+
     public CustomerEntity getCustomerEntity() {
         return customerEntity;
     }
@@ -97,30 +101,4 @@ public class ReservationEntity implements Serializable {
     public void setRoomEntity(RoomEntity roomEntity) {
         this.roomEntity = roomEntity;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (reservationId != null ? reservationId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the reservationId fields are not set
-        if (!(object instanceof ReservationEntity)) {
-            return false;
-        }
-        ReservationEntity other = (ReservationEntity) object;
-        if ((this.reservationId == null && other.reservationId != null) || (this.reservationId != null && !this.reservationId.equals(other.reservationId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.ReservationEntity[ id=" + reservationId + " ]";
-    }
-    
 }

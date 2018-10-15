@@ -48,6 +48,10 @@ public class RoomEntity implements Serializable {
         this.disabled = disabled;
     } 
 
+    public Long getRoomId() {
+        return roomId;
+    }
+
     public Integer getRoomNumber() {
         return roomNumber;
     }
@@ -87,30 +91,4 @@ public class RoomEntity implements Serializable {
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (roomId != null ? roomId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the roomId fields are not set
-        if (!(object instanceof RoomEntity)) {
-            return false;
-        }
-        RoomEntity other = (RoomEntity) object;
-        if ((this.roomId == null && other.roomId != null) || (this.roomId != null && !this.roomId.equals(other.roomId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.RoomEntity[ id=" + roomId + " ]";
-    }
-    
 }

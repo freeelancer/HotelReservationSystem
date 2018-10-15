@@ -54,6 +54,10 @@ public class PartnerEntity implements Serializable {
         this.accessRightsEnum = accessRightEnum;
     }
 
+    public Long getPartnerId() {
+        return partnerId;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -101,30 +105,4 @@ public class PartnerEntity implements Serializable {
     public void setReservationEntity(ReservationEntity reservationEntity) {
         this.reservationEntity = reservationEntity;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (partnerId != null ? partnerId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the partnerId fields are not set
-        if (!(object instanceof PartnerEntity)) {
-            return false;
-        }
-        PartnerEntity other = (PartnerEntity) object;
-        if ((this.partnerId == null && other.partnerId != null) || (this.partnerId != null && !this.partnerId.equals(other.partnerId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.PartnerEntity[ id=" + partnerId + " ]";
-    }
-    
 }
