@@ -8,6 +8,7 @@ package horsmanagementclient;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import entity.EmployeeEntity;
 import entity.PartnerEntity;
+import java.util.List;
 import java.util.Scanner;
 import util.enumeration.EmployeeAccessRightsEnum;
 import util.enumeration.PartnerAccessRightsEnum;
@@ -144,7 +145,20 @@ class ManagementModule {
 
     private void viewAllEmployeeOperation() 
     {
+        Scanner sc = new Scanner(System.in);
+        List<EmployeeEntity> employeeEntitys = employeeEntityController.retrieveAllEmployees();
         
+        System.out.println("*** Management Client System :: View All Exisiting Employees ***\n");
+        for(EmployeeEntity tempEmployee:employeeEntitys)
+        {
+            System.out.println("Employee ID: "+tempEmployee.getEmployeeId());
+            System.out.println("Employee Name: " + tempEmployee.getFirstName() + " " + tempEmployee.getLastName());
+            System.out.println("Employee Username: " + tempEmployee.getUsername());
+            System.out.println("Employee Access Rights: " + tempEmployee.getAccessRightEnum().toString());
+            System.out.println("------------------------");
+        }
+        System.out.print("Press any key to continue...> ");
+        sc.nextLine();
     }
 
     private void viewAllPartnerOperation() {

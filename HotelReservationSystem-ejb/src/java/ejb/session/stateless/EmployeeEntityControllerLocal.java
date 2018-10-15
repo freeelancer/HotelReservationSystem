@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.EmployeeEntity;
+import java.util.List;
 import util.exception.EmployeeNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 
@@ -18,4 +19,6 @@ public interface EmployeeEntityControllerLocal {
 
     public EmployeeEntity employeeLogin(String username, String password) throws InvalidLoginCredentialException;
     public EmployeeEntity createNewEmployee(EmployeeEntity newEmployeeEntity);
+    public List<EmployeeEntity> retrieveAllEmployees();
+    
 }

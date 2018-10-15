@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.EmployeeEntity;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -76,6 +77,13 @@ public class EmployeeEntityController implements EmployeeEntityControllerRemote,
         em.persist(newEmployeeEntity);
         em.flush();
         return newEmployeeEntity;
+    }
+    
+    @Override
+    public List<EmployeeEntity> retrieveAllEmployees()
+    {
+       Query query = em.createQuery("SELECT e FROM EmployeeEntity e");
+       return query.getResultList();
     }
     
 }
