@@ -39,7 +39,7 @@ public class EmployeeEntity implements Serializable {
     @Column(length = 32, nullable = false, unique = true)
     private String password;
     @Enumerated(EnumType.STRING)
-    private EmployeeAccessRightsEnum accessRightEnum;
+    private EmployeeAccessRightsEnum accessRightsEnum;
 
     public EmployeeEntity() {
     }
@@ -50,7 +50,7 @@ public class EmployeeEntity implements Serializable {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.accessRightEnum = accessRightEnum;
+        this.accessRightsEnum = accessRightEnum;
     }
 
     public String getFirstName() {
@@ -85,12 +85,12 @@ public class EmployeeEntity implements Serializable {
         this.password = password;
     }
 
-    public EmployeeAccessRightsEnum getAccessRightEnum() {
-        return accessRightEnum;
+    public EmployeeAccessRightsEnum getAccessRightsEnum() {
+        return accessRightsEnum;
     }
 
-    public void setAccessRightEnum(EmployeeAccessRightsEnum accessRightEnum) {
-        this.accessRightEnum = accessRightEnum;
+    public void setAccessRightsEnum(EmployeeAccessRightsEnum accessRightEnum) {
+        this.accessRightsEnum = accessRightEnum;
     }
 
     public ReservationEntity getReservationEntity() {

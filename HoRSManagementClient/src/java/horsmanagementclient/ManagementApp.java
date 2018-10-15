@@ -6,6 +6,7 @@
 package horsmanagementclient;
 
 import ejb.session.stateless.EmployeeEntityControllerRemote;
+import ejb.session.stateless.PartnerEntityControllerRemote;
 import entity.EmployeeEntity;
 import java.util.Scanner;
 import util.exception.InvalidLoginCredentialException;
@@ -17,13 +18,16 @@ import util.exception.InvalidLoginCredentialException;
 class ManagementApp {
     private EmployeeEntityControllerRemote employeeEntityController;
     private EmployeeEntity currentEmployeeEntity;
+    private PartnerEntityControllerRemote partnerEntityController;
     private ManagementModule managementModule;
     
     public ManagementApp() {
     }
 
-    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController) {
+    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController) 
+    {
         this.employeeEntityController = employeeEntityController;
+        this.partnerEntityController = partnerEntityController;
     }
 
     public void runApp()
@@ -50,7 +54,7 @@ class ManagementApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        managementModule = new ManagementModule(currentEmployeeEntity,employeeEntityController);
+                        managementModule = new ManagementModule(currentEmployeeEntity,employeeEntityController,partnerEntityController);
                         managementModule.menuEmployeeOperations();
                     }
                     catch(InvalidLoginCredentialException ex) 

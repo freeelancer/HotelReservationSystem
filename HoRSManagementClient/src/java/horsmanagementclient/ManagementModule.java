@@ -6,6 +6,7 @@
 package horsmanagementclient;
 
 import ejb.session.stateless.EmployeeEntityControllerRemote;
+import ejb.session.stateless.PartnerEntityControllerRemote;
 import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import java.util.List;
@@ -20,20 +21,21 @@ import util.enumeration.PartnerAccessRightsEnum;
 class ManagementModule {
     private EmployeeEntity currentEmployeeEntity;
     private EmployeeEntityControllerRemote employeeEntityController;
-
+    private PartnerEntityControllerRemote partnerEntityController;
     public ManagementModule() {
     }
 
-    public ManagementModule(EmployeeEntity currentEmployeeEntity, EmployeeEntityControllerRemote employeeEntityController) {
+    public ManagementModule(EmployeeEntity currentEmployeeEntity, EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController) {
         this.currentEmployeeEntity = currentEmployeeEntity;
         this.employeeEntityController = employeeEntityController;
+        this.partnerEntityController = partnerEntityController;
     }
 
     void menuEmployeeOperations() 
     {
         System.out.println("*** Management Client System ***\n");
-        System.out.println("You are login as " + currentEmployeeEntity.getFirstName() + " " + currentEmployeeEntity.getLastName() + " with " + currentEmployeeEntity.getAccessRightEnum().toString() + " rights\n");
-        EmployeeAccessRightsEnum currAccessRights = currentEmployeeEntity.getAccessRightEnum();
+        System.out.println("You are login as " + currentEmployeeEntity.getFirstName() + " " + currentEmployeeEntity.getLastName() + " with " + currentEmployeeEntity.getAccessRightsEnum().toString() + " rights\n");
+        EmployeeAccessRightsEnum currAccessRights = currentEmployeeEntity.getAccessRightsEnum();
         if(currAccessRights.equals(EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR))
         {
             systemAdminOperations();
@@ -119,7 +121,7 @@ class ManagementModule {
         System.out.print("Enter Password> ");
         newEmployeeEntity.setPassword(sc.nextLine().trim());
         System.out.print("Enter Access Rights Of New Employee\n'1' for System Administrator\n'2' For Operations Manager\n'3' For Sales Manager\n'4' For Guest Relation Officer\n>");
-        newEmployeeEntity.setAccessRightEnum(EmployeeAccessRightsEnum.values()[sc.nextInt()-1]);
+        newEmployeeEntity.setAccessRightsEnum(EmployeeAccessRightsEnum.values()[sc.nextInt()-1]);
         newEmployeeEntity = employeeEntityController.createNewEmployee(newEmployeeEntity);
         System.out.println("New Employee Created Successfully!: " + newEmployeeEntity.getFirstName() + " " + newEmployeeEntity.getLastName() + "\n");    
     }
@@ -137,9 +139,9 @@ class ManagementModule {
         newPartnerEntity.setUsername(sc.nextLine().trim());
         System.out.print("Enter Password> ");
         newPartnerEntity.setPassword(sc.nextLine().trim());
-        System.out.print("Enter Access Rights Of New Employee\n'1' for System Administrator\n'2' For Operations Manager\n'3' For Sales Manager\n'4' For Guest Relation Officer\n>");
+        System.out.print("Enter Access Rights Of New Employee\n'1' For Employee\n'2' For Manager\n>");
         newPartnerEntity.setAccessRightsEnum(PartnerAccessRightsEnum.values()[sc.nextInt()-1]);
-        //Require partner session bean
+        newPartnerEntity = partnerEntityController.createNewPartner(newPartnerEntity);
         System.out.println("New Partner Created Successfully!: " + newPartnerEntity.getFirstName() + " " + newPartnerEntity.getLastName() + "\n");        
     }
 
@@ -154,15 +156,28 @@ class ManagementModule {
             System.out.println("Employee ID: "+tempEmployee.getEmployeeId());
             System.out.println("Employee Name: " + tempEmployee.getFirstName() + " " + tempEmployee.getLastName());
             System.out.println("Employee Username: " + tempEmployee.getUsername());
-            System.out.println("Employee Access Rights: " + tempEmployee.getAccessRightEnum().toString());
+            System.out.println("Employee Access Rights: " + tempEmployee.getAccessRightsEnum().toString());
             System.out.println("------------------------");
         }
         System.out.print("Press any key to continue...> ");
         sc.nextLine();
     }
 
-    private void viewAllPartnerOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void viewAllPartnerOperation() 
+    {
+        Scanner sc = new Scanner(System.in);
+        List<PartnerEntity> partnerEntitys = partnerEntityController.retrieveAllPartners();
+        System.out.println("*** Management Client System :: View All Exisiting Partners ***\n");
+        for(PartnerEntity tempPartner:partnerEntitys)
+        {
+            System.out.println("Partner ID: "+tempPartner.getPartnerId());
+            System.out.println("Partner Name: " + tempPartner.getFirstName() + " " + tempPartner.getLastName());
+            System.out.println("Partner Username: " + tempPartner.getUsername());
+            System.out.println("Partner Access Rights: " + tempPartner.getAccessRightsEnum().toString());
+            System.out.println("------------------------");
+        }
+        System.out.print("Press any key to continue...> ");
+        sc.nextLine();
     }
 
     private void generalOperations() {
@@ -175,10 +190,5 @@ class ManagementModule {
 
     private void guestRelationOperations() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
-
-    
-            
+    }            
 }
