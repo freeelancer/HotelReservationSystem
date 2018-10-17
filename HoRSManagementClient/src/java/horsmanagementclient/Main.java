@@ -5,8 +5,13 @@
  */
 package horsmanagementclient;
 
+import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import ejb.session.stateless.PartnerEntityControllerRemote;
+import ejb.session.stateless.ReservationEntityControllerRemote;
+import ejb.session.stateless.RoomEntityControllerRemote;
+import ejb.session.stateless.RoomRateEntityControllerRemote;
+import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import javax.ejb.EJB;
 
 /**
@@ -16,13 +21,28 @@ import javax.ejb.EJB;
 public class Main {
 
     @EJB
+    private static RoomTypeEntityControllerRemote roomTypeEntityController;
+
+    @EJB
+    private static RoomRateEntityControllerRemote roomRateEntityController;
+
+    @EJB
+    private static RoomEntityControllerRemote roomEntityController;
+
+    @EJB
+    private static ReservationEntityControllerRemote reservationEntityController;
+
+    @EJB
+    private static CustomerEntityControllerRemote customerEntityController;
+
+    @EJB
     private static PartnerEntityControllerRemote partnerEntityController;
 
     @EJB
     private static EmployeeEntityControllerRemote employeeEntityController;
     
     public static void main(String[] args) {
-        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController);
+        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController);
         managementApp.runApp();
     }
     

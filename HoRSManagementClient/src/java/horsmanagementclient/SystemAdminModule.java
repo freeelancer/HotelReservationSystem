@@ -13,48 +13,24 @@ import java.util.List;
 import java.util.Scanner;
 import util.enumeration.EmployeeAccessRightsEnum;
 import util.enumeration.PartnerAccessRightsEnum;
-
 /**
  *
  * @author Lance
  */
-class ManagementModule {
+class SystemAdminModule {
     private EmployeeEntity currentEmployeeEntity;
     private EmployeeEntityControllerRemote employeeEntityController;
     private PartnerEntityControllerRemote partnerEntityController;
-    public ManagementModule() {
+    public SystemAdminModule() {
     }
 
-    public ManagementModule(EmployeeEntity currentEmployeeEntity, EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController) {
+    public SystemAdminModule(EmployeeEntity currentEmployeeEntity, EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController) {
         this.currentEmployeeEntity = currentEmployeeEntity;
         this.employeeEntityController = employeeEntityController;
         this.partnerEntityController = partnerEntityController;
     }
 
-    void menuEmployeeOperations() 
-    {
-        System.out.println("*** Management Client System ***\n");
-        System.out.println("You are login as " + currentEmployeeEntity.getFirstName() + " " + currentEmployeeEntity.getLastName() + " with " + currentEmployeeEntity.getAccessRightsEnum().toString() + " rights\n");
-        EmployeeAccessRightsEnum currAccessRights = currentEmployeeEntity.getAccessRightsEnum();
-        if(currAccessRights.equals(EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR))
-        {
-            systemAdminOperations();
-        }
-        else if(currAccessRights.equals(EmployeeAccessRightsEnum.OPEARTION_MANAGER))
-        {
-            generalOperations();
-        }
-        else if(currAccessRights.equals(EmployeeAccessRightsEnum.SALES_MANAGER))
-        {
-            salesOperations();
-        }
-        else if(currAccessRights.equals(EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER))
-        {
-            guestRelationOperations();
-        }
-    }  
-
-    private void systemAdminOperations() 
+    void systemAdminOperations() 
     {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
@@ -178,17 +154,5 @@ class ManagementModule {
         }
         System.out.print("Press any key to continue...> ");
         sc.nextLine();
-    }
-
-    private void generalOperations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void salesOperations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void guestRelationOperations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }            
+    }      
 }

@@ -5,10 +5,16 @@
  */
 package horsmanagementclient;
 
+import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import ejb.session.stateless.PartnerEntityControllerRemote;
+import ejb.session.stateless.ReservationEntityControllerRemote;
+import ejb.session.stateless.RoomEntityControllerRemote;
+import ejb.session.stateless.RoomRateEntityControllerRemote;
+import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.EmployeeEntity;
 import java.util.Scanner;
+import util.enumeration.EmployeeAccessRightsEnum;
 import util.exception.InvalidLoginCredentialException;
 
 /**
@@ -19,16 +25,29 @@ class ManagementApp {
     private EmployeeEntityControllerRemote employeeEntityController;
     private EmployeeEntity currentEmployeeEntity;
     private PartnerEntityControllerRemote partnerEntityController;
-    private ManagementModule managementModule;
-    
+    private RoomTypeEntityControllerRemote roomTypeEntityController;
+    private RoomRateEntityControllerRemote roomRateEntityController;
+    private RoomEntityControllerRemote roomEntityController;
+    private ReservationEntityControllerRemote reservationEntityController;
+    private CustomerEntityControllerRemote customerEntityController;
+    private SystemAdminModule systemAdminModule;
+    private OperationManagerModule operationManagerModule;
+    private SalesManagerModule salesManagerModule;
+    private GuestRelationModule guestRelationModule;
+            
     public ManagementApp() {
     }
 
-    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController) 
-    {
+    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, RoomEntityControllerRemote roomEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController) {
         this.employeeEntityController = employeeEntityController;
         this.partnerEntityController = partnerEntityController;
+        this.roomTypeEntityController = roomTypeEntityController;
+        this.roomRateEntityController = roomRateEntityController;
+        this.roomEntityController = roomEntityController;
+        this.reservationEntityController = reservationEntityController;
+        this.customerEntityController = customerEntityController;
     }
+
 
     public void runApp()
     {
@@ -54,8 +73,7 @@ class ManagementApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        managementModule = new ManagementModule(currentEmployeeEntity,employeeEntityController,partnerEntityController);
-                        managementModule.menuEmployeeOperations();
+                        
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {
@@ -99,5 +117,31 @@ class ManagementApp {
             throw new InvalidLoginCredentialException("Missing login credential!");
         }
     }
+    private void menuEmployeeOperations() 
+    {
+        System.out.println("*** Management Client System ***\n");
+        System.out.println("You are login as " + currentEmployeeEntity.getFirstName() + " " + currentEmployeeEntity.getLastName() + " with " + currentEmployeeEntity.getAccessRightsEnum().toString() + " rights\n");
+        EmployeeAccessRightsEnum currAccessRights = currentEmployeeEntity.getAccessRightsEnum();
+        if(currAccessRights.equals(EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR))
+        {
+            systemAdminModule = new SystemAdminModule(currentEmployeeEntity,employeeEntityController,partnerEntityController);
+            systemAdminModule.systemAdminOperations();
+        }
+        else if(currAccessRights.equals(EmployeeAccessRightsEnum.OPEARTION_MANAGER))
+        {
+            operationManagerModule = new OperationManagerModule(currentEmployeeEntity,roomTypeEntityController,roomEntityController);
+            operationManagerModule.operationModuleOperations();
+        }
+        else if(currAccessRights.equals(EmployeeAccessRightsEnum.SALES_MANAGER))
+        {
+            salesManagerModule = new SalesManagerModule(currentEmployeeEntity,roomRateEntityController);
+            salesManagerModule.salesManagerOperations();
+        }
+        else if(currAccessRights.equals(EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER))
+        {
+            guestRelationModule = new GuestRelationModule(currentEmployeeEntity,reservationEntityController,customerEntityController);
+            guestRelationModule.guestRelationOperations();
+        }
+    }  
     
 }
