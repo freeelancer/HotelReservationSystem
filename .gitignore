@@ -13,3 +13,8 @@
 /HotelReservationSystem-ejb/build/
 /dist/
 /build/
+/nbproject/
+/HotelReservationSystem-ejb/setup/
+/HotelReservationSystem-ejb/nbproject/
+/src/
+/HotelReservationSystem-ejb/src/conf/

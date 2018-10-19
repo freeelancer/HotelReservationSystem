@@ -73,7 +73,8 @@ class ManagementApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        
+                        menuEmployeeOperations(); 
+
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {

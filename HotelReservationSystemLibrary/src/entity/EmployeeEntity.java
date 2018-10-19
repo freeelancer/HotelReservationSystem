@@ -36,7 +36,7 @@ public class EmployeeEntity implements Serializable {
     private String lastName;
     @Column(length = 32, nullable = false, unique = true)
     private String username;
-    @Column(length = 32, nullable = false, unique = true)
+    @Column(length = 32, nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
     private EmployeeAccessRightsEnum accessRightsEnum;
