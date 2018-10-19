@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author Lance
  */
 @Stateless
-@Local(ReservationEntityController.class)
+@Local(ReservationEntityControllerLocal.class)
 @Remote(ReservationEntityControllerRemote.class)
 public class ReservationEntityController implements ReservationEntityControllerRemote, ReservationEntityControllerLocal 
 {
