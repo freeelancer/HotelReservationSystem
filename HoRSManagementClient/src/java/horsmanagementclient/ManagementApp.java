@@ -73,8 +73,7 @@ class ManagementApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        menuEmployeeOperations(); 
-
+                        menuEmployeeOperations();
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {
@@ -112,6 +111,7 @@ class ManagementApp {
         if(username.length() > 0 && password.length() > 0)
         {
             currentEmployeeEntity = employeeEntityController.employeeLogin(username, password);
+            menuEmployeeOperations();
         }
         else
         {

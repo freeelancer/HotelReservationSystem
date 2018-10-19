@@ -5,10 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.RoomTypeEntity;
+
 /**
  *
  * @author Lance
  */
-public interface RoomTypeEntityControllerRemote {
-    
+public interface RoomTypeEntityControllerRemote 
+{
+    public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity);    
 }

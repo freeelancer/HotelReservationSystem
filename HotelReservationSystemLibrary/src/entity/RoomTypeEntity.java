@@ -52,7 +52,7 @@ public class RoomTypeEntity implements Serializable {
     public RoomTypeEntity() {
     }
 
-    public RoomTypeEntity(List<RoomEntity> roomEntities, String name, String description, String size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
+    public RoomTypeEntity(String name, String description, String size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
         this.roomEntities = roomEntities;
         this.name = name;
         this.description = description;
