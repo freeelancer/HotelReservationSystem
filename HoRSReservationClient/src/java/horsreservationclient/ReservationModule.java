@@ -5,7 +5,6 @@
  */
 package horsreservationclient;
 
-import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
@@ -25,7 +24,6 @@ import util.exception.ReservationNotFoundException;
 public class ReservationModule {
     
     private CustomerEntity currentCustomerEntity;
-    private CustomerEntityControllerRemote customerEntityController;
     private RoomTypeEntityControllerRemote roomTypeEntityController;
     private ReservationEntityControllerRemote reservationEntityController;
     
@@ -33,11 +31,10 @@ public class ReservationModule {
     public ReservationModule() {
     }
 
-    public ReservationModule(CustomerEntity currentCustomerEntity, CustomerEntityControllerRemote customerEntityController) {
+    public ReservationModule(CustomerEntity currentCustomerEntity) {
         this.currentCustomerEntity = currentCustomerEntity;
-        this.customerEntityController = customerEntityController;
     }
-   /*
+   
     public void menuReservation() {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
@@ -73,9 +70,9 @@ public class ReservationModule {
                 }
             }
         }
-    }*/
+    }
     
-    /*private void reserveHotelRoom(){
+    private void reserveHotelRoom(){
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
@@ -172,6 +169,8 @@ public class ReservationModule {
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
         
             if (datesUnavailable.isEmpty()){
+                
+                
                 System.out.println("Room is available. Confirm reservation for:");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 System.out.println("Room Type: " + roomTypeEntity.getName());
@@ -188,7 +187,7 @@ public class ReservationModule {
                 }
             }
         }
-    }*/
+    }
     
     private void viewReservationDetails(){
         Scanner scanner = new Scanner(System.in);

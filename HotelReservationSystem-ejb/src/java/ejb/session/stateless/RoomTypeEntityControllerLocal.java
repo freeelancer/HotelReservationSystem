@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.RoomTypeEntity;
+import java.util.Date;
+import java.util.List;
 import util.exception.RoomTypeNotFoundException;
 
 /**
@@ -21,4 +23,6 @@ public interface RoomTypeEntityControllerLocal
     public void updateRoomType(RoomTypeEntity roomType);
     
     public String deleteRoomType(RoomTypeEntity roomType);
+    
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate);
 }

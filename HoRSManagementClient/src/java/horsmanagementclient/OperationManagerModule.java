@@ -276,8 +276,7 @@ class OperationManagerModule {
             System.out.print("Room Number invalid, input again> ");
             input=sc.nextLine().trim();           
         }
-        System.out.println("Enter Name of Room Type> ");
-        String roomTypeName=sc.nextLine().trim();
+        
         
     }
 
