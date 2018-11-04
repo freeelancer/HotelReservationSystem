@@ -6,11 +6,21 @@
 package horsreservationclient;
 
 import ejb.session.stateless.CustomerEntityControllerRemote;
+import ejb.session.stateless.EmployeeEntityControllerRemote;
+import ejb.session.stateless.PartnerEntityControllerRemote;
+import ejb.session.stateless.ReservationEntityControllerRemote;
+import ejb.session.stateless.RoomEntityControllerRemote;
+import ejb.session.stateless.RoomRateEntityControllerRemote;
+import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
+import entity.EmployeeEntity;
+import entity.RoomTypeEntity;
+import java.util.List;
 import java.util.Scanner;
 import util.exception.CustomerNotFoundException;
 import util.exception.UsernameExistException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.RoomExistException;
 
 /**
  *
@@ -19,12 +29,25 @@ import util.exception.InvalidLoginCredentialException;
 public class ReservationApp {
     private CustomerEntityControllerRemote customerEntityController;
     private CustomerEntity currentCustomerEntity;
+    private EmployeeEntityControllerRemote employeeEntityController;
+    private EmployeeEntity currentEmployeeEntity;
+    private PartnerEntityControllerRemote partnerEntityController;
+    private RoomTypeEntityControllerRemote roomTypeEntityController;
+    private RoomRateEntityControllerRemote roomRateEntityController;
+    private RoomEntityControllerRemote roomEntityController;
+    private ReservationEntityControllerRemote reservationEntityController;
     private ReservationModule reservationModule;
 
     public ReservationApp() {
     }
 
-    public ReservationApp(CustomerEntityControllerRemote customerEntityController) {
+    public ReservationApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, RoomEntityControllerRemote roomEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController) {
+        this.employeeEntityController = employeeEntityController;
+        this.partnerEntityController = partnerEntityController;
+        this.roomTypeEntityController = roomTypeEntityController;
+        this.roomRateEntityController = roomRateEntityController;
+        this.roomEntityController = roomEntityController;
+        this.reservationEntityController = reservationEntityController;
         this.customerEntityController = customerEntityController;
     }
     
@@ -35,13 +58,14 @@ public class ReservationApp {
         
         while(true)
         {
-            System.out.println("*** Welcome to HoRS Reservation System ***\n");
-            System.out.println("1: Login");
-            System.out.println("2: Register");
-            System.out.println("3: Exit\n");
+            System.out.println("*** Welcome to HoRS Reservation System - Visitor Page ***\n");
+            System.out.println("1: Login as Guest");
+            System.out.println("2: Register as Guest");
+            System.out.println("3: Search Hotel Room");
+            System.out.println("4: Exit\n");
             response = 0;
             
-            while(response < 1 || response > 3)
+            while(response < 1 || response > 4)
             {
                 System.out.print("> ");
 
@@ -69,10 +93,21 @@ public class ReservationApp {
                     }
                     catch(UsernameExistException ex)
                     {
-                        System.out.println("Acount already exist: " + ex.getMessage() + "\n");
+                        System.out.println("Account already exist: " + ex.getMessage() + "\n");
                     }
                 }
                 else if (response == 3)
+                {
+                    try
+                    {
+                        doSearchHotelRoom();
+                    }
+                    catch(RoomExistException ex)
+                    {
+                        System.out.println("There are no rooms available at the moment.\n");
+                    }
+                }
+                else if (response == 4)
                 {
                     break;
                 }
@@ -82,7 +117,7 @@ public class ReservationApp {
                 }
             }
   
-            if(response == 3)
+            if(response == 4)
             {
                 break;
             }
@@ -95,7 +130,7 @@ public class ReservationApp {
         String username = "";
         String password = "";
         
-        System.out.println("*** Reservation System :: Login ***\n");
+        System.out.println("*** Reservation System :: Login as Guest ***\n");
         System.out.print("Enter username> ");
         username = sc.nextLine().trim();
         System.out.print("Enter password> ");
@@ -117,7 +152,7 @@ public class ReservationApp {
         String username = "";
         String password = "";
         
-        System.out.println("*** Reservation System :: Registration ***\n");
+        System.out.println("*** Reservation System :: Guest Registration ***\n");
         
         do 
         {
@@ -166,5 +201,30 @@ public class ReservationApp {
             newCustomerEntity = customerEntityController.createNewCustomer(newCustomerEntity);
             System.out.println("New account created successfully!: " + newCustomerEntity.getUsername() + "\n");
         } 
+    }
+    
+    public void doSearchHotelRoom() throws RoomExistException
+    {
+        Scanner sc = new Scanner(System.in);
+        int response;
+        
+        System.out.println("*** Reservation System :: Search for Hotel Room ***\n");
+        int index = 1;
+        List<RoomTypeEntity> roomTypeEntities = roomTypeEntityController.retrieveAllRoomTypes();
+        
+        for (RoomTypeEntity roomTypeEntity : roomTypeEntities){
+            System.out.print("" + index + ". " + roomTypeEntity.getName());
+        }
+        
+        System.out.print("> ");
+
+        response = sc.nextInt();
+        
+        RoomTypeEntity roomType = roomTypeEntities.get(response-1);
+
+        //Get number of available room
+        //Display description, size, bed type, capacity, amneities
+        //Option to login to book or back 
+        
     }
 }
