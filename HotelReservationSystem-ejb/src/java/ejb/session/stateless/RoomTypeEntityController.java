@@ -6,6 +6,9 @@
 package ejb.session.stateless;
 
 import entity.RoomTypeEntity;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -32,5 +35,21 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         em.flush();
         return newRoomTypeEntity;
     }
-
+    
+    // Logic not done
+    @Override
+    public List<RoomTypeEntity> retrieveAllRoomTypes(){
+        List<RoomTypeEntity> roomTypeList = new ArrayList<RoomTypeEntity>();
+        return roomTypeList;
+    }
+    
+    // Logic not done
+    @Override
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
+        
+        List<Date> datesUnavailable = new ArrayList<Date>();
+        
+        return datesUnavailable;
+    }
+    
 }

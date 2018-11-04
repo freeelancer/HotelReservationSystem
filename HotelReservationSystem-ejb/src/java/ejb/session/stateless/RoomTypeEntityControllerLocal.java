@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.RoomTypeEntity;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,5 +16,9 @@ import entity.RoomTypeEntity;
 public interface RoomTypeEntityControllerLocal 
 {
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity);    
+
+    public List<RoomTypeEntity> retrieveAllRoomTypes();
+
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate);
     
 }
