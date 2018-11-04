@@ -27,7 +27,7 @@ public class DateEntity implements Serializable {
     private Long dateId;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateTime;
-    @ManyToOne
+    @ManyToOne(optional=false)
     private RoomTypeEntity roomTypeEntity;
 
     public DateEntity() {
