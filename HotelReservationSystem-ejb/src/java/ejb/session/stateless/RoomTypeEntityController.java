@@ -35,21 +35,5 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         em.flush();
         return newRoomTypeEntity;
     }
-    
-    // Logic not done
-    @Override
-    public List<RoomTypeEntity> retrieveAllRoomTypes(){
-        List<RoomTypeEntity> roomTypeList = new ArrayList<RoomTypeEntity>();
-        return roomTypeList;
-    }
-    
-    // Logic not done
-    @Override
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
-        
-        List<Date> datesUnavailable = new ArrayList<Date>();
-        
-        return datesUnavailable;
-    }
-    
+   
 }

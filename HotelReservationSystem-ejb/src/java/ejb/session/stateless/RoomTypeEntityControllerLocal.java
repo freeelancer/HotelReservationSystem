@@ -15,10 +15,5 @@ import java.util.List;
  */
 public interface RoomTypeEntityControllerLocal 
 {
-    public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity);    
-
-    public List<RoomTypeEntity> retrieveAllRoomTypes();
-
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate);
-    
+    public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity);       
 }
