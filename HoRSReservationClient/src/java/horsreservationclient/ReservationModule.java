@@ -31,8 +31,10 @@ public class ReservationModule {
     public ReservationModule() {
     }
 
-    public ReservationModule(CustomerEntity currentCustomerEntity) {
+    public ReservationModule(CustomerEntity currentCustomerEntity, RoomTypeEntityControllerRemote roomTypeEntityController, ReservationEntityControllerRemote reservationEntityController) {
         this.currentCustomerEntity = currentCustomerEntity;
+        this.reservationEntityController = reservationEntityController;
+        this.roomTypeEntityController = roomTypeEntityController;
     }
    
     public void menuReservation() {
@@ -44,7 +46,7 @@ public class ReservationModule {
             System.out.println("1: Reserve Hotel Room");
             System.out.println("2: View My Reservation Details");
             System.out.println("3: View All My Reservations");
-            System.out.println("4: Back\n");
+            System.out.println("4: Logout\n");
             response = 0;
             
             while(response < 1 || response > 4){
@@ -69,6 +71,9 @@ public class ReservationModule {
                     break;
                 }
             }
+            if (response == 4){
+                return;
+            }
         }
     }
     
@@ -84,9 +89,9 @@ public class ReservationModule {
         
         while(true){
             for (i = 1; i <= numRoomType; i++){
-                System.out.println("" + i + ": " + roomTypeList.get(i-1));
+                System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
             }
-            int lastOption = i+1;
+            int lastOption = i;
             System.out.println("" + lastOption + ": Back\n");
 
             System.out.print("> ");
@@ -179,9 +184,11 @@ public class ReservationModule {
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");
                 response = scanner.nextLine();
+                System.out.println("-------------------");
                 if (!response.equals("c")){
                     reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeEntity, null, null, checkInDate, checkOutDate);
                     System.out.println("Reservation Successful!");
+                    return true;
                 } else {
                     System.out.println("Reservation cancelled.");
                 }
@@ -192,9 +199,9 @@ public class ReservationModule {
     private void viewReservationDetails(){
         Scanner scanner = new Scanner(System.in);
         
-        System.out.println("*** HoRS Reservation System :: View Reservation Details ***\n");
+        System.out.println("*** HoRS Reservation System :: View Reservation Details ***");
         System.out.println("Enter Reservation ID");
-        System.out.println("> ");
+        System.out.print("> ");
         Long reservationId = scanner.nextLong();
         scanner.nextLine();
         
@@ -214,7 +221,7 @@ public class ReservationModule {
         System.out.println("Total Amount: " + reservationEntity.getTotalAmount());
         
         System.out.println("Press Enter to continue: ");
-        System.out.println("> ");
+        System.out.print("> ");
         scanner.nextLine();
     }
     
@@ -234,7 +241,7 @@ public class ReservationModule {
         }
         
         System.out.println("Press Enter to continue: ");
-        System.out.println("> ");
+        System.out.print("> ");
         scanner.nextLine();        
     }
 }

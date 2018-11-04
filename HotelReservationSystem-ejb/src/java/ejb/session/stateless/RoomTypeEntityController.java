@@ -5,8 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.DateEntity;
 import entity.RoomTypeEntity;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -31,10 +34,34 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
 
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
+
+    public RoomTypeEntityController() {
+    }
     
     @Override
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
+        List<DateEntity> dates = new ArrayList<DateEntity>();
+        Date start = new Date();
+        Date end = new Date();
+        try {
+            start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
+            end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
+        } catch (Exception e) {
+        
+        }
+        
+        for(Date current = start; current.before(end); ){
+            dates.add(new DateEntity(current, newRoomTypeEntity));
+ 
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(current);
+            calendar.add(Calendar.DATE, 1);
+            current = calendar.getTime();
+        }
+        
+        newRoomTypeEntity.setDateEntities(dates);
+        
         em.persist(newRoomTypeEntity);
         em.flush();
         return newRoomTypeEntity;

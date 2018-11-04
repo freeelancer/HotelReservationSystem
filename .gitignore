@@ -21,3 +21,6 @@
 /HoRSReservationClient/nbproject/
 /HoRSManagementClient/nbproject/
 /HotelReservationSystemLibrary/nbproject/
+HoRSManagementClient/nbproject/genfiles.properties
+*.properties
+*.xml

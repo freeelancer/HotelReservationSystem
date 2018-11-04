@@ -44,12 +44,9 @@ public class ReservationApp {
     public ReservationApp() {
     }
 
-    public ReservationApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, RoomEntityControllerRemote roomEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController) {
-        this.employeeEntityController = employeeEntityController;
-        this.partnerEntityController = partnerEntityController;
+    public ReservationApp(RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController) {
         this.roomTypeEntityController = roomTypeEntityController;
         this.roomRateEntityController = roomRateEntityController;
-        this.roomEntityController = roomEntityController;
         this.reservationEntityController = reservationEntityController;
         this.customerEntityController = customerEntityController;
     }
@@ -80,8 +77,8 @@ public class ReservationApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        reservationModule = new ReservationModule(currentCustomerEntity);
-                        //Run reservationModule operations
+                        reservationModule = new ReservationModule(currentCustomerEntity, roomTypeEntityController, reservationEntityController);
+                        reservationModule.menuReservation();
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {

@@ -61,22 +61,10 @@ public class ReservationEntityController implements ReservationEntityControllerR
     // Logic not done
     @Override
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException {
+ 
+        ReservationEntity reservationEntity = em.find(ReservationEntity.class, reservationId);
         
-        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.reservationid = :inReservationId");
-        query.setParameter("inReservationId", reservationId);
-        
-        ReservationEntity reservationEntity = new ReservationEntity();
-        
-        try
-        {
-            reservationEntity = (ReservationEntity)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
-            throw new ReservationNotFoundException("Reservation " + reservationId + " does not exist!");
-        }
-        
-        if (reservationEntity.getCustomerEntity().getCustomerId() == customerEntity.getCustomerId()){
+        if (reservationEntity.getCustomerEntity().getCustomerId().equals(customerEntity.getCustomerId())){
             return reservationEntity;  
         } else {
             throw new ReservationNotFoundException("Reservation " + reservationId + " does not exist!");
@@ -89,6 +77,9 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
         List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
         
-        return reservationList;
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r, IN (r.customerEntity) c WHERE c.customerid = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        
+        return query.getResultList();
     }
 }
