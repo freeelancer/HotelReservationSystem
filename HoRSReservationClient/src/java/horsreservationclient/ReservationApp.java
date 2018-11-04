@@ -15,6 +15,9 @@ import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
 import entity.EmployeeEntity;
 import entity.RoomTypeEntity;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.CustomerNotFoundException;
@@ -77,7 +80,7 @@ public class ReservationApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        reservationModule = new ReservationModule(currentCustomerEntity,customerEntityController);
+                        reservationModule = new ReservationModule(currentCustomerEntity);
                         //Run reservationModule operations
                     }
                     catch(InvalidLoginCredentialException ex) 
@@ -205,26 +208,135 @@ public class ReservationApp {
     
     public void doSearchHotelRoom() throws RoomExistException
     {
-        Scanner sc = new Scanner(System.in);
-        int response;
+        Scanner scanner = new Scanner(System.in);
         
         System.out.println("*** Reservation System :: Search for Hotel Room ***\n");
-        int index = 1;
-        List<RoomTypeEntity> roomTypeEntities = roomTypeEntityController.retrieveAllRoomTypes();
+        List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
+        int numRoomType = roomTypeList.size();
+        int i;
+        Integer response = 0;
         
-        for (RoomTypeEntity roomTypeEntity : roomTypeEntities){
-            System.out.print("" + index + ". " + roomTypeEntity.getName());
+        while(true){
+            for (i = 1; i <= numRoomType; i++){
+                System.out.println("" + i + ": " + roomTypeList.get(i-1));
+            }
+            int lastOption = i+1;
+            System.out.println("" + lastOption + ": Back\n");
+
+            System.out.print("> ");
+            response = scanner.nextInt();
+            scanner.nextLine();
+
+            while (response < 1 || response > lastOption){
+                System.out.println("Invalid response! Please try again.");
+                System.out.print("> ");
+                response = scanner.nextInt();
+                scanner.nextLine();
+            }
+
+            if (response == lastOption){
+                break;
+            }
+            
+            reserveRoom(roomTypeList.get(response-1));
+            
         }
+        return;
+    }
+    
+    private void reserveRoom(RoomTypeEntity roomTypeEntity){
         
-        System.out.print("> ");
+        Scanner scanner = new Scanner(System.in);
+       
+        System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
+        System.out.println("Room Type: " + roomTypeEntity.getName());
+        System.out.println("Description: " + roomTypeEntity.getDescription());
+        System.out.println("Amenities: " + roomTypeEntity.getAmenities());
+        System.out.println("Room Size: " + roomTypeEntity.getSize() + " square meters");
+        System.out.println("Bed Type: " + roomTypeEntity.getBedTypeEnum());
+        System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
+        System.out.println("-------------------");
+        
+        while (true){
+            System.out.println("Type the dates (dd/MM/yyyy) you wish to reserve. Type 'b' to return.");
 
-        response = sc.nextInt();
-        
-        RoomTypeEntity roomType = roomTypeEntities.get(response-1);
+            System.out.println("Check in date:");
+            System.out.print("> ");
+            String response = scanner.nextLine();
 
-        //Get number of available room
-        //Display description, size, bed type, capacity, amneities
-        //Option to login to book or back 
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}")){
+                if (response.equals("b")){return;}
+                System.out.println("Invalid response! Please try again.");
+                System.out.print("> ");
+                response = scanner.nextLine();
+            }
+            
+            Date checkInDate = new Date();
+            
+            try {
+                checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            } catch (Exception e){
+                System.out.println(e);
+            }
+            
+            System.out.println("Check out date:");
+            System.out.print("> ");
+            response = scanner.nextLine();
+
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}")){
+                if (response.equals("b")){return;}
+                System.out.println("Invalid response! Please try again.");
+                System.out.print("> ");
+                response = scanner.nextLine();
+            }
+               
+            Date checkOutDate = new Date();
+            
+            try {
+                checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            } catch (Exception e){
+                System.out.println(e);
+            }
+            
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
         
+            if (datesUnavailable.isEmpty()){
+                System.out.println("Room is available:");
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                System.out.println("Room Type: " + roomTypeEntity.getName());
+                System.out.println("Check-in date: " + dateFormat.format(checkInDate));
+                System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
+                System.out.println("--- Login to reserve ---");
+                System.out.print("1. Login as Guest");
+                System.out.print("2. Register as Guest");
+                System.out.print("3. Cancel");
+                System.out.println("> ");
+                Integer response2 = scanner.nextInt();
+                scanner.nextLine();
+                
+                while (response2 < 1 || response2 > 3){
+                    System.out.println("Invalid response! Please try again.");
+                    System.out.print("> ");
+                    response2 = scanner.nextInt();
+                    scanner.nextLine();
+                }
+                
+                if (response2 == 1){
+                    try{
+                        doLogin();
+                    } catch (InvalidLoginCredentialException ex){
+                        System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
+                    }
+                } else if (response2 == 2){
+                    try{
+                        doRegistration();
+                    } catch(UsernameExistException ex){
+                        System.out.println("Username already exist: " + ex.getMessage() + "\n");
+                    }
+                } else if (response2 == 3){
+                    return;
+                }
+            }
+        }
     }
 }
