@@ -25,7 +25,6 @@ import util.exception.ReservationNotFoundException;
 public class ReservationModule {
     
     private CustomerEntity currentCustomerEntity;
-    private CustomerEntityControllerRemote customerEntityController;
     private RoomTypeEntityControllerRemote roomTypeEntityController;
     private ReservationEntityControllerRemote reservationEntityController;
     
@@ -33,9 +32,8 @@ public class ReservationModule {
     public ReservationModule() {
     }
 
-    public ReservationModule(CustomerEntity currentCustomerEntity, CustomerEntityControllerRemote customerEntityController) {
+    public ReservationModule(CustomerEntity currentCustomerEntity) {
         this.currentCustomerEntity = currentCustomerEntity;
-        this.customerEntityController = customerEntityController;
     }
    
     public void menuReservation() {
@@ -172,6 +170,8 @@ public class ReservationModule {
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
         
             if (datesUnavailable.isEmpty()){
+                
+                
                 System.out.println("Room is available. Confirm reservation for:");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 System.out.println("Room Type: " + roomTypeEntity.getName());
