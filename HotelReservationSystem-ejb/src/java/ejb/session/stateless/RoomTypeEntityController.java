@@ -41,26 +41,27 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     @Override
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
-        List<DateEntity> dates = new ArrayList<DateEntity>();
-        Date start = new Date();
-        Date end = new Date();
-        try {
-            start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
-            end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
-        } catch (Exception e) {
-        
-        }
-        
-        for(Date current = start; current.before(end); ){
-            dates.add(new DateEntity(current, newRoomTypeEntity));
- 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(current);
-            calendar.add(Calendar.DATE, 1);
-            current = calendar.getTime();
-        }
-        
-        newRoomTypeEntity.setDateEntities(dates);
+//        Deal with this later
+//        List<DateEntity> dates = new ArrayList<DateEntity>();
+//        Date start = new Date();
+//        Date end = new Date();
+//        try {
+//            start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
+//            end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
+//        } catch (Exception e) {
+//        
+//        }
+//        
+//        for(Date current = start; current.before(end); ){
+//            dates.add(new DateEntity(current, newRoomTypeEntity));
+// 
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(current);
+//            calendar.add(Calendar.DATE, 1);
+//            current = calendar.getTime();
+//        }
+//        
+//        newRoomTypeEntity.setDateEntities(dates);
         
         em.persist(newRoomTypeEntity);
         em.flush();
