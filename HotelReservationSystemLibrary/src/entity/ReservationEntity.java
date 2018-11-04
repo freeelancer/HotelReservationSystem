@@ -6,6 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +40,11 @@ public class ReservationEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+    @Column(nullable=false)
+    private Date checkInDate;
+    @Column(nullable=false)
+    private Date checkOutDate;
+    private BigDecimal totalAmount;
 
     public ReservationEntity() {
     }
@@ -48,6 +56,30 @@ public class ReservationEntity implements Serializable {
         this.roomRateEntity = roomRateEntity;
         this.roomTypeEntity = roomTypeEntity;
         this.roomEntity = roomEntity;
+    }
+
+    public Date getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(Date checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(Date checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public Long getReservationId() {
