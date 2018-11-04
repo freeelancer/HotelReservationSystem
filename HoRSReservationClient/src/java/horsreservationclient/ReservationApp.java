@@ -210,17 +210,17 @@ public class ReservationApp {
         
         System.out.println("*** Reservation System :: Search for Hotel Room ***\n");
         int index = 1;
-        List<RoomTypeEntity> roomTypeEntities = roomTypeEntityController.retrieveAllRoomTypes();
+        /*List<RoomTypeEntity> roomTypeEntities = roomTypeEntityController.retrieveAllRoomTypes();
         
         for (RoomTypeEntity roomTypeEntity : roomTypeEntities){
             System.out.print("" + index + ". " + roomTypeEntity.getName());
-        }
+        }*/
         
         System.out.print("> ");
 
         response = sc.nextInt();
         
-        RoomTypeEntity roomType = roomTypeEntities.get(response-1);
+        //RoomTypeEntity roomType = roomTypeEntities.get(response-1);
 
         //Get number of available room
         //Display description, size, bed type, capacity, amneities

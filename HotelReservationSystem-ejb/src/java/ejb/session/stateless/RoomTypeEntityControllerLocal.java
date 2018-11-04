@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.RoomTypeEntity;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -15,4 +16,9 @@ public interface RoomTypeEntityControllerLocal
 {
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity);    
     
+    public RoomTypeEntity retrieveRoomTypeByName(String roomTypeName) throws RoomTypeNotFoundException;
+    
+    public void updateRoomType(RoomTypeEntity roomType);
+    
+    public String deleteRoomType(RoomTypeEntity roomType);
 }

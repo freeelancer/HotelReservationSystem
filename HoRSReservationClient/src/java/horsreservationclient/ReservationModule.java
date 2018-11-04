@@ -29,7 +29,7 @@ public class ReservationModule {
         this.currentCustomerEntity = currentCustomerEntity;
         this.customerEntityController = customerEntityController;
     }
-   
+   /*
     public void menuReservation() {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
@@ -64,9 +64,9 @@ public class ReservationModule {
                 }
             }
         }
-    }
+    }*/
     
-    private void reserveHotelRoom(){
+    /*private void reserveHotelRoom(){
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
@@ -156,7 +156,7 @@ public class ReservationModule {
                 reservationEntityController.createNewReservation(customerEntity, roomTypeEntity, null, null, checkInDate, checkOutDate);
             }
         }
-    }
+    }*/
     
     private void viewReservationDetails(){
     
