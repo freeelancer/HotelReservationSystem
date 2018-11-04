@@ -124,7 +124,8 @@ class OperationManagerModule {
         System.out.print("Enter Description> ");
         newRoomTypeEntity.setDescription(sc.nextLine().trim());
         System.out.print("Enter Size Of Room Type> ");
-        newRoomTypeEntity.setSize(sc.nextLine().trim());
+        newRoomTypeEntity.setSize(sc.nextInt());
+        sc.nextLine();
         System.out.print("Enter Type Of Bed\n1: Single\n2: Queen\n3: King\n4: Jumbo\n>");
         newRoomTypeEntity.setBedTypeEnum(BedTypeEnum.values()[sc.nextInt()-1]);
         System.out.print("Enter Capacity Of Room Type> ");

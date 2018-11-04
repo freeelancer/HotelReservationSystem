@@ -25,7 +25,7 @@ public class EmployeeEntity implements Serializable {
 
     @OneToOne(mappedBy = "employeeEntity")
     private ReservationEntity reservationEntity;
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

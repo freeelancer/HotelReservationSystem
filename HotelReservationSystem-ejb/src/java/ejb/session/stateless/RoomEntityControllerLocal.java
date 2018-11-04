@@ -5,10 +5,14 @@
  */
 package ejb.session.stateless;
 
+import entity.RoomEntity;
+
 /**
  *
  * @author Lance
  */
 public interface RoomEntityControllerLocal {
+
+    public RoomEntity createNewRoom(RoomEntity room);
     
 }

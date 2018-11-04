@@ -21,7 +21,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class RoomEntity implements Serializable {
 
-    @OneToOne(mappedBy = "roomEntity")
+    @OneToOne(mappedBy = "roomEntity", optional=true)
     private ReservationEntity reservationEntity;
     @ManyToOne
     private RoomTypeEntity roomTypeEntity;
@@ -31,32 +31,54 @@ public class RoomEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
     @Column(length = 10, nullable = false, unique = true)
-    private Integer roomNumber;
+    private String roomNumber;
     @Column(nullable = false)
-    private Boolean used;
+    private Boolean used=false;
     @Column(nullable = false)
-    private Boolean disabled;
+    private Boolean disabled=false;
+    @Column(nullable = false)
+    private Boolean occupied=false;
+    @Column(nullable = false)
+    private Boolean allocated=false;
 
     public RoomEntity() {
     }
 
-    public RoomEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, Integer roomNumber, Boolean used, Boolean disabled) {
+    public RoomEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, String roomNumber, Boolean used, Boolean disabled, Boolean occupied, Boolean allocated) {
         this.reservationEntity = reservationEntity;
         this.roomTypeEntity = roomTypeEntity;
         this.roomNumber = roomNumber;
         this.used = used;
         this.disabled = disabled;
-    } 
+        this.occupied = occupied;
+        this.allocated = allocated;
+    }
 
+    public Boolean getOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(Boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public Boolean getAllocated() {
+        return allocated;
+    }
+
+    public void setAllocated(Boolean allocated) {
+        this.allocated = allocated;
+    }
+    
     public Long getRoomId() {
         return roomId;
     }
 
-    public Integer getRoomNumber() {
+    public String getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(Integer roomNumber) {
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 

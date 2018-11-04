@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.RoomEntity;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -23,5 +24,16 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
 
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
+
+    public RoomEntityController() {
+    }
+    
+    @Override
+    public RoomEntity createNewRoom(RoomEntity room)
+    {
+        em.persist(room);
+        em.flush();
+        return room;
+    }
     
 }

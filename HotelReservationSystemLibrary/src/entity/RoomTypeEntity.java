@@ -36,8 +36,8 @@ public class RoomTypeEntity implements Serializable {
     private String name;
     @Column(length = 500, nullable = false)
     private String description;
-    @Column(length = 32, nullable = false)
-    private String size;
+    @Column(nullable = false)
+    private Integer size;
     @Enumerated(EnumType.STRING)
     private BedTypeEnum bedTypeEnum;
     @Column(length = 1, nullable = false)
@@ -45,14 +45,14 @@ public class RoomTypeEntity implements Serializable {
     @Column(length = 100, nullable = false)
     private String amenities;
     @Column(nullable = false)
-    private Boolean used;
+    private Boolean used = false;
     @Column(nullable = false)
-    private Boolean disable;
+    private Boolean disable = false;
 
     public RoomTypeEntity() {
     }
 
-    public RoomTypeEntity(String name, String description, String size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
+    public RoomTypeEntity(String name, String description, Integer size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
         this.roomEntities = roomEntities;
         this.name = name;
         this.description = description;
@@ -84,11 +84,11 @@ public class RoomTypeEntity implements Serializable {
         this.description = description;
     }
 
-    public String getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 

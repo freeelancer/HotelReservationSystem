@@ -30,7 +30,7 @@ public class ReservationEntity implements Serializable {
     private RoomRateEntity roomRateEntity;
     @OneToOne
     private RoomTypeEntity roomTypeEntity;
-    @OneToOne
+    @OneToOne (optional=true)
     private RoomEntity roomEntity;
 
     private static final long serialVersionUID = 1L;

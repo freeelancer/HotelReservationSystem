@@ -32,7 +32,7 @@ class SystemAdminModule {
 
     void systemAdminOperations() 
     {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         Integer response = 0;
         
         while(true)
@@ -48,8 +48,8 @@ class SystemAdminModule {
             {
                 System.out.print("> ");
 
-                response = scanner.nextInt();
-
+                response = sc.nextInt();
+                sc.nextLine();
                 if(response == 1)
                 {
                     createEmployeeOperation();
@@ -76,7 +76,7 @@ class SystemAdminModule {
                 }
             }
             
-            if(response == 4)
+            if(response == 5)
             {
                 break;
             }
