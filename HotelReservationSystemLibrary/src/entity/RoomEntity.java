@@ -23,7 +23,7 @@ public class RoomEntity implements Serializable {
 
     @OneToOne(mappedBy = "roomEntity", optional=true)
     private ReservationEntity reservationEntity;
-    @ManyToOne
+    @ManyToOne (optional=false)
     private RoomTypeEntity roomTypeEntity;
 
     private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class RoomEntity implements Serializable {
     @Column(length = 10, nullable = false, unique = true)
     private String roomNumber;
     @Column(nullable = false)
-    private Boolean used=false;
+    private Boolean used=true;
     @Column(nullable = false)
     private Boolean disabled=false;
     @Column(nullable = false)

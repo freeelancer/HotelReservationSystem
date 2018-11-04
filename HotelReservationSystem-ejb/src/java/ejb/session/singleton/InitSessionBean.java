@@ -57,7 +57,8 @@ public class InitSessionBean
     private void initializeData() 
     {
         employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Admin", "Admin", "Admin","password",EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR));
-     
+        
+//     initialize roomtypes
         RoomTypeEntity roomType1 = new RoomTypeEntity();
         roomType1.setName("Deluxe");
         roomType1.setAmenities("");
@@ -99,7 +100,7 @@ public class InitSessionBean
         roomType5.setSize(100);
         roomType5=roomTypeEntityController.createNewRoomType(roomType5);
         
-        //populate the rooms
+//        intialize all the rooms
         for(int i=1;i<=10;i++)
         {
             for(int j=1;j<=50;j++)

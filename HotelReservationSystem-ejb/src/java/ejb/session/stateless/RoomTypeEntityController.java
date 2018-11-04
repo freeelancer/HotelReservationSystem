@@ -5,7 +5,12 @@
  */
 package ejb.session.stateless;
 
+import entity.DateEntity;
 import entity.RoomTypeEntity;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
