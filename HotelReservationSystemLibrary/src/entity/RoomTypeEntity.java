@@ -46,6 +46,8 @@ public class RoomTypeEntity implements Serializable {
     private String amenities;
     @Column(nullable = false)
     private Boolean used = true;
+    @OneToMany(mappedBy = "roomTypeEntity")
+    private List<DateEntity> dateEntities;
     @Column(nullable = false)
     private Boolean disable = false;
     @OneToMany(mappedBy = "roomTypeEntity")
