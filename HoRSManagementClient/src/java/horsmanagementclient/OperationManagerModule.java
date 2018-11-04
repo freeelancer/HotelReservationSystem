@@ -8,9 +8,12 @@ package horsmanagementclient;
 import ejb.session.stateless.RoomEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.EmployeeEntity;
+import entity.RoomEntity;
 import entity.RoomTypeEntity;
+import java.util.List;
 import java.util.Scanner;
 import util.enumeration.BedTypeEnum;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -67,7 +70,7 @@ class OperationManagerModule {
                 }
                 else if (response == 3)
                 {
-                    UpdateRoomTypeOperations();
+                    updateRoomTypeOperations();
                 }
                 else if (response == 4)
                 {
@@ -136,26 +139,128 @@ class OperationManagerModule {
         newRoomTypeEntity.setDisable(Boolean.FALSE);
         newRoomTypeEntity.setUsed(Boolean.TRUE);
         newRoomTypeEntity = roomTypeEntityController.createNewRoomType(newRoomTypeEntity);
+        System.out.println("Room Type "+newRoomTypeEntity.getName()+" successfully created!\n");
     }
 
-    private void viewRoomTypeDetailsOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void viewRoomTypeDetailsOperation() 
+    {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*** Operation Manager Operations :: View Room Type Details ***\n");
+        System.out.print("Enter Name Of Room Type> ");
+        try{
+            RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine().trim());
+            printRoomTypeDetails(roomType);
+        }catch(RoomTypeNotFoundException ex){
+            System.out.println(ex.getMessage()+"\n");
+        }
+    }
+    
+    private void printRoomTypeDetails(RoomTypeEntity roomType)
+    {
+        System.out.println("Name: "+roomType.getName());
+        System.out.println("Description: "+roomType.getDescription());
+        System.out.println("Amenities: "+roomType.getAmenities());
+        System.out.println("Bed Type: "+roomType.getBedTypeEnum().toString());
+        System.out.println("Capacity: "+roomType.getCapacity().toString());
+        System.out.println("Size: "+roomType.getSize().toString());
+        System.out.println("Disabled: "+roomType.getDisable().toString()+"\n");
+        System.out.println("Used: "+roomType.getName()+"\n");
     }
 
-    private void UpdateRoomTypeOperations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void updateRoomTypeOperations() 
+    {
+        Scanner sc = new Scanner(System.in);
+        String input;
+        System.out.println("*** Operation Manager Operations :: Create New Room Type ***\n");
+        try{
+            System.out.print("Enter Name Of Room Type> ");
+            RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine());
+            System.out.println("Current Details:");
+            printRoomTypeDetails(roomType);
+            System.out.print("Enter New Name Of Room Type (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setName(input);
+            }
+            System.out.print("Enter New Description (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setDescription(input);
+            }
+            System.out.print("Enter New Size Of Room Type (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setSize(Integer.parseInt(input));
+            }
+            System.out.print("Enter New Type Of Bed\n1: Single\n2: Queen\n3: King\n4: Jumbo\n (blank if no change)\n>");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setBedTypeEnum(BedTypeEnum.values()[Integer.parseInt(input)-1]);
+            }
+       
+            System.out.print("Enter New Capacity Of Room Type (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setCapacity(Integer.parseInt(input));
+            }
+            System.out.print("Enter New Amenities Of Room Type with each amenity separated by a comma (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomType.setAmenities(input);
+            }
+            roomTypeEntityController.updateRoomType(roomType);
+            System.out.println("Room Type updated successfully!\n");   
+        }catch(RoomTypeNotFoundException ex){
+            System.out.println(ex.getMessage()+"\n");
+        }
     }
 
     private void deleteRoomTypeOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*** Operation Manager Operations :: Delete Room Type ***\n");
+        System.out.print("Enter Name Of Room Type> ");
+        String input;
+        try{
+            RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine().trim());
+            printRoomTypeDetails(roomType);
+            System.out.println("Are you sure you want to delete? Enter y to confirm>");
+            input=sc.nextLine().trim();
+            if(input.equals('y'))
+            {
+                roomTypeEntityController.deleteRoomType(roomType);
+                
+            }
+            else
+            {
+                System.out.println("Room Type "+roomType.getName()+" is not deleted\n");
+            }
+            
+        }catch(RoomTypeNotFoundException ex){
+            System.out.println(ex.getMessage()+"\n");
+        }
     }
 
     private void viewAllRoomTypesOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("*** Operation Manager Operations :: View All Room Types ***\n");
+        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
+        for(RoomTypeEntity roomType:roomTypes)
+        {
+            System.out.println();
+            printRoomTypeDetails(roomType);
+        }
+        System.out.println();
+        
     }
 
     private void createNewRoomOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        RoomEntity room = new RoomEntity();
+        
     }
 
     private void updateRoomOperation() {

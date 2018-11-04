@@ -135,7 +135,7 @@ class SystemAdminModule {
             System.out.println("Employee Access Rights: " + tempEmployee.getAccessRightsEnum().toString());
             System.out.println("------------------------");
         }
-        System.out.print("Press any key to continue...> ");
+        System.out.print("Press Enter to continue...> ");
         sc.nextLine();
     }
 

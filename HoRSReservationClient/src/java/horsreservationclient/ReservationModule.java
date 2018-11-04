@@ -5,7 +5,6 @@
  */
 package horsreservationclient;
 
-import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;

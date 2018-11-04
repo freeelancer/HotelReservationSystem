@@ -45,6 +45,8 @@ public class ReservationEntity implements Serializable {
     @Column(nullable=false)
     private Date checkOutDate;
     private BigDecimal totalAmount;
+    @OneToOne(mappedBy = "reservationEntity", optional=true)
+    private AllocationExceptionEntity allocationExceptionEntity;
 
     public ReservationEntity() {
     }
@@ -56,6 +58,14 @@ public class ReservationEntity implements Serializable {
         this.roomRateEntity = roomRateEntity;
         this.roomTypeEntity = roomTypeEntity;
         this.roomEntity = roomEntity;
+    }
+
+    public AllocationExceptionEntity getAllocationExceptionEntity() {
+        return allocationExceptionEntity;
+    }
+
+    public void setAllocationExceptionEntity(AllocationExceptionEntity allocationExceptionEntity) {
+        this.allocationExceptionEntity = allocationExceptionEntity;
     }
 
     public Date getCheckInDate() {

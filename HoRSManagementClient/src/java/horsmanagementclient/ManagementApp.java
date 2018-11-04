@@ -66,14 +66,15 @@ class ManagementApp {
                 System.out.print("> ");
 
                 response = sc.nextInt();
+                sc.nextLine();
 
                 if(response == 1)
                 {
                     try
                     {
                         doLogin();
-                        System.out.println("Login successful!\n");    
-                        menuEmployeeOperations();
+                        //System.out.println("Login successful!\n");    
+                        //menuEmployeeOperations();
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {
@@ -128,7 +129,7 @@ class ManagementApp {
             systemAdminModule = new SystemAdminModule(currentEmployeeEntity,employeeEntityController,partnerEntityController);
             systemAdminModule.systemAdminOperations();
         }
-        else if(currAccessRights.equals(EmployeeAccessRightsEnum.OPEARTION_MANAGER))
+        else if(currAccessRights.equals(EmployeeAccessRightsEnum.OPERATION_MANAGER))
         {
             operationManagerModule = new OperationManagerModule(currentEmployeeEntity,roomTypeEntityController,roomEntityController);
             operationManagerModule.operationModuleOperations();
