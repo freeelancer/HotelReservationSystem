@@ -163,8 +163,8 @@ class OperationManagerModule {
         System.out.println("Bed Type: "+roomType.getBedTypeEnum().toString());
         System.out.println("Capacity: "+roomType.getCapacity().toString());
         System.out.println("Size: "+roomType.getSize().toString());
-        System.out.println("Disabled: "+roomType.getDisable().toString()+"\n");
-        System.out.println("Used: "+roomType.getName()+"\n");
+        System.out.println("Disabled: "+roomType.getDisable().toString());
+        System.out.println("Used: "+roomType.getUsed()+"\n");
     }
 
     private void updateRoomTypeOperations() 
@@ -229,12 +229,12 @@ class OperationManagerModule {
         try{
             RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine().trim());
             printRoomTypeDetails(roomType);
-            System.out.println("Are you sure you want to delete? Enter y to confirm>");
+            System.out.print("Are you sure you want to delete? Enter y to confirm>");
             input=sc.nextLine().trim();
-            if(input.equals('y'))
+            if(input.equals("y"))
             {
-                roomTypeEntityController.deleteRoomType(roomType);
-                
+                String msg=roomTypeEntityController.deleteRoomType(roomType);
+                System.out.println(msg+"\n");
             }
             else
             {
@@ -259,7 +259,24 @@ class OperationManagerModule {
     }
 
     private void createNewRoomOperation() {
-        RoomEntity room = new RoomEntity();
+        Scanner sc = new Scanner(System.in);
+        RoomEntity room=new RoomEntity();
+        String input;
+        System.out.println("*** Operation Manager Operations :: Create New Room ***\n");
+        System.out.print("Enter Room Number> ");
+        input="";
+        while(input.length()!=4)
+        {
+            input=sc.nextLine().trim();
+            if(input.length()==4)
+            {
+                room.setRoomNumber(input);
+                break;
+            }
+            System.out.print("Room Number invalid, input again> ");
+            input=sc.nextLine().trim();           
+        }
+        
         
     }
 

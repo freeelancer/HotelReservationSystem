@@ -49,12 +49,12 @@ public class RoomTypeEntity implements Serializable {
     @Column(nullable = false)
     private Boolean disable = false;
     @OneToMany(mappedBy = "roomTypeEntity")
-    private List<DateEntity> dateEntities;
+    private List<DateEntity> dates;
 
     public RoomTypeEntity() {
     }
 
-    public RoomTypeEntity(String name, String description, Integer size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities, Boolean used, Boolean disable) {
+    public RoomTypeEntity(List<RoomEntity> roomEntities, String name, String description, Integer size, BedTypeEnum bedTypeEnum, Integer capacity, String amenities) {
         this.roomEntities = roomEntities;
         this.name = name;
         this.description = description;
@@ -62,8 +62,14 @@ public class RoomTypeEntity implements Serializable {
         this.bedTypeEnum = bedTypeEnum;
         this.capacity = capacity;
         this.amenities = amenities;
-        this.used = used;
-        this.disable = disable;
+    }
+
+    public List<DateEntity> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<DateEntity> dates) {
+        this.dates = dates;
     }
 
     public List<DateEntity> getDateEntities() {
