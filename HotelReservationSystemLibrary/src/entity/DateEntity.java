@@ -27,8 +27,10 @@ public class DateEntity implements Serializable {
     private Long dateId;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateTime;
+    
     @ManyToOne(optional=false)
     private RoomTypeEntity roomTypeEntity;
+    private Integer numReserved=0;
 
     public DateEntity() {
     }
@@ -38,12 +40,16 @@ public class DateEntity implements Serializable {
         this.roomTypeEntity = roomTypeEntity;
     }
 
-    public Long getDateId() {
-        return dateId;
+    public Integer getNumReserved() {
+        return numReserved;
     }
 
-    public void setDateId(Long dateId) {
-        this.dateId = dateId;
+    public void setNumReserved(Integer numReserved) {
+        this.numReserved = numReserved;
+    }
+
+    public Long getDateId() {
+        return dateId;
     }
 
     public Date getDateTime() {
@@ -60,31 +66,6 @@ public class DateEntity implements Serializable {
 
     public void setRoomTypeEntity(RoomTypeEntity roomTypeEntity) {
         this.roomTypeEntity = roomTypeEntity;
-    }
-        
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (dateId != null ? dateId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the dateId fields are not set
-        if (!(object instanceof DateEntity)) {
-            return false;
-        }
-        DateEntity other = (DateEntity) object;
-        if ((this.dateId == null && other.dateId != null) || (this.dateId != null && !this.dateId.equals(other.dateId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.DateEntity[ id=" + dateId + " ]";
     }
     
 }
