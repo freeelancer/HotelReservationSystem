@@ -27,3 +27,17 @@ HoRSManagementClient/nbproject/genfiles.properties
 *.properties
 *.xml
 *.properties
+HotelReservationSystem-ejb/nbproject/private/private.properties
+HoRSManagementClient/nbproject/genfiles.properties
+HoRSManagementClient/nbproject/private/private.properties
+HoRSManagementClient/nbproject/private/private.xml
+HoRSManagementClient/nbproject/project.properties
+HoRSManagementClient/nbproject/project.xml
+HoRSReservationClient/nbproject/genfiles.properties
+HoRSReservationClient/nbproject/private/private.properties
+HoRSReservationClient/nbproject/project.properties
+HotelReservationSystem-ejb/nbproject/private/private.properties
+HotelReservationSystem-ejb/nbproject/project.properties
+HotelReservationSystem-ejb/src/conf/persistence.xml
+nbproject/private/private.properties
+nbproject/project.properties

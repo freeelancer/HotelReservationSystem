@@ -9,6 +9,10 @@
     <class>entity.RoomEntity</class>
     <class>entity.RoomRateEntity</class>
     <class>entity.RoomTypeEntity</class>
+    <class>ejb.session.stateless.DateEntityController</class>
+    <class>entity.AllocationExceptionEntity</class>
+    <class>entity.DateEntity</class>
+    <class>entity.RoomExceptionReportEntity</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
