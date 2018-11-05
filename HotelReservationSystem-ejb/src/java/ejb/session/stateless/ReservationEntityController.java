@@ -64,22 +64,24 @@ public class ReservationEntityController implements ReservationEntityControllerR
  
         ReservationEntity reservationEntity = em.find(ReservationEntity.class, reservationId);
         
-        if (reservationEntity.getCustomerEntity().getCustomerId().equals(customerEntity.getCustomerId())){
-            return reservationEntity;  
+        if (reservationEntity != null){
+            System.out.println("Reservation Found!");
+            if (reservationEntity.getCustomerEntity().getCustomerId().equals(customerEntity.getCustomerId())){
+                return reservationEntity;  
+            } else {
+            throw new ReservationNotFoundException("Error 2: Reservation " + reservationId + " does not exist!");
+            }
         } else {
-            throw new ReservationNotFoundException("Reservation " + reservationId + " does not exist!");
+            throw new ReservationNotFoundException("Error 1: Reservation " + reservationId + " does not exist!");
         }
     }
     
-    // Logic not done
     @Override
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId){
-    
-        List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
-        
-        Query query = em.createQuery("SELECT r FROM ReservationEntity r, IN (r.customerEntity) c WHERE c.customerid = :inCustomerId");
-        query.setParameter("inCustomerId", customerId);
+
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r");
         
         return query.getResultList();
+        
     }
 }

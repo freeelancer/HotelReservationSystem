@@ -77,7 +77,7 @@ public class ReservationApp {
                     {
                         doLogin();
                         System.out.println("Login successful!\n");    
-                        reservationModule = new ReservationModule(currentCustomerEntity, roomTypeEntityController, reservationEntityController);
+                        reservationModule = new ReservationModule(currentCustomerEntity, customerEntityController, roomTypeEntityController, reservationEntityController);
                         reservationModule.menuReservation();
                     }
                     catch(InvalidLoginCredentialException ex) 
@@ -217,7 +217,7 @@ public class ReservationApp {
             for (i = 1; i <= numRoomType; i++){
                 System.out.println("" + i + ": " + roomTypeList.get(i-1));
             }
-            int lastOption = i+1;
+            int lastOption = i;
             System.out.println("" + lastOption + ": Back\n");
 
             System.out.print("> ");

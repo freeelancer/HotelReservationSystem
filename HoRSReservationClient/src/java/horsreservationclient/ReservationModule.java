@@ -5,6 +5,7 @@
  */
 package horsreservationclient;
 
+import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
@@ -12,6 +13,7 @@ import entity.ReservationEntity;
 import entity.RoomTypeEntity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -24,6 +26,7 @@ import util.exception.ReservationNotFoundException;
 public class ReservationModule {
     
     private CustomerEntity currentCustomerEntity;
+    private CustomerEntityControllerRemote customerEntityController;
     private RoomTypeEntityControllerRemote roomTypeEntityController;
     private ReservationEntityControllerRemote reservationEntityController;
     
@@ -31,10 +34,11 @@ public class ReservationModule {
     public ReservationModule() {
     }
 
-    public ReservationModule(CustomerEntity currentCustomerEntity, RoomTypeEntityControllerRemote roomTypeEntityController, ReservationEntityControllerRemote reservationEntityController) {
+    public ReservationModule(CustomerEntity currentCustomerEntity, CustomerEntityControllerRemote customerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, ReservationEntityControllerRemote reservationEntityController) {
         this.currentCustomerEntity = currentCustomerEntity;
-        this.reservationEntityController = reservationEntityController;
+        this.customerEntityController = customerEntityController;
         this.roomTypeEntityController = roomTypeEntityController;
+        this.reservationEntityController = reservationEntityController;
     }
    
     public void menuReservation() {
@@ -209,7 +213,7 @@ public class ReservationModule {
         
         try {
             reservationEntity = reservationEntityController.retrieveReservationDetails(reservationId, currentCustomerEntity);
-        } catch (ReservationNotFoundException e) {
+        } catch (ReservationNotFoundException ex) {
             System.out.println("Sorry, the reservation ID you entered is not found.");
             return;
         }
@@ -230,7 +234,13 @@ public class ReservationModule {
         
         System.out.println("*** HoRS Reservation System :: View All Reservation ***\n");
         
-        List<ReservationEntity> reservationList = reservationEntityController.retrieveAllReservationsByCustomerId(currentCustomerEntity.getCustomerId());
+        List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
+                
+        try {
+        reservationList = customerEntityController.retrieveAllReservations(currentCustomerEntity.getCustomerId());
+        } catch (ReservationNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }        
         
         for (ReservationEntity reservationEntity:reservationList){
             System.out.println("Reservation ID: " + reservationEntity.getReservationId());

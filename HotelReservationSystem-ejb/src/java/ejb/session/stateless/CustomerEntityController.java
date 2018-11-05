@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import entity.ReservationEntity;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.ReservationNotFoundException;
 
 /**
  *
@@ -101,4 +104,25 @@ public class CustomerEntityController implements CustomerEntityControllerRemote,
         }
     }
     
+    @Override
+    public List<ReservationEntity> retrieveAllReservations(Long customerId) throws ReservationNotFoundException
+    {
+        
+        CustomerEntity customerEntity = em.find(CustomerEntity.class, customerId);
+        List<ReservationEntity> reservations = new ArrayList<ReservationEntity>();
+        
+//        for (ReservationEntity reservationEntity:customerEntity.getReservationEntities()){
+//            reservations.add(reservationEntity);
+//        }
+        
+        if(customerEntity != null)
+        {
+            return customerEntity.getReservationEntities();
+        } 
+        else 
+        {
+            throw new ReservationNotFoundException("There are no reservations!");
+        }
+        
+    }
 }

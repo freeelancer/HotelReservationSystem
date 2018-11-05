@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ import util.enumeration.CustomerAccessRightsEnum;
 @Entity
 public class CustomerEntity implements Serializable {
 
-    @OneToMany(mappedBy = "customerEntity")
+    @OneToMany(mappedBy = "customerEntity", fetch=FetchType.EAGER)
     private List<ReservationEntity> reservationEntities;
     
     private static final long serialVersionUID = 1L;
