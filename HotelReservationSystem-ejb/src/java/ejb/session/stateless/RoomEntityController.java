@@ -57,7 +57,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     public void updateRoom(RoomEntity room) 
     {
         try {
-            RoomEntity roomToUpdate = retrieveRoomTypeById(room.getRoomId());
+            RoomEntity roomToUpdate = retrieveRoomById(room.getRoomId());
             roomToUpdate.getRoomTypeEntity().getRoomEntities().remove(roomToUpdate);
             RoomTypeEntity roomTypeNew = roomTypeEntityController.retrieveRoomTypeByName(room.getRoomTypeEntity().getName());
             roomTypeNew.getRoomEntities().add(roomToUpdate);
@@ -82,7 +82,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         }
     }
 
-    private RoomEntity retrieveRoomTypeById(Long roomId) 
+    private RoomEntity retrieveRoomById(Long roomId) 
     {
         Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.Id = :inRoomId");
         query.setParameter("inRoomId", roomId);
@@ -107,10 +107,5 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
             throw new RoomAlreadyDisabledException("Room "+room.getRoomNumber()+" currently is still used and is already disabled\n");
         }
         
-    }
-
-    private RoomEntity retrieveRoomById(Long roomId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }    
 }
