@@ -33,8 +33,8 @@ public class RoomEntity implements Serializable {
     @Column(length = 10, nullable = false, unique = true)
     private String roomNumber;
     @Column(nullable = false)
-    
-    private Boolean usable=false;
+//    whether room is spoiled, default true means room usable and not spoiled
+    private Boolean usable=true;
     @Column(nullable = false)
     private Boolean disabled=false;
     @Column(nullable = false)
