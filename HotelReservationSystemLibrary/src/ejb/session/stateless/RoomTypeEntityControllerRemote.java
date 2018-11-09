@@ -8,7 +8,9 @@ package ejb.session.stateless;
 import entity.RoomTypeEntity;
 import java.util.Date;
 import java.util.List;
+import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
+import util.exception.RoomTypeStillUsedException;
 
 /**
  *
@@ -22,7 +24,7 @@ public interface RoomTypeEntityControllerRemote
 
     public void updateRoomType(RoomTypeEntity roomType);
 
-    public String deleteRoomType(RoomTypeEntity roomType);
+    public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException;
 
     public List<RoomTypeEntity> retrieveAllRoomTypes();
 
