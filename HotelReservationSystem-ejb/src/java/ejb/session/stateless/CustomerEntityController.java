@@ -107,17 +107,15 @@ public class CustomerEntityController implements CustomerEntityControllerRemote,
     @Override
     public List<ReservationEntity> retrieveAllReservations(Long customerId) throws ReservationNotFoundException
     {
+        Query query = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.customerId = :inStudentId");
+        query.setParameter(":inCustomerId", customerId);
+        CustomerEntity customer = (CustomerEntity) query.getSingleResult();
         
-        CustomerEntity customerEntity = em.find(CustomerEntity.class, customerId);
-        List<ReservationEntity> reservations = new ArrayList<ReservationEntity>();
-        
-//        for (ReservationEntity reservationEntity:customerEntity.getReservationEntities()){
-//            reservations.add(reservationEntity);
-//        }
-        
-        if(customerEntity != null)
+        List<ReservationEntity> reservations = customer.getReservationEntities();
+
+        if(reservations.size() != 0)
         {
-            return customerEntity.getReservationEntities();
+            return reservations;
         } 
         else 
         {
