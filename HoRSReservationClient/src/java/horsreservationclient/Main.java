@@ -42,7 +42,7 @@ public class Main {
     private static EmployeeEntityControllerRemote employeeEntityController;
     
     public static void main(String[] args) {
-        ReservationApp reservationApp = new ReservationApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController);
+        ReservationApp reservationApp = new ReservationApp(roomTypeEntityController,roomRateEntityController,reservationEntityController,customerEntityController);
         reservationApp.runApp();
     }
     

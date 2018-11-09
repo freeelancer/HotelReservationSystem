@@ -11,17 +11,16 @@ import entity.PartnerEntity;
 import entity.ReservationEntity;
 import entity.RoomTypeEntity;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.CustomerNotFoundException;
 import util.exception.ReservationNotFoundException;
 
 /**
@@ -37,6 +36,8 @@ public class ReservationEntityController implements ReservationEntityControllerR
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
     
+    @EJB
+    CustomerEntityControllerLocal customerEntityController;
     
     // Logic not done
     @Override
@@ -52,8 +53,22 @@ public class ReservationEntityController implements ReservationEntityControllerR
         reservationEntity.setCheckOutDate(checkOutDate);
         reservationEntity.setTotalAmount(new BigDecimal(1000.00)); // hardcoded for now
         
+        CustomerEntity customerToUpdate = new CustomerEntity();
+        
+        try {
+            customerToUpdate = customerEntityController.retrieveCustomerByUsername(customerEntity.getUsername());
+        } catch (CustomerNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
         em.persist(reservationEntity);
         em.flush();
+        em.refresh(reservationEntity);
+        
+        List<ReservationEntity> reservations = customerToUpdate.getReservationEntities();
+        reservations.add(reservationEntity);
+        customerToUpdate.setReservationEntities(reservations);
+        customerEntityController.updateCustomer(customerToUpdate);
         
         return reservationEntity;        
     }
@@ -61,34 +76,27 @@ public class ReservationEntityController implements ReservationEntityControllerR
     // Logic not done
     @Override
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException {
+ 
+        ReservationEntity reservationEntity = em.find(ReservationEntity.class, reservationId);
         
-        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.reservationid = :inReservationId");
-        query.setParameter("inReservationId", reservationId);
-        
-        ReservationEntity reservationEntity = new ReservationEntity();
-        
-        try
-        {
-            reservationEntity = (ReservationEntity)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
-            throw new ReservationNotFoundException("Reservation " + reservationId + " does not exist!");
-        }
-        
-        if (reservationEntity.getCustomerEntity().getCustomerId() == customerEntity.getCustomerId()){
-            return reservationEntity;  
+        if (reservationEntity != null){
+            System.out.println("Reservation Found!");
+            if (reservationEntity.getCustomerEntity().getCustomerId().equals(customerEntity.getCustomerId())){
+                return reservationEntity;  
+            } else {
+            throw new ReservationNotFoundException("Error 2: Reservation " + reservationId + " does not exist!");
+            }
         } else {
-            throw new ReservationNotFoundException("Reservation " + reservationId + " does not exist!");
+            throw new ReservationNotFoundException("Error 1: Reservation " + reservationId + " does not exist!");
         }
     }
     
-    // Logic not done
     @Override
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId){
-    
-        List<ReservationEntity> reservationList = new ArrayList<ReservationEntity>();
+
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r");
         
-        return reservationList;
+        return query.getResultList();
+        
     }
 }
