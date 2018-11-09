@@ -12,8 +12,15 @@ import entity.RoomEntity;
 import entity.RoomTypeEntity;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.enumeration.BedTypeEnum;
+import util.exception.RoomAlreadyDisabledException;
+import util.exception.RoomIsUsedException;
+import util.exception.RoomNotFoundException;
+import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
+import util.exception.RoomTypeStillUsedException;
 
 /**
  *
@@ -90,7 +97,7 @@ class OperationManagerModule {
                 }
                 else if (response == 8)
                 {
-                    deleteRoomOpertaion();
+                    deleteRoomOperation();
                 }
                 else if (response == 9)
                 {
@@ -166,15 +173,21 @@ class OperationManagerModule {
         System.out.println("Disabled: "+roomType.getDisable().toString());
         System.out.println("Used: "+roomType.getUsed()+"\n");
     }
+    
+    private void printRoomDetails(RoomEntity room) 
+    {
+        System.out.println("Room Number: "+room.getRoomNumber());
+        System.out.println("Room Type: "+room.getRoomTypeEntity().getName());
+    }   
 
     private void updateRoomTypeOperations() 
     {
         Scanner sc = new Scanner(System.in);
         String input;
-        System.out.println("*** Operation Manager Operations :: Create New Room Type ***\n");
+        System.out.println("*** Operation Manager Operations :: Update Room Type ***\n");
         try{
             System.out.print("Enter Name Of Room Type> ");
-            RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine());
+            RoomTypeEntity roomType=roomTypeEntityController.retrieveRoomTypeByName(sc.nextLine().trim());
             System.out.println("Current Details:");
             printRoomTypeDetails(roomType);
             System.out.print("Enter New Name Of Room Type (blank if no change)> ");
@@ -233,14 +246,19 @@ class OperationManagerModule {
             input=sc.nextLine().trim();
             if(input.equals("y"))
             {
-                String msg=roomTypeEntityController.deleteRoomType(roomType);
-                System.out.println(msg+"\n");
+                try {
+                    roomTypeEntityController.deleteRoomType(roomType);
+                    System.out.println("Successfully Deleted Room Type!\n");
+                } catch (RoomTypeStillUsedException ex) {
+                    System.out.println(ex.getMessage()+"\n");
+                } catch (RoomTypeAlreadyDisabledException ex) {
+                    System.out.println(ex.getMessage()+"\n");
+                }    
             }
             else
             {
                 System.out.println("Room Type "+roomType.getName()+" is not deleted\n");
-            }
-            
+            }  
         }catch(RoomTypeNotFoundException ex){
             System.out.println(ex.getMessage()+"\n");
         }
@@ -276,16 +294,104 @@ class OperationManagerModule {
             System.out.print("Room Number invalid, input again> ");
             input=sc.nextLine().trim();           
         }
-        
-        
+        System.out.println("Enter Name Of Room Type For Room> ");
+        try{
+            String roomTypeName = sc.nextLine().trim();
+            roomEntityController.createNewRoom(room, roomTypeName);
+        }catch(RoomTypeNotFoundException ex){
+            System.out.println("Error in creating new Room: "+ex.getMessage()+"\n"); 
+        }
     }
 
     private void updateRoomOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Scanner sc = new Scanner(System.in);
+        String input;
+        System.out.println("*** Operation Manager Operations :: Update Room ***\n");
+       
+        System.out.print("Enter Room Number To Update> ");
+        try{
+            RoomEntity room=roomEntityController.retrieveRoomByNumber(sc.nextLine().trim());
+            System.out.println("Current Details:");
+            printRoomDetails(room);
+            System.out.print("Enter New Room Number (blank if no change)> ");
+            input=" ";
+            while(input.length()>0&&input.length()!=4)
+            {
+                input=sc.nextLine().trim();
+                if(input.length()==0){
+                    break;
+                }else if(input.length()==4){
+                    room.setRoomNumber(input);
+                    break;
+                }
+                System.out.print("Room Number invalid, input again (blank if no change)> "); 
+            }
+            System.out.print("Enter New Room Type of Room (blank if no change)> ");
+            List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
+            int numRoomType = roomTypeList.size();
+            int i;
+            Integer response = 0;
+            while(true){
+                for (i = 1; i <= numRoomType; i++){
+                    System.out.println("" + i + ": " + roomTypeList.get(i-1));
+                }
+                int lastOption = i+1;
+                System.out.println("" + lastOption + ": No Change\n");
+                System.out.print("> ");
+                response = sc.nextInt();
+                sc.nextLine().trim();
+                
+                while (response < 1 || response > lastOption){
+                    System.out.println("Invalid response! Please try again.");
+                    System.out.print("> ");
+                    response = sc.nextInt();
+                    sc.nextLine();
+                }
+
+                if (response == lastOption){
+                    break;
+                }
+
+                else{
+                    room.setRoomTypeEntity(roomTypeList.get(i-1));
+                    break;
+                }
+            }
+        }catch(RoomNotFoundException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
-    private void deleteRoomOpertaion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void deleteRoomOperation() 
+    {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*** Operation Manager Operations :: Delete Room ***\n");
+        System.out.print("Enter Room Number> ");
+        String input;
+        try{
+            RoomEntity room=roomEntityController.retrieveRoomByNumber(sc.nextLine().trim());
+            printRoomDetails(room);
+            System.out.print("Are you sure you want to delete? Enter y to confirm>");
+            input=sc.nextLine().trim();
+            if(input.equals("y"))
+            {
+                try {
+                    roomEntityController.deleteRoom(room);
+                    System.out.println("Successfully Deleted Room!\n");
+                } catch (RoomIsUsedException ex) {
+                    System.out.println(ex.getMessage()+"\n");
+                } catch (RoomAlreadyDisabledException ex) {
+                    System.out.println(ex.getMessage()+"\n");
+                }
+            }
+            else
+            {
+                System.out.println("Room Type is not deleted\n");
+            }
+            
+        }catch(RoomNotFoundException ex){
+            System.out.println(ex.getMessage()+"\n");
+        }
     }
 
     private void viewAllRoomsOperation() {
@@ -295,5 +401,6 @@ class OperationManagerModule {
     private void viewRoomAllocationExceptionResultOperation() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }

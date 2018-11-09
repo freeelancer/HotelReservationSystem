@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import entity.DateEntity;
 import entity.RoomTypeEntity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +17,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
+import util.exception.RoomTypeStillUsedException;
 
 /**
  *
@@ -36,6 +37,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     @Override
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
+        
         em.persist(newRoomTypeEntity);
         em.flush();
         return newRoomTypeEntity;
@@ -76,22 +78,21 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     }
     
     @Override
-    public String deleteRoomType(RoomTypeEntity roomType)
+    public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException
     {
         RoomTypeEntity roomTypeToDelete = retrieveRoomTypeById(roomType.getRoomTypeId());
         if(roomTypeToDelete.getRoomEntities().size()==0)
         {
             em.remove(roomTypeToDelete);
-            return("Room Type "+roomType.getName()+" deleted from database\n");
         }
         else if(roomTypeToDelete.getUsed()==Boolean.TRUE)
         {
             roomTypeToDelete.setUsed(Boolean.FALSE);
-            return("Room Type "+roomType.getName()+" currently still has rooms with such Room Type. As such it is disabled from further use but not deleted\n");
+            throw new RoomTypeStillUsedException("Room Type "+roomType.getName()+" currently still has rooms with such Room Type. As such it is disabled from further use but not deleted\n");
         }
         else
         {
-            return("Room Type "+roomType.getName()+" currently still has rooms with such Room Type and is already disabled\n");
+            throw new RoomTypeAlreadyDisabledException("Room Type "+roomType.getName()+" currently still has rooms with such Room Type and is already disabled\n");
         }
     }
     

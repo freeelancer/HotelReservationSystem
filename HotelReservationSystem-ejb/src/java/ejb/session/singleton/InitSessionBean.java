@@ -11,6 +11,8 @@ import ejb.session.stateless.RoomTypeEntityControllerLocal;
 import entity.EmployeeEntity;
 import entity.RoomEntity;
 import entity.RoomTypeEntity;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -19,6 +21,7 @@ import javax.ejb.Startup;
 import util.enumeration.BedTypeEnum;
 import util.enumeration.EmployeeAccessRightsEnum;
 import util.exception.EmployeeNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -126,43 +129,48 @@ public class InitSessionBean
                 
                 if(i<=2)
                 {
-                    room= new RoomEntity();
-                    room.setRoomNumber(roomNum);
-                    room.setRoomTypeEntity(roomType1);
-                    room=roomEntityController.createNewRoom(room);
-                    roomType1.getRoomEntities().add(room);
+                    try {
+                        room= new RoomEntity();
+                        room.setRoomNumber(roomNum);   
+                        roomEntityController.createNewRoom(room,roomType1.getName());
+                    } catch (RoomTypeNotFoundException ex) {
+                    }
                 }
                 else if(i<=4)
                 {
-                    room= new RoomEntity();
-                    room.setRoomNumber(roomNum);
-                    room.setRoomTypeEntity(roomType2);
-                    room=roomEntityController.createNewRoom(room);
-                    roomType2.getRoomEntities().add(room);
+                    try {
+                        room= new RoomEntity();
+                        room.setRoomNumber(roomNum);   
+                        roomEntityController.createNewRoom(room,roomType2.getName());
+                    } catch (RoomTypeNotFoundException ex) {
+                    }
                 }
                 else if(i<=7)
                 {
-                    room= new RoomEntity();
-                    room.setRoomNumber(roomNum);
-                    room.setRoomTypeEntity(roomType3);
-                    room=roomEntityController.createNewRoom(room);
-                    roomType3.getRoomEntities().add(room);
+                    try {
+                        room= new RoomEntity();
+                        room.setRoomNumber(roomNum);   
+                        roomEntityController.createNewRoom(room,roomType3.getName());
+                    } catch (RoomTypeNotFoundException ex) {
+                    }
                 }
                 else if(i<=9)
                 {
-                    room= new RoomEntity();
-                    room.setRoomNumber(roomNum);
-                    room.setRoomTypeEntity(roomType4);
-                    room=roomEntityController.createNewRoom(room);
-                    roomType4.getRoomEntities().add(room);
+                    try {
+                        room= new RoomEntity();
+                        room.setRoomNumber(roomNum);   
+                        roomEntityController.createNewRoom(room,roomType4.getName());
+                    } catch (RoomTypeNotFoundException ex) {
+                    }
                 }
                 else if(i==10)
                 {
-                    room= new RoomEntity();
-                    room.setRoomNumber(roomNum);
-                    room.setRoomTypeEntity(roomType5);
-                    room=roomEntityController.createNewRoom(room);
-                    roomType5.getRoomEntities().add(room);
+                    try {
+                        room= new RoomEntity();
+                        room.setRoomNumber(roomNum);   
+                        roomEntityController.createNewRoom(room,roomType5.getName());
+                    } catch (RoomTypeNotFoundException ex) {
+                    }
                 }
             }
         }
