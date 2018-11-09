@@ -14,6 +14,7 @@ import entity.RoomTypeEntity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -134,45 +135,55 @@ public class ReservationModule {
         System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
         System.out.println("-------------------");
         
+        String response = "";
+        Date checkInDate = new Date();
+        Date checkOutDate = new Date();
+        
         while (true){
             System.out.println("Type the dates (dd/MM/yyyy) you wish to reserve. Type 'b' to return.");
 
             System.out.println("Check in date:");
             System.out.print("> ");
-            String response = scanner.nextLine();
+            response = scanner.nextLine();            
 
-            while(!response.matches("\\d{2}/\\d{2}/\\d{4}")){
-                if (response.equals("b")){return false;}
-                System.out.println("Invalid response! Please try again.");
-                System.out.print("> ");
-                response = scanner.nextLine();
-            }
-            
-            Date checkInDate = new Date();
-            
             try {
                 checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
             } catch (Exception e){
                 System.out.println(e);
             }
-            
-            System.out.println("Check out date:");
-            System.out.print("> ");
-            response = scanner.nextLine();
 
-            while(!response.matches("\\d{2}/\\d{2}/\\d{4}")){
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") && validateCheckIn(checkInDate)){
                 if (response.equals("b")){return false;}
                 System.out.println("Invalid response! Please try again.");
                 System.out.print("> ");
                 response = scanner.nextLine();
+                try {
+                checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+                } catch (Exception e){
+                    System.out.println(e);
+                }
             }
-               
-            Date checkOutDate = new Date();
-            
+
+            System.out.println("Check out date:");
+            System.out.print("> ");
+            response = scanner.nextLine();
+
             try {
                 checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
             } catch (Exception e){
                 System.out.println(e);
+            }
+
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") && validateCheckOut(checkInDate, checkOutDate)){
+                if (response.equals("b")){return false;}
+                System.out.println("Invalid response! Please try again.");
+                System.out.print("> ");
+                response = scanner.nextLine();
+                try {
+                checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+                } catch (Exception e){
+                    System.out.println(e);
+                }
             }
             
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
@@ -253,5 +264,29 @@ public class ReservationModule {
         System.out.println("Press Enter to continue: ");
         System.out.print("> ");
         scanner.nextLine();        
+    }
+    
+    private boolean validateCheckIn(Date date){
+        Date today = Calendar.getInstance().getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, 365);
+        Date latest = calendar.getTime();
+        if (date.compareTo(today) > 0 && date.compareTo(latest) < 0){
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean validateCheckOut(Date checkInDate, Date checkOutDate){
+        Date today = Calendar.getInstance().getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, 365);
+        Date latest = calendar.getTime();
+        if (checkInDate.compareTo(checkOutDate) < 0 && checkOutDate.compareTo(today) > 0 && checkOutDate.compareTo(latest) < 0){
+            return true;
+        }
+        return false;
     }
 }

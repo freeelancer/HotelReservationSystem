@@ -25,7 +25,7 @@ import util.enumeration.CustomerAccessRightsEnum;
 @Entity
 public class CustomerEntity implements Serializable {
 
-    @OneToMany(mappedBy = "customerEntity", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "customerEntity")
     private List<ReservationEntity> reservationEntities;
     
     private static final long serialVersionUID = 1L;
