@@ -5,55 +5,30 @@
  */
 package ejb.session.stateless;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import entity.DateEntity;
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Wai Kin
  */
-@Entity
-public class DateEntityController implements Serializable {
+@Stateless
+@Local(DateEntityControllerLocal.class)
+@Remote(DateEntityControllerRemote.class)
+public class DateEntityController implements DateEntityControllerRemote, DateEntityControllerLocal {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
+    private EntityManager em;
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public DateEntity createNewDate(DateEntity date){
+        em.persist(date);
+        em.flush();
+        em.refresh(date);
+        return date; 
     }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DateEntityController)) {
-            return false;
-        }
-        DateEntityController other = (DateEntityController) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ejb.session.stateless.DateEntityController[ id=" + id + " ]";
-    }
-    
 }

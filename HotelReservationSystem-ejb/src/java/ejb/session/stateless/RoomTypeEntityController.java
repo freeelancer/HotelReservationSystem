@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -34,6 +35,9 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
 
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    DateEntityControllerLocal dateEntityController;
 
     public RoomTypeEntityController() {
     }
@@ -42,29 +46,37 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
 //        Deal with this later
-//        List<DateEntity> dates = new ArrayList<DateEntity>();
-//        Date start = new Date();
-//        Date end = new Date();
-//        try {
-//            start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
-//            end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
-//        } catch (Exception e) {
-//        
-//        }
-//        
-//        for(Date current = start; current.before(end); ){
-//            dates.add(new DateEntity(current, newRoomTypeEntity));
-// 
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(current);
-//            calendar.add(Calendar.DATE, 1);
-//            current = calendar.getTime();
-//        }
-//        
-//        newRoomTypeEntity.setDateEntities(dates);
-        
         em.persist(newRoomTypeEntity);
         em.flush();
+        
+        try {
+            newRoomTypeEntity = retrieveRoomTypeByName(newRoomTypeEntity.getName());
+            
+            List<DateEntity> dates = new ArrayList<DateEntity>();
+            Date start = new Date();
+            Date end = new Date();
+            try {
+                start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
+                end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            for(Date current = start; current.before(end); ){
+                DateEntity date = new DateEntity(current, newRoomTypeEntity);
+                date = dateEntityController.createNewDate(date);
+                dates.add(date);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(current);
+                calendar.add(Calendar.DATE, 1);
+                current = calendar.getTime();
+            }
+
+            newRoomTypeEntity.setDates(dates);
+        } catch (RoomTypeNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
         return newRoomTypeEntity;
     }
     

@@ -72,14 +72,6 @@ public class RoomTypeEntity implements Serializable {
         this.dates = dates;
     }
 
-    public List<DateEntity> getDateEntities() {
-        return dateEntities;
-    }
-
-    public void setDateEntities(List<DateEntity> dateEntities) {
-        this.dateEntities = dateEntities;
-    }
-
     public Long getRoomTypeId() {
         return roomTypeId;
     }
