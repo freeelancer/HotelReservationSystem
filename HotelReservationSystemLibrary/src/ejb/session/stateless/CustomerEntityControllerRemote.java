@@ -6,10 +6,12 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import entity.ReservationEntity;
 import java.util.List;
 import util.exception.UsernameExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.ReservationNotFoundException;
 
 /**
  *
@@ -28,5 +30,7 @@ public interface CustomerEntityControllerRemote {
     public void updateCustomer(CustomerEntity customerEntity);
 
     public void deleteCustomer(String username) throws CustomerNotFoundException;
+
+    public List<ReservationEntity> retrieveAllReservations(Long customerId) throws ReservationNotFoundException;
     
 }
