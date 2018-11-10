@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import util.enumeration.RateTypeEnum;
 
@@ -25,8 +27,6 @@ import util.enumeration.RateTypeEnum;
 @Entity
 public class RoomRateEntity implements Serializable {
 
-    @OneToOne(mappedBy = "roomRateEntity")
-    private ReservationEntity reservationEntity;
     @OneToOne
     private RoomTypeEntity roomTypeEntity;
 
@@ -42,29 +42,23 @@ public class RoomRateEntity implements Serializable {
     private BigDecimal ratePerNight;
     @Column(nullable = false)
     private Timestamp[] validityPeriod; 
+    @OneToMany(mappedBy = "roomRateEntity")
+    private List<ReservationEntity> reservationEntities;
 
     public RoomRateEntity() {
     }
 
-    public RoomRateEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, Timestamp[] validityPeriod) {
-        this.reservationEntity = reservationEntity;
+    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, Timestamp[] validityPeriod, List<ReservationEntity> reservationEntities) {
         this.roomTypeEntity = roomTypeEntity;
         this.name = name;
         this.rateTypeEnum = rateTypeEnum;
         this.ratePerNight = ratePerNight;
         this.validityPeriod = validityPeriod;
+        this.reservationEntities = reservationEntities;
     }
 
     public Long getRoomRateId() {
         return roomRateId;
-    }
-
-    public ReservationEntity getReservationEntity() {
-        return reservationEntity;
-    }
-
-    public void setReservationEntity(ReservationEntity reservationEntity) {
-        this.reservationEntity = reservationEntity;
     }
 
     public RoomTypeEntity getRoomTypeEntity() {
@@ -105,5 +99,13 @@ public class RoomRateEntity implements Serializable {
 
     public void setValidityPeriod(Timestamp[] validityPeriod) {
         this.validityPeriod = validityPeriod;
+    }
+
+    public List<ReservationEntity> getReservationEntities() {
+        return reservationEntities;
+    }
+
+    public void setReservationEntities(List<ReservationEntity> reservationEntities) {
+        this.reservationEntities = reservationEntities;
     }
 }
