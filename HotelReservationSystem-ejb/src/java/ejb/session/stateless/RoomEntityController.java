@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.RoomEntity;
 import entity.RoomTypeEntity;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -90,7 +91,8 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     }
     
     @Override
-    public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException{
+    public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException
+    {
         RoomEntity roomToDelete = retrieveRoomById(room.getRoomId());
 //        change if clause if necessary
         if(roomToDelete.getAllocated().equals(Boolean.FALSE)&&roomToDelete.getOccupied().equals(Boolean.FALSE))
@@ -107,5 +109,12 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
             throw new RoomAlreadyDisabledException("Room "+room.getRoomNumber()+" currently is still used and is already disabled\n");
         }
         
-    }    
+    }  
+    
+    @Override
+    public List<RoomEntity> retrieveAllRooms()
+    {
+        Query query = em.createQuery("SELECT r FROM RoomEntity r");
+        return query.getResultList();
+    }
 }

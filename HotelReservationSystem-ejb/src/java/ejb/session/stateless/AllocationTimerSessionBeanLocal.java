@@ -5,10 +5,14 @@
  */
 package ejb.session.stateless;
 
+import javax.ejb.Local;
+
 /**
  *
- * @author Wai Kin
+ * @author Lance
  */
-public interface DateEntityControllerRemote {
+@Local
+public interface AllocationTimerSessionBeanLocal {
     
+    public void allocateAllRooms();
 }
