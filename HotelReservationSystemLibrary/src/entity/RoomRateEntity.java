@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import util.enumeration.RateTypeEnum;
 
 /**
@@ -26,9 +27,6 @@ import util.enumeration.RateTypeEnum;
  */
 @Entity
 public class RoomRateEntity implements Serializable {
-
-    @OneToOne
-    private RoomTypeEntity roomTypeEntity;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,33 +38,34 @@ public class RoomRateEntity implements Serializable {
     private RateTypeEnum rateTypeEnum;
     @Column(nullable = false)
     private BigDecimal ratePerNight;
-    @Column(nullable = false)
-    private Timestamp[] validityPeriod; 
+    private List<Date> validityPeriod; 
     @OneToMany(mappedBy = "roomRateEntity")
-    private List<ReservationEntity> reservationEntities;
+    private List<ReservationEntity> reservation;
+    @ManyToOne
+    private RoomTypeEntity roomType;
 
     public RoomRateEntity() {
     }
 
-    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, Timestamp[] validityPeriod, List<ReservationEntity> reservationEntities) {
-        this.roomTypeEntity = roomTypeEntity;
+    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, List<Date> validityPeriod, List<ReservationEntity> reservationEntities) {
+        this.roomType = roomTypeEntity;
         this.name = name;
         this.rateTypeEnum = rateTypeEnum;
         this.ratePerNight = ratePerNight;
         this.validityPeriod = validityPeriod;
-        this.reservationEntities = reservationEntities;
+        this.reservation = reservationEntities;
+    }
+
+    public RoomTypeEntity getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomTypeEntity roomType) {
+        this.roomType = roomType;
     }
 
     public Long getRoomRateId() {
         return roomRateId;
-    }
-
-    public RoomTypeEntity getRoomTypeEntity() {
-        return roomTypeEntity;
-    }
-
-    public void setRoomTypeEntity(RoomTypeEntity roomTypeEntity) {
-        this.roomTypeEntity = roomTypeEntity;
     }
 
     public String getName() {
@@ -93,19 +92,20 @@ public class RoomRateEntity implements Serializable {
         this.ratePerNight = ratePerNight;
     }
 
-    public Timestamp[] getValidityPeriod() {
+    public List<Date> getValidityPeriod() {
         return validityPeriod;
     }
 
-    public void setValidityPeriod(Timestamp[] validityPeriod) {
+    public void setValidityPeriod(List<Date> validityPeriod) {
         this.validityPeriod = validityPeriod;
     }
 
-    public List<ReservationEntity> getReservationEntities() {
-        return reservationEntities;
+    public List<ReservationEntity> getReservation() {
+        return reservation;
     }
 
-    public void setReservationEntities(List<ReservationEntity> reservationEntities) {
-        this.reservationEntities = reservationEntities;
+    public void setReservation(List<ReservationEntity> reservation) {
+        this.reservation = reservation;
     }
+    
 }

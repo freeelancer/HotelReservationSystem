@@ -8,6 +8,8 @@ package ejb.session.stateless;
 import entity.DateEntity;
 import entity.RoomTypeEntity;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,9 +57,12 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
             List<DateEntity> dates = new ArrayList<DateEntity>();
             Date start = new Date();
             Date end = new Date();
+            LocalDate today = LocalDate.now();
+            today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             try {
-                start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
-                end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
+                start = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
+                today.plusYears(1);
+                end = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

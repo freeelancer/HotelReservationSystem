@@ -309,44 +309,22 @@ public class ReservationApp {
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
         
             if (datesUnavailable.isEmpty()){
-                System.out.println("Room is available:");
+                System.out.println("*** Room is available! ***");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                System.out.println("--- Login to reserve ---");
-                System.out.println("1. Login as Guest");
-                System.out.println("2. Register as Guest");
-                System.out.println("3. Cancel");
+                System.out.println("Login to reserve. Press Enter to return to main page");
                 System.out.println("> ");
-                Integer response2 = scanner.nextInt();
                 scanner.nextLine();
-                
-                while (response2 < 1 || response2 > 3){
-                    System.out.println("Invalid response! Please try again.");
-                    System.out.print("> ");
-                    response2 = scanner.nextInt();
-                    scanner.nextLine();
+                return;
+            } else {
+                System.out.println("*** Following dates are unavailable ***");
+                for (Date date:datesUnavailable){
+                    System.out.println(date.toString());
                 }
-                
-                if (response2 == 1){
-                    try{
-                        doLogin();
-                        reservationModule = new ReservationModule(currentCustomerEntity, customerEntityController, roomTypeEntityController, reservationEntityController);
-                        reservationModule.menuReservation();
-                    } catch (InvalidLoginCredentialException ex){
-                        System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
-                    }
-                } else if (response2 == 2){
-                    try{
-                        doRegistration();
-                    } catch(UsernameExistException ex){
-                        System.out.println("Username already exist: " + ex.getMessage() + "\n");
-                    }
-                    return;
-                } else if (response2 == 3){
-                    return;
-                }
+                System.out.println("-------------------");
+                System.out.println("Select another room or another date! ");
             }
         }
     }

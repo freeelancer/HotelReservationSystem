@@ -6,7 +6,9 @@
 package ejb.session.stateless;
 
 import entity.RoomRateEntity;
+import entity.RoomTypeEntity;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -15,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.DeleteRoomRateException;
 import util.exception.RoomRateNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -28,12 +31,25 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
     
+    @EJB
+    RoomTypeEntityControllerLocal roomTypeController;
+    
     @Override
     public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate){
         em.persist(roomRate);
         em.flush();
         em.refresh(roomRate);
         
+        try {
+            RoomTypeEntity roomTypeToUpdate = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
+            List<RoomRateEntity> roomRates = roomTypeToUpdate.getRoomRateEntities();
+            roomRates.add(roomRate);
+            roomTypeToUpdate.setRoomRateEntities(roomRates);
+            roomTypeController.updateRoomType(roomTypeToUpdate);
+        } catch (RoomTypeNotFoundException ex) {
+            ex.printStackTrace();
+        }
+                
         return roomRate;
     }
     
@@ -76,7 +92,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
         } catch (RoomRateNotFoundException e){
             System.out.println(e.getMessage());
         }
-        if(roomRateToDelete.getReservationEntities().isEmpty()){
+        if(roomRateToDelete.getReservation().isEmpty()){
             em.remove(roomRateToDelete);
         } else {
             throw new DeleteRoomRateException("Room rate ID " + roomRateId + "is associated with existing reservation(s) and cannot be deleted!");

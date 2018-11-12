@@ -253,11 +253,13 @@ public class ReservationModule {
             System.out.println(ex.getMessage());
         }        
         
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        
         for (ReservationEntity reservationEntity:reservationList){
             System.out.println("Reservation ID: " + reservationEntity.getReservationId());
             System.out.println("Room Type: " + reservationEntity.getRoomTypeEntity().getName());
-            System.out.println("Check-in Date: " + reservationEntity.getCheckInDate());
-            System.out.println("Check-out Date: " + reservationEntity.getCheckOutDate());
+            System.out.println("Check-in Date: " + dateFormat.format(reservationEntity.getCheckInDate()));
+            System.out.println("Check-out Date: " + dateFormat.format(reservationEntity.getCheckOutDate()));
             System.out.println("-------------------");
         }
         
