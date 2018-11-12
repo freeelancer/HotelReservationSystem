@@ -12,8 +12,6 @@ import entity.RoomEntity;
 import entity.RoomTypeEntity;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.enumeration.BedTypeEnum;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
@@ -105,7 +103,7 @@ class OperationManagerModule {
                 }
                 else if (response == 10)
                 {
-                    viewRoomAllocationExceptionResultOperation();
+//                    viewRoomAllocationExceptionResultOperation();
                 }
                 else if (response == 11)
                 {
@@ -394,13 +392,23 @@ class OperationManagerModule {
         }
     }
 
-    private void viewAllRoomsOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void viewAllRoomsOperation() 
+    {
+        System.out.println("*** Operation Manager Operations :: View All Rooms ***\n");
+        List<RoomEntity> rooms = roomEntityController.retrieveAllRooms();
+        for(RoomEntity room:rooms)
+        {
+            System.out.println();
+            printRoomDetails(room);
+        }
+        System.out.println();
     }
 
-    private void viewRoomAllocationExceptionResultOperation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    private void viewRoomAllocationExceptionResultOperation() 
+//    {
+//        AllocationExceptionEntity exception = retrieveLatestException();
+//        
+//    }
 
     
 }

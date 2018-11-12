@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.DateEntity;
 import entity.RoomTypeEntity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

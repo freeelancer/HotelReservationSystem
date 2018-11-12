@@ -5,10 +5,14 @@
  */
 package ejb.session.stateless;
 
+import javax.ejb.Remote;
+
 /**
  *
- * @author Wai Kin
+ * @author Lance
  */
-public interface DateEntityControllerRemote {
+@Remote
+public interface AllocationTimerSessionBeanRemote {
     
+    public void allocateAllRooms();
 }

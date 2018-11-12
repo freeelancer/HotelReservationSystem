@@ -17,11 +17,11 @@ public interface RoomRateEntityControllerRemote {
 
     public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate);
 
-     public RoomRateEntity retrieveRoomRateById(Long roomRateId) throws RoomRateNotFoundException
+    public RoomRateEntity retrieveRoomRateById(Long roomRateId) throws RoomRateNotFoundException;
 
-    public List<RoomRateEntity> retrieveAllRoomRates();
-
-    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
+//    public List<RoomRateEntity> retrieveAllRoomRates();
+//
+//    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
 
     public void deleteRoomRate(RoomRateEntity roomRate);
     

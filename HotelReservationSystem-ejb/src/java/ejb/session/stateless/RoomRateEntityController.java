@@ -49,15 +49,17 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
         }
     }
     
-    @Override
-    public List<RoomRateEntity> retrieveAllRoomRates(){
-        
-    }
+//    @Override
+//    public List<RoomRateEntity> retrieveAllRoomRates()
+//    {
+//        return List<RoomRateEntity>;
+//    }
     
-    @Override
-    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate){
-    
-    }
+//    @Override
+//    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate)
+//    {
+//        return RoomRateEntity;
+//    }
     
     @Override
     public void deleteRoomRate(RoomRateEntity roomRate){

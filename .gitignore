@@ -63,3 +63,5 @@ nbproject/private/private.properties
 HotelReservationSystem-ejb/src/conf/persistence.xml
 HotelReservationSystem-ejb/setup/glassfish-resources.xml
 HotelReservationSystemLibrary/nbproject/project.properties
+*.properties
+*.properties

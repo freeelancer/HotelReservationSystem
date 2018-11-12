@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.RoomEntity;
+import java.util.List;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
 import util.exception.RoomNotFoundException;
@@ -24,4 +25,6 @@ public interface RoomEntityControllerRemote {
     public void updateRoom(RoomEntity room);
 
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException;   
+
+    public List<RoomEntity> retrieveAllRooms();
 }
