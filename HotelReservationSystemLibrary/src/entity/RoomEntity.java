@@ -33,7 +33,8 @@ public class RoomEntity implements Serializable {
     @Column(length = 10, nullable = false, unique = true)
     private String roomNumber;
     @Column(nullable = false)
-    private Boolean used=true;
+//    whether room is spoiled, default true means room usable and not spoiled
+    private Boolean usable=true;
     @Column(nullable = false)
     private Boolean disabled=false;
     @Column(nullable = false)
@@ -48,7 +49,7 @@ public class RoomEntity implements Serializable {
         this.reservationEntity = reservationEntity;
         this.roomTypeEntity = roomTypeEntity;
         this.roomNumber = roomNumber;
-        this.used = used;
+        this.usable = used;
         this.disabled = disabled;
         this.occupied = occupied;
         this.allocated = allocated;
@@ -98,12 +99,12 @@ public class RoomEntity implements Serializable {
         this.roomTypeEntity = roomTypeEntity;
     }
 
-    public Boolean getUsed() {
-        return used;
+    public Boolean getUsable() {
+        return usable;
     }
 
-    public void setUsed(Boolean used) {
-        this.used = used;
+    public void setUsable(Boolean usable) {
+        this.usable = usable;
     }
 
     public Boolean getDisabled() {
