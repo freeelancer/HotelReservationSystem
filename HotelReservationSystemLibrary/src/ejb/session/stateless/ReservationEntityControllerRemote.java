@@ -10,6 +10,7 @@ import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
 import entity.RoomTypeEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import util.exception.ReservationNotFoundException;
@@ -25,5 +26,7 @@ public interface ReservationEntityControllerRemote {
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException;
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
+
+    public BigDecimal calculateTotalAmount(RoomTypeEntity roomTypeEntity, Date checkInDate, Date checkOutDate);
 
 }

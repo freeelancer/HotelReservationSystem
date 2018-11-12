@@ -29,7 +29,7 @@ public class ReservationEntity implements Serializable {
     private EmployeeEntity employeeEntity;
     @OneToOne (optional = true)
     private PartnerEntity partnerEntity;
-    @OneToOne
+    @ManyToOne
     private RoomRateEntity roomRateEntity;
     @OneToOne
     private RoomTypeEntity roomTypeEntity;

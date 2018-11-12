@@ -15,7 +15,9 @@ import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
 import entity.EmployeeEntity;
 import entity.RoomTypeEntity;
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -213,32 +215,30 @@ public class ReservationApp {
         int numRoomType = roomTypeList.size();
         int i;
         Integer response = 0;
-        
-        while(true){
-            for (i = 1; i <= numRoomType; i++){
-                System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
-            }
-            int lastOption = i;
-            System.out.println("" + lastOption + ": Back\n");
+ 
+        for (i = 1; i <= numRoomType; i++){
+            System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
+        }
+        int lastOption = i;
+        System.out.println("" + lastOption + ": Back\n");
 
+        System.out.print("> ");
+        response = scanner.nextInt();
+        scanner.nextLine();
+
+        while (response < 1 || response > lastOption){
+            System.out.println("Invalid response! Please try again.");
             System.out.print("> ");
             response = scanner.nextInt();
             scanner.nextLine();
-
-            while (response < 1 || response > lastOption){
-                System.out.println("Invalid response! Please try again.");
-                System.out.print("> ");
-                response = scanner.nextInt();
-                scanner.nextLine();
-            }
-
-            if (response == lastOption){
-                break;
-            }
-            
-            reserveRoom(roomTypeList.get(response-1));
-            
         }
+
+        if (response == lastOption){
+            return;
+        }
+
+        reserveRoom(roomTypeList.get(response-1));
+        
         return;
     }
     
@@ -263,90 +263,93 @@ public class ReservationApp {
             System.out.println("Type the dates (dd/MM/yyyy) you wish to reserve. Type 'b' to return.");
 
             System.out.println("Check in date:");
-            System.out.print("> ");
-            response = scanner.nextLine();            
-
-            try {
-                checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
-            } catch (Exception e){
-                System.out.println(e);
-            }
-
-            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") && validateCheckIn(checkInDate)){
-                if (response.equals("b")){break;}
-                System.out.println("Invalid response! Please try again.");
-                System.out.print("> ");
-                response = scanner.nextLine();
-                try {
-                checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
-                } catch (Exception e){
-                    System.out.println(e);
-                }
-            }
-
-            System.out.println("Check out date:");
+            
             System.out.print("> ");
             response = scanner.nextLine();
 
+            if (response.equals("b")){
+                break;
+            }
+
+            try {
+                checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            } catch (Exception e){
+                System.out.println(e);
+            }
+            
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckIn(checkInDate)) {
+                
+                System.out.println("Invalid response! Please try again.");
+                
+                System.out.print("> ");
+                response = scanner.nextLine();
+                
+                if (response.equals("b")){
+                    break;
+                }
+                
+                try {
+                    checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+                } catch (Exception e){
+                    System.out.println(e);
+                }              
+            } 
+
+            System.out.println("Check out date:");
+            
+            System.out.print("> ");
+            response = scanner.nextLine();
+
+            if (response.equals("b")){
+                break;
+            }
+
             try {
                 checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
             } catch (Exception e){
                 System.out.println(e);
-            }
-
-            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") && validateCheckOut(checkInDate, checkOutDate)){
-                if (response.equals("b")){break;}
+            }  
+ 
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckOut(checkInDate, checkOutDate)) {
+                
                 System.out.println("Invalid response! Please try again.");
+                
                 System.out.print("> ");
                 response = scanner.nextLine();
+                
+                if (response.equals("b")){
+                    break;
+                }
+                
                 try {
-                checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+                    checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
                 } catch (Exception e){
                     System.out.println(e);
-                }
-            }
+                }                
+            } 
             
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
         
             if (datesUnavailable.isEmpty()){
-                System.out.println("Room is available:");
+                System.out.println("Room is available. Confirm reservation for:");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                System.out.println("--- Login to reserve ---");
-                System.out.println("1. Login as Guest");
-                System.out.println("2. Register as Guest");
-                System.out.println("3. Cancel");
-                System.out.println("> ");
-                Integer response2 = scanner.nextInt();
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity, checkInDate, checkOutDate);
+                DecimalFormat df = new DecimalFormat("#,###.00");
+                System.out.println("Total Amount: " + df.format(totalAmount));
+                System.out.println("Login to reserve. Press Enter to return to main page");
+                System.out.print("> ");
                 scanner.nextLine();
-                
-                while (response2 < 1 || response2 > 3){
-                    System.out.println("Invalid response! Please try again.");
-                    System.out.print("> ");
-                    response2 = scanner.nextInt();
-                    scanner.nextLine();
+                return;
+            } else {
+                System.out.println("*** Following dates are unavailable ***");
+                for (Date date:datesUnavailable){
+                    System.out.println(date.toString());
                 }
-                
-                if (response2 == 1){
-                    try{
-                        doLogin();
-                        reservationModule = new ReservationModule(currentCustomerEntity, customerEntityController, roomTypeEntityController, reservationEntityController);
-                        reservationModule.menuReservation();
-                    } catch (InvalidLoginCredentialException ex){
-                        System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
-                    }
-                } else if (response2 == 2){
-                    try{
-                        doRegistration();
-                    } catch(UsernameExistException ex){
-                        System.out.println("Username already exist: " + ex.getMessage() + "\n");
-                    }
-                    return;
-                } else if (response2 == 3){
-                    return;
-                }
+                System.out.println("-------------------");
+                System.out.println("Select another room or another date! ");
             }
         }
     }
@@ -355,9 +358,9 @@ public class ReservationApp {
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
-        calendar.add(Calendar.DATE, 365);
+        calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();
-        if (date.compareTo(today) > 0 && date.compareTo(latest) < 0){
+        if (date.after(today) && date.before(latest)){
             return true;
         }
         return false;
@@ -367,9 +370,9 @@ public class ReservationApp {
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
-        calendar.add(Calendar.DATE, 365);
+        calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();
-        if (checkInDate.compareTo(checkOutDate) < 0 && checkOutDate.compareTo(today) > 0 && checkOutDate.compareTo(latest) < 0){
+        if (checkOutDate.after(checkInDate) && checkOutDate.after(today) && checkOutDate.before(latest)){
             return true;
         }
         return false;

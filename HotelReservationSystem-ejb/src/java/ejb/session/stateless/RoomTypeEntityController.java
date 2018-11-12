@@ -8,6 +8,8 @@ package ejb.session.stateless;
 import entity.DateEntity;
 import entity.RoomTypeEntity;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,9 +23,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
-import util.exception.RoomTypeStillUsedException;
 
 /**
  *
@@ -47,6 +47,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     @Override
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
+//        Deal with this later
         em.persist(newRoomTypeEntity);
         em.flush();
         
@@ -56,9 +57,12 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
             List<DateEntity> dates = new ArrayList<DateEntity>();
             Date start = new Date();
             Date end = new Date();
+            LocalDate today = LocalDate.now();
+            today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             try {
-                start = new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2018");
-                end = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2020");
+                start = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
+                today.plusYears(1);
+                end = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -107,30 +111,37 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         roomTypeToUpdate.setDescription(roomType.getDescription());
         roomTypeToUpdate.setName(roomType.getName()); 
         roomTypeToUpdate.setSize(roomType.getSize());
+        roomTypeToUpdate.setRoomRateEntities(roomType.getRoomRateEntities());
+        em.merge(roomTypeToUpdate);
     }
     
     private RoomTypeEntity retrieveRoomTypeById(Long roomTypeId)
     {
+//        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+//        query.setParameter("inRoomTypeId", roomTypeId);
+//        RoomTypeEntity roomType = (RoomTypeEntity) query.getSingleResult();
         RoomTypeEntity roomType = em.find(RoomTypeEntity.class, roomTypeId);
+        
         return roomType;
     }
     
     @Override
-    public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException
+    public String deleteRoomType(RoomTypeEntity roomType)
     {
         RoomTypeEntity roomTypeToDelete = retrieveRoomTypeById(roomType.getRoomTypeId());
         if(roomTypeToDelete.getRoomEntities().size()==0)
         {
             em.remove(roomTypeToDelete);
+            return("Room Type "+roomType.getName()+" deleted from database\n");
         }
         else if(roomTypeToDelete.getUsed()==Boolean.TRUE)
         {
             roomTypeToDelete.setUsed(Boolean.FALSE);
-            throw new RoomTypeStillUsedException("Room Type "+roomType.getName()+" currently still has rooms with such Room Type. As such it is disabled from further use but not deleted\n");
+            return("Room Type "+roomType.getName()+" currently still has rooms with such Room Type. As such it is disabled from further use but not deleted\n");
         }
         else
         {
-            throw new RoomTypeAlreadyDisabledException("Room Type "+roomType.getName()+" currently still has rooms with such Room Type and is already disabled\n");
+            return("Room Type "+roomType.getName()+" currently still has rooms with such Room Type and is already disabled\n");
         }
     }
     
@@ -141,6 +152,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         return query.getResultList();
     }
     
+    // Not done yet
     public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
         return new ArrayList<Date>();
     }
