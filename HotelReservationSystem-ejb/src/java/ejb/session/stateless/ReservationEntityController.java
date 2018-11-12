@@ -22,6 +22,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import util.enumeration.RateTypeEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.ReservationNotFoundException;
@@ -36,6 +37,7 @@ import util.exception.RoomTypeNotFoundException;
 @Remote(ReservationEntityControllerRemote.class)
 public class ReservationEntityController implements ReservationEntityControllerRemote, ReservationEntityControllerLocal 
 {
+    
 
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
     private EntityManager em;
@@ -179,5 +181,23 @@ public class ReservationEntityController implements ReservationEntityControllerR
             }
         }
         return sum;
+    }
+    
+//    @Override
+//    public void allocateRooms()
+//    {
+//        List<ReservationEntity> reservations = retrieveAllReservationByDate();
+//        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
+//        for(RoomTypeEntity roomType:roomTypes)
+//        {
+//            List<RoomTypeEntity> roomType.getName() = room
+//        }
+//    }
+
+    private List<ReservationEntity> retrieveAllReservationByDate() 
+    {
+        Query query = em.createQuery("SELECT r FROM ReservationEntity WHERE s.checkInDate = :inDate");
+        query.setParameter("today",new Date(),TemporalType.DATE);
+        return query.getResultList();
     }
 }

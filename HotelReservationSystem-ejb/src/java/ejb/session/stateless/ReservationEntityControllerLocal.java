@@ -25,5 +25,7 @@ public interface ReservationEntityControllerLocal {
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException;
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
+
+//    public void allocateRooms();
     
 }

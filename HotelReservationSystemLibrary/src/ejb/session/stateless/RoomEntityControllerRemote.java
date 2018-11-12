@@ -27,4 +27,5 @@ public interface RoomEntityControllerRemote {
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException;   
 
     public List<RoomEntity> retrieveAllRooms();
+    
 }

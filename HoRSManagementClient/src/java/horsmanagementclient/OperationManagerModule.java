@@ -360,7 +360,7 @@ class OperationManagerModule {
         }
     }
 
-    private void deleteRoomOperation() 
+    private void deleteRoomOperation()
     {
         Scanner sc = new Scanner(System.in);
         System.out.println("*** Operation Manager Operations :: Delete Room ***\n");
