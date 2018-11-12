@@ -9,8 +9,10 @@ import entity.CustomerEntity;
 import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
+import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -20,8 +22,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.enumeration.RateTypeEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.ReservationNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -39,6 +43,9 @@ public class ReservationEntityController implements ReservationEntityControllerR
     @EJB
     CustomerEntityControllerLocal customerEntityController;
     
+    @EJB
+    RoomTypeEntityControllerLocal roomTypeEntityController;
+    
     // Logic not done
     @Override
     public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate){
@@ -51,7 +58,8 @@ public class ReservationEntityController implements ReservationEntityControllerR
         reservationEntity.setPartnerEntity(partnerEntity);
         reservationEntity.setCheckInDate(checkInDate);
         reservationEntity.setCheckOutDate(checkOutDate);
-        reservationEntity.setTotalAmount(new BigDecimal(1000.00)); // hardcoded for now
+       
+        reservationEntity.setTotalAmount(calculateTotalAmount(roomTypeEntity, checkInDate, checkOutDate)); // hardcoded for now
         
         CustomerEntity customerToUpdate = new CustomerEntity();
         
@@ -98,5 +106,78 @@ public class ReservationEntityController implements ReservationEntityControllerR
         
         return query.getResultList();
         
+    }
+
+    @Override
+    public BigDecimal calculateTotalAmount(RoomTypeEntity roomTypeEntity, Date checkInDate, Date checkOutDate) {
+        
+        RoomTypeEntity roomType = new RoomTypeEntity();
+                
+        try {
+            roomType = roomTypeEntityController.retrieveRoomTypeByName(roomTypeEntity.getName());
+        } catch (RoomTypeNotFoundException e) {
+            e.printStackTrace();
+        } 
+        
+        List<RoomRateEntity> roomRates = roomType.getRoomRateEntities();
+                
+        Date start = new Date();
+        Date end = new Date();
+        
+        Calendar calendar = Calendar.getInstance();
+        
+        try {
+            start = checkInDate;
+            end = checkOutDate;
+            calendar.setTime(end);
+            calendar.add(Calendar.DATE, 1);
+            end = calendar.getTime();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        BigDecimal sum = new BigDecimal(0.00);
+        
+        // Prevent crashing
+        if (roomRates==null){
+            System.out.println("There are no room rates!");
+            return sum;
+        }
+        
+        // For checking
+        for (RoomRateEntity roomRate:roomRates){
+            System.out.println(roomRate.getName());
+        }
+        
+        cycleDates: for(Date current = start; current.before(end); ){
+            
+            calendar.setTime(current);
+            calendar.add(Calendar.DATE, 1);
+            current = calendar.getTime();
+            
+            for(RoomRateEntity roomRate:roomRates){
+                if(roomRate.getRateTypeEnum().equals(RateTypeEnum.PEAK) && roomRate.getValidityPeriod()!=null){
+                    if(roomRate.getValidityPeriod().contains(current)){
+                        sum.add(roomRate.getRatePerNight());
+                        continue cycleDates;
+                    }
+                }
+            }
+            for(RoomRateEntity roomRate:roomRates){
+                if(roomRate.getRateTypeEnum().equals(RateTypeEnum.PROMOTION) && roomRate.getValidityPeriod()!=null){
+                   if(roomRate.getValidityPeriod().contains(current)){
+                        sum.add(roomRate.getRatePerNight());
+                        continue cycleDates;
+                    }
+                }
+            }
+            for(RoomRateEntity roomRate:roomRates){
+                if(roomRate.getRateTypeEnum().equals(RateTypeEnum.NORMAL)){
+                    sum.add(roomRate.getRatePerNight());
+                    continue cycleDates;
+                }
+            }
+        }
+        return sum;
     }
 }

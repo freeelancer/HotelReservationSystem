@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import util.enumeration.BedTypeEnum;
 
 /**
@@ -50,6 +49,8 @@ public class RoomTypeEntity implements Serializable {
     private Boolean disable = false;
     @OneToMany(mappedBy = "roomTypeEntity")
     private List<DateEntity> dates;
+    @OneToMany(mappedBy = "roomType")
+    private List<RoomRateEntity> roomRateEntities;
 
     public RoomTypeEntity() {
     }
@@ -147,4 +148,13 @@ public class RoomTypeEntity implements Serializable {
     public void setRoomEntities(List<RoomEntity> roomEntities) {
         this.roomEntities = roomEntities;
     }
+
+    public List<RoomRateEntity> getRoomRateEntities() {
+        return roomRateEntities;
+    }
+
+    public void setRoomRateEntities(List<RoomRateEntity> roomRateEntities) {
+        this.roomRateEntities = roomRateEntities;
+    }
+
 }
