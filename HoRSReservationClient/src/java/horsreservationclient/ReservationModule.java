@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.ReservationNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -123,7 +124,15 @@ public class ReservationModule {
         }
     }
     
-    private boolean reserveRoom(RoomTypeEntity roomTypeEntity){
+    private boolean reserveRoom(RoomTypeEntity roomTypeToBook){
+        
+        RoomTypeEntity roomTypeEntity = new RoomTypeEntity();
+                
+        try {
+            roomTypeEntity = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
+        } catch (RoomTypeNotFoundException e) {
+        
+        }
         
         Scanner scanner = new Scanner(System.in);
        
@@ -134,6 +143,7 @@ public class ReservationModule {
         System.out.println("Room Size: " + roomTypeEntity.getSize() + " square meters");
         System.out.println("Bed Type: " + roomTypeEntity.getBedTypeEnum());
         System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
+        System.out.println("Normal Room Rate: " + roomTypeEntity.getRoomRateEntities().get(0).getRatePerNight());
         System.out.println("-------------------");
         
         String response = "";
@@ -297,6 +307,9 @@ public class ReservationModule {
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
+        calendar.add(Calendar.DATE, -1);
+        today = calendar.getTime();
+        calendar.setTime(today);
         calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();
         if (date.after(today) && date.before(latest)){
@@ -308,6 +321,9 @@ public class ReservationModule {
     private boolean validateCheckOut(Date checkInDate, Date checkOutDate){
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        calendar.add(Calendar.DATE, -1);
+        today = calendar.getTime();
         calendar.setTime(today);
         calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();

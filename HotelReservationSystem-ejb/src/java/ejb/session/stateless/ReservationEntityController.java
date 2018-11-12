@@ -127,6 +127,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         } 
         
         List<RoomRateEntity> roomRates = roomType.getRoomRateEntities();
+        roomRates.size();
                 
         Date start = new Date();
         Date end = new Date();

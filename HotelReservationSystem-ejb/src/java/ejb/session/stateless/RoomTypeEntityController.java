@@ -95,7 +95,9 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         
         try
         {
-            return (RoomTypeEntity)query.getSingleResult();
+            RoomTypeEntity roomType = (RoomTypeEntity)query.getSingleResult();
+            roomType.getRoomRateEntities().size();
+            return roomType;
         }
         catch(NoResultException | NonUniqueResultException ex)
         {
