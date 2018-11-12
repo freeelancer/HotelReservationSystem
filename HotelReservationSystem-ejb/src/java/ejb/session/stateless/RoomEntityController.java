@@ -64,6 +64,9 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
             roomTypeNew.getRoomEntities().add(roomToUpdate);
             roomToUpdate.setRoomNumber(room.getRoomNumber());
         } catch (RoomTypeNotFoundException ex) {
+        
+        } catch (RoomNotFoundException ex){
+            
         }
     }
     
@@ -83,17 +86,28 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         }
     }
 
-    private RoomEntity retrieveRoomById(Long roomId) 
+    @Override
+    public RoomEntity retrieveRoomById(Long roomId) throws RoomNotFoundException
     {
         Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.Id = :inRoomId");
         query.setParameter("inRoomId", roomId);
-        return (RoomEntity)query.getSingleResult();
+        RoomEntity room = (RoomEntity)query.getSingleResult();
+        if(room != null){
+            return room;
+        } else {
+            throw new RoomNotFoundException("No room allocated!");
+        }        
     }
     
     @Override
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException
     {
-        RoomEntity roomToDelete = retrieveRoomById(room.getRoomId());
+        RoomEntity roomToDelete = new RoomEntity();
+        try{
+            roomToDelete = retrieveRoomById(room.getRoomId());
+        } catch (RoomNotFoundException e) {
+            e.printStackTrace();
+        }
 //        change if clause if necessary
         if(roomToDelete.getAllocated().equals(Boolean.FALSE)&&roomToDelete.getOccupied().equals(Boolean.FALSE))
         {

@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
+import entity.RoomEntity;
 import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import javax.persistence.TemporalType;
 import util.enumeration.RateTypeEnum;
 import util.exception.CustomerNotFoundException;
 import util.exception.ReservationNotFoundException;
+import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
 
 /**
@@ -47,6 +49,9 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     @EJB
     RoomTypeEntityControllerLocal roomTypeEntityController;
+    
+    @EJB
+    RoomEntityControllerLocal roomEntityController;
     
     // Logic not done
     @Override
@@ -200,5 +205,38 @@ public class ReservationEntityController implements ReservationEntityControllerR
         Query query = em.createQuery("SELECT r FROM ReservationEntity WHERE s.checkInDate = :inDate");
         query.setParameter("today",new Date(),TemporalType.DATE);
         return query.getResultList();
+    }
+    
+    @Override   
+    public ReservationEntity retrieveReservationById(Long reservationId){
+        ReservationEntity reservation = em.find(ReservationEntity.class, reservationId);
+        return reservation;
+    }
+    
+    @Override
+    public String checkInGuest(Long reservationId){
+        ReservationEntity reservation = retrieveReservationById(reservationId);
+        RoomEntity room = new RoomEntity();
+        try{
+            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+            room.setOccupied(Boolean.TRUE);
+            roomEntityController.updateRoom(room);
+        } catch (RoomNotFoundException e) {
+            e.printStackTrace();
+        }        
+        return room.getRoomNumber();
+    }
+    
+    @Override
+    public void checkOutGuest(Long reservationId){
+        ReservationEntity reservation = retrieveReservationById(reservationId);
+         RoomEntity room = new RoomEntity();
+        try{
+            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+            room.setOccupied(Boolean.FALSE);
+            roomEntityController.updateRoom(room);
+        } catch (RoomNotFoundException e) {
+            e.printStackTrace();
+        }        
     }
 }

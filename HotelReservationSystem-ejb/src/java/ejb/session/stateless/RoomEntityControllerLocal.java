@@ -24,5 +24,6 @@ public interface RoomEntityControllerLocal {
     public void updateRoom(RoomEntity room);    
     
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException;
-
+    
+    public RoomEntity retrieveRoomById(Long roomId) throws RoomNotFoundException;
 }

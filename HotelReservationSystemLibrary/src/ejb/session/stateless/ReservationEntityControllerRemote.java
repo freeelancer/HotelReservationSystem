@@ -29,4 +29,10 @@ public interface ReservationEntityControllerRemote {
 
     public BigDecimal calculateTotalAmount(RoomTypeEntity roomTypeEntity, Date checkInDate, Date checkOutDate);
 
+    public ReservationEntity retrieveReservationById(Long reservationId);
+
+    public String checkInGuest(Long reservationId);
+
+    public void checkOutGuest(Long reservationId);
+
 }
