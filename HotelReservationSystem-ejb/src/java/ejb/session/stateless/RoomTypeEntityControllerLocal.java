@@ -22,6 +22,8 @@ public interface RoomTypeEntityControllerLocal
     
     public RoomTypeEntity retrieveRoomTypeByName(String roomTypeName) throws RoomTypeNotFoundException;
     
+    public List<RoomTypeEntity> retrieveAllRoomTypes();
+    
     public void updateRoomType(RoomTypeEntity roomType);
     
     public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException;

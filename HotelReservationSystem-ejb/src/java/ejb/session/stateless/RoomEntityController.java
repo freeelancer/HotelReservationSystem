@@ -117,4 +117,5 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         Query query = em.createQuery("SELECT r FROM RoomEntity r");
         return query.getResultList();
     }
+    
 }
