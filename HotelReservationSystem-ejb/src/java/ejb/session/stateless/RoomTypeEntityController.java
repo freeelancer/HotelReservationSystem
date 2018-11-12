@@ -111,11 +111,17 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         roomTypeToUpdate.setDescription(roomType.getDescription());
         roomTypeToUpdate.setName(roomType.getName()); 
         roomTypeToUpdate.setSize(roomType.getSize());
+        roomTypeToUpdate.setRoomRateEntities(roomType.getRoomRateEntities());
+        em.merge(roomTypeToUpdate);
     }
     
     private RoomTypeEntity retrieveRoomTypeById(Long roomTypeId)
     {
+//        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+//        query.setParameter("inRoomTypeId", roomTypeId);
+//        RoomTypeEntity roomType = (RoomTypeEntity) query.getSingleResult();
         RoomTypeEntity roomType = em.find(RoomTypeEntity.class, roomTypeId);
+        
         return roomType;
     }
     
@@ -146,6 +152,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         return query.getResultList();
     }
     
+    // Not done yet
     public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
         return new ArrayList<Date>();
     }
