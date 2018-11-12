@@ -74,3 +74,4 @@ nbproject/project.properties
 nbproject/private/private.properties
 HoRSReservationClient/nbproject/private/private.xml
 
+*.properties

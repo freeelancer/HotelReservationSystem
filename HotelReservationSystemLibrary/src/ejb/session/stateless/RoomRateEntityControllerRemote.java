@@ -22,10 +22,6 @@ public interface RoomRateEntityControllerRemote {
 
     public List<RoomRateEntity> retrieveAllRoomRates();
 
-    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
-  
-    public List<RoomRateEntity> retrieveAllRoomRates();
-
     public void updateRoomRate(RoomRateEntity roomRate);
 
     public void deleteRoomRate(Long roomRateId) throws DeleteRoomRateException;

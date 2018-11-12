@@ -76,7 +76,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
         try {
             roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
         } catch (RoomRateNotFoundException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         roomRateToUpdate.setName(roomRate.getName());
         roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());

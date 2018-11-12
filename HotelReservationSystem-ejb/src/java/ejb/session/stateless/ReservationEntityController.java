@@ -145,6 +145,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         }
         
         // For checking
+        System.out.println(roomRates.size());
         for (RoomRateEntity roomRate:roomRates){
             System.out.println(roomRate.getName());
         }
