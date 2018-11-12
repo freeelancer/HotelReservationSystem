@@ -92,7 +92,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
         } catch (RoomRateNotFoundException e){
             System.out.println(e.getMessage());
         }
-        if(roomRateToDelete.getReservation().isEmpty()){
+        if(roomRateToDelete.getReservations().isEmpty()){
             em.remove(roomRateToDelete);
         } else {
             throw new DeleteRoomRateException("Room rate ID " + roomRateId + "is associated with existing reservation(s) and cannot be deleted!");

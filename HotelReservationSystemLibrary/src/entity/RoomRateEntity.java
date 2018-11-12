@@ -39,7 +39,7 @@ public class RoomRateEntity implements Serializable {
     private BigDecimal ratePerNight;
     private List<Date> validityPeriod; 
     @OneToMany(mappedBy = "roomRateEntity")
-    private List<ReservationEntity> reservation;
+    private List<ReservationEntity> reservations;
     @ManyToOne(optional=false)
     private RoomTypeEntity roomType;
 
@@ -52,7 +52,7 @@ public class RoomRateEntity implements Serializable {
         this.rateTypeEnum = rateTypeEnum;
         this.ratePerNight = ratePerNight;
         this.validityPeriod = validityPeriod;
-        this.reservation = reservationEntities;
+        this.reservations = reservationEntities;
     }
 
     public RoomTypeEntity getRoomType() {
@@ -99,12 +99,12 @@ public class RoomRateEntity implements Serializable {
         this.validityPeriod = validityPeriod;
     }
 
-    public List<ReservationEntity> getReservation() {
-        return reservation;
+    public List<ReservationEntity> getReservations() {
+        return reservations;
     }
 
-    public void setReservation(List<ReservationEntity> reservation) {
-        this.reservation = reservation;
+    public void setReservations(List<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
     
 }

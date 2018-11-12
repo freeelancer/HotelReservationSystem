@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.RoomEntity;
 import entity.RoomTypeEntity;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -17,10 +18,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.FirstAllocationException;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
+import util.exception.SecondAllocationException;
 
 /**
  *
@@ -130,6 +133,33 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     {
         Query query = em.createQuery("SELECT r FROM RoomEntity r");
         return query.getResultList();
+    }
+    
+    @Override
+    public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType){
+        
+        List<RoomEntity> rooms = new ArrayList<RoomEntity>();      
+   
+        Long roomTypeId = roomType.getRoomTypeId();
+        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+        query.setParameter("inRoomTypeId", roomTypeId);
+
+        rooms = query.getResultList();
+
+        if (rooms != null){
+            return null; 
+        }
+        
+        RoomEntity roomToAllocate = new RoomEntity();
+                
+        try {
+            roomToAllocate = retrieveRoomById(rooms.get(0).getRoomId());
+        } catch (RoomNotFoundException e){
+        
+        }
+        
+        roomToAllocate.setAllocated(Boolean.TRUE);
+        return roomToAllocate;
     }
     
 }

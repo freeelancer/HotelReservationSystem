@@ -6,10 +6,13 @@
 package ejb.session.stateless;
 
 import entity.RoomEntity;
+import entity.RoomTypeEntity;
+import util.exception.FirstAllocationException;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
+import util.exception.SecondAllocationException;
 
 /**
  *
@@ -26,4 +29,7 @@ public interface RoomEntityControllerLocal {
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException;
     
     public RoomEntity retrieveRoomById(Long roomId) throws RoomNotFoundException;
+
+    public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType);
+
 }

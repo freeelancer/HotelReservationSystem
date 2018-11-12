@@ -157,4 +157,10 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
         return new ArrayList<Date>();
     }
+    
+    // Not done yet
+    @Override
+    public RoomTypeEntity getNextHigherRoomType(){
+        return new RoomTypeEntity();
+    }
 }

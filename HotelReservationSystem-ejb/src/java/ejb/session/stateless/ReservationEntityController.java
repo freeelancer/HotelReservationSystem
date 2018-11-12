@@ -239,4 +239,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
             e.printStackTrace();
         }        
     }
+    
+    @Override
+    public List<ReservationEntity> retrieveAllReservations(){
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r");
+        
+        return query.getResultList();
+    }
 }
