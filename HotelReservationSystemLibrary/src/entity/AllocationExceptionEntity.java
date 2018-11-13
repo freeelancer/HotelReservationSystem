@@ -28,6 +28,7 @@ public class AllocationExceptionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exceptionId;
+    @JoinColumn(nullable=true)
     @OneToOne
     private RoomTypeEntity reservedRoomType;
     @JoinColumn(nullable=true)

@@ -27,5 +27,7 @@ public interface ReservationEntityControllerLocal {
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
 
 //    public void allocateRooms();
+
+    public List<ReservationEntity> retrieveAllReservations();
     
 }

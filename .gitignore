@@ -75,3 +75,18 @@ nbproject/private/private.properties
 HoRSReservationClient/nbproject/private/private.xml
 
 *.properties
+nbproject/project.properties
+nbproject/private/private.properties
+HotelReservationSystem-ejb/nbproject/project.xml
+HotelReservationSystem-ejb/nbproject/genfiles.properties
+HotelReservationSystem-ejb/nbproject/build-impl.xml
+HoRSReservationClient/nbproject/private/private.xml
+HoRSManagementClient/nbproject/private/private.xml
+HoRSReservationClient/nbproject/private/private.properties
+HotelReservationSystemLibrary/nbproject/project.properties
+nbproject/private/private.properties
+HoRSManagementClient/nbproject/private/private.xml
+HoRSReservationClient/nbproject/private/private.xml
+HoRSManagementClient/nbproject/private/private.xml
+HoRSReservationClient/nbproject/private/private.xml
+HoRSReservationClient/nbproject/private/private.properties

@@ -27,6 +27,12 @@ public interface ReservationEntityControllerRemote {
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
 
-    public BigDecimal calculateTotalAmount(RoomTypeEntity roomTypeEntity, Date checkInDate, Date checkOutDate);
+    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate);
+
+    public ReservationEntity retrieveReservationById(Long reservationId);
+
+    public String checkInGuest(Long reservationId);
+
+    public void checkOutGuest(Long reservationId);
 
 }
