@@ -10,6 +10,7 @@ import ejb.session.stateless.ReservationEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.CustomerEntity;
 import entity.ReservationEntity;
+import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -20,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import util.enumeration.RateTypeEnum;
 import util.exception.ReservationNotFoundException;
 import util.exception.RoomTypeNotFoundException;
 
@@ -143,7 +145,8 @@ public class ReservationModule {
         System.out.println("Room Size: " + roomTypeEntity.getSize() + " square meters");
         System.out.println("Bed Type: " + roomTypeEntity.getBedTypeEnum());
         System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
-        System.out.println("Normal Room Rate: " + roomTypeEntity.getRoomRateEntities().get(0).getRatePerNight());
+        DecimalFormat df = new DecimalFormat("$#,###.00");
+        System.out.println("Normal Room Rate: " + df.format(roomTypeEntity.getRoomRateEntities().get(0).getRatePerNight()));
         System.out.println("-------------------");
         
         String response = "";
@@ -152,16 +155,12 @@ public class ReservationModule {
         
         while (true){
             System.out.println("Type the dates (dd/MM/yyyy) you wish to reserve. Type 'b' to return.");
-
             System.out.println("Check in date:");
-            
             System.out.print("> ");
             response = scanner.nextLine();
-
             if (response.equals("b")){
                 return false;
             }
-
             try {
                 checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
             } catch (Exception e){
@@ -169,32 +168,25 @@ public class ReservationModule {
             }
             
             while(!response.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckIn(checkInDate)) {
-                
                 System.out.println("Invalid response! Please try again.");
-                
                 System.out.print("> ");
                 response = scanner.nextLine();
                 
                 if (response.equals("b")){
                     return false;
-                }
-                
+                }   
                 try {
                     checkInDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
                 } catch (Exception e){
                     System.out.println(e);
                 }              
-            } 
-
+            }
             System.out.println("Check out date:");
-            
             System.out.print("> ");
             response = scanner.nextLine();
-
             if (response.equals("b")){
                 return false;
             }
-
             try {
                 checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
             } catch (Exception e){
@@ -202,16 +194,12 @@ public class ReservationModule {
             }  
  
             while(!response.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckOut(checkInDate, checkOutDate)) {
-                
                 System.out.println("Invalid response! Please try again.");
-                
                 System.out.print("> ");
                 response = scanner.nextLine();
-                
                 if (response.equals("b")){
                     return false;
                 }
-                
                 try {
                     checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
                 } catch (Exception e){
@@ -220,15 +208,15 @@ public class ReservationModule {
             } 
             
             List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
-        
+            
             if (datesUnavailable.isEmpty()){
+                
                 System.out.println("Room is available. Confirm reservation for:");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity, checkInDate, checkOutDate);
-                DecimalFormat df = new DecimalFormat("#,###.00");
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate);
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");

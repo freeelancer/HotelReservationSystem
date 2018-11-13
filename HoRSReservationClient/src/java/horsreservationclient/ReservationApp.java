@@ -27,6 +27,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.UsernameExistException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RoomExistException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -242,7 +243,15 @@ public class ReservationApp {
         return;
     }
     
-    private void reserveRoom(RoomTypeEntity roomTypeEntity){
+    private void reserveRoom(RoomTypeEntity roomTypeToBook){
+        
+        RoomTypeEntity roomTypeEntity = new RoomTypeEntity();
+        
+        try {
+            roomTypeEntity = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
+        } catch (RoomTypeNotFoundException e) {
+        
+        }
         
         Scanner scanner = new Scanner(System.in);
        
@@ -253,6 +262,7 @@ public class ReservationApp {
         System.out.println("Room Size: " + roomTypeEntity.getSize() + " square meters");
         System.out.println("Bed Type: " + roomTypeEntity.getBedTypeEnum());
         System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
+        System.out.println("Normal Room Rate: " + roomTypeEntity.getRoomRateEntities().get(0).getRatePerNight());
         System.out.println("-------------------");
         
         String response = "";
@@ -336,7 +346,7 @@ public class ReservationApp {
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity, checkInDate, checkOutDate);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate);
                 DecimalFormat df = new DecimalFormat("#,###.00");
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.println("Login to reserve. Press Enter to return to main page");
