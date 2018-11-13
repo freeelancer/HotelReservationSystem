@@ -141,7 +141,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         end = calendar.getTime();
 
         BigDecimal sum = new BigDecimal("0");
-        sum.add(new BigDecimal("200"));
+        sum.add(new BigDecimal("200")); // test
 
         for(Date current = start; current.before(end); ){
             for(RoomRateEntity roomRate:roomRates){
