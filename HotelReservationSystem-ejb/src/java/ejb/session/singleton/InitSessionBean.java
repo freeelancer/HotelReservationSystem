@@ -66,8 +66,11 @@ public class InitSessionBean
 
     private void initializeData() 
     {
-        employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Admin", "Admin", "Admin","password",EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR));
-        
+        employeeEntityController.createNewEmployee(new EmployeeEntity(null, "System", "Admin", "Admin","password",EmployeeAccessRightsEnum.SYSTEM_ADMINISTRATOR));
+        employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Operation", "Manager", "Operation","password",EmployeeAccessRightsEnum.OPERATION_MANAGER));
+        employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Sales", "Manager", "Sales","password",EmployeeAccessRightsEnum.SALES_MANAGER));
+        employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Guest", "Relations Officer", "Guest","password",EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER));
+
 //     initialize roomtypes
         RoomTypeEntity roomType1 = new RoomTypeEntity();
         roomType1.setName("Deluxe");
@@ -88,7 +91,7 @@ public class InitSessionBean
         RoomRateEntity roomRate1a = new RoomRateEntity();
         roomRate1a.setName("Deluxe Peak");
         roomRate1a.setRatePerNight(new BigDecimal(150.00));
-        roomRate1a.setRateTypeEnum(RateTypeEnum.PEAK);
+        roomRate1a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate1a.setRoomType(roomType1);
         roomRate1a=roomRateEntityController.createNewRoomRate(roomRate1a);
         
@@ -117,7 +120,7 @@ public class InitSessionBean
         RoomRateEntity roomRate2a = new RoomRateEntity();
         roomRate2a.setName("Premier Peak");
         roomRate2a.setRatePerNight(new BigDecimal(250.00));
-        roomRate2a.setRateTypeEnum(RateTypeEnum.PEAK);
+        roomRate2a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate2a.setRoomType(roomType2);
         roomRate2a=roomRateEntityController.createNewRoomRate(roomRate2a);
         
@@ -146,7 +149,7 @@ public class InitSessionBean
         RoomRateEntity roomRate3a = new RoomRateEntity();
         roomRate3a.setName("Family Peak");
         roomRate3a.setRatePerNight(new BigDecimal(350.00));
-        roomRate3a.setRateTypeEnum(RateTypeEnum.PEAK);
+        roomRate3a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate3a.setRoomType(roomType3);
         roomRate3a=roomRateEntityController.createNewRoomRate(roomRate3a);
         
@@ -175,7 +178,7 @@ public class InitSessionBean
         RoomRateEntity roomRate4a = new RoomRateEntity();
         roomRate4a.setName("Junior Suite Peak");
         roomRate4a.setRatePerNight(new BigDecimal(450.00));
-        roomRate4a.setRateTypeEnum(RateTypeEnum.PEAK);
+        roomRate4a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate4a.setRoomType(roomType4);
         roomRate4a=roomRateEntityController.createNewRoomRate(roomRate4a);
         
@@ -204,7 +207,7 @@ public class InitSessionBean
         RoomRateEntity roomRate5a = new RoomRateEntity();
         roomRate5a.setName("Grand Suite Peak");
         roomRate5a.setRatePerNight(new BigDecimal(550.00));
-        roomRate5a.setRateTypeEnum(RateTypeEnum.PEAK);
+        roomRate5a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate5a.setRoomType(roomType5);
         roomRate5a=roomRateEntityController.createNewRoomRate(roomRate5a);
         
@@ -215,30 +218,13 @@ public class InitSessionBean
         roomTypeEntityController.updateRoomType(roomType5);
         
 //        intialize all the rooms
-        for(int i=1;i<=10;i++)
+        for(int i=1;i<=5;i++)
         {
-            for(int j=1;j<=50;j++)
+            for(int j=1;j<=5;j++)
             {
-                String roomNum;
+                String roomNum=""+0+i+0+j;
                 RoomEntity room;
-                if(i<10&&j<10)
-                {
-                    roomNum=""+0+i+0+j;
-                }
-                else if(i<10)
-                {
-                    roomNum=""+0+i+j;
-                }
-                else if(i==10 && j<10)
-                {
-                    roomNum=""+i+0+j;
-                }
-                else
-                {
-                    roomNum=""+i+j;
-                }
-                
-                if(i<=2)
+                if(i==1)
                 {
                     try {
                         room= new RoomEntity();
@@ -247,7 +233,7 @@ public class InitSessionBean
                     } catch (RoomTypeNotFoundException ex) {
                     }
                 }
-                else if(i<=4)
+                else if(i==2)
                 {
                     try {
                         room= new RoomEntity();
@@ -256,7 +242,7 @@ public class InitSessionBean
                     } catch (RoomTypeNotFoundException ex) {
                     }
                 }
-                else if(i<=7)
+                else if(i==3)
                 {
                     try {
                         room= new RoomEntity();
@@ -265,7 +251,7 @@ public class InitSessionBean
                     } catch (RoomTypeNotFoundException ex) {
                     }
                 }
-                else if(i<=9)
+                else if(i==4)
                 {
                     try {
                         room= new RoomEntity();
@@ -274,7 +260,7 @@ public class InitSessionBean
                     } catch (RoomTypeNotFoundException ex) {
                     }
                 }
-                else if(i==10)
+                else if(i==5)
                 {
                     try {
                         room= new RoomEntity();
@@ -284,7 +270,6 @@ public class InitSessionBean
                     }
                 }
             }
-        }
-        
+        }  
     }
 }

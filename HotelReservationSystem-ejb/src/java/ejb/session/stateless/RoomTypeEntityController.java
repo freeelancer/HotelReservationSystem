@@ -52,38 +52,33 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
 //        Deal with this later
         em.persist(newRoomTypeEntity);
         em.flush();
-        
+        em.refresh(newRoomTypeEntity);
+        List<DateEntity> dates = new ArrayList<DateEntity>();
+        Date start = new Date();
+        Date end = new Date();
+        LocalDate today = LocalDate.now();
+        today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         try {
-            newRoomTypeEntity = retrieveRoomTypeByName(newRoomTypeEntity.getName());
-            
-            List<DateEntity> dates = new ArrayList<DateEntity>();
-            Date start = new Date();
-            Date end = new Date();
-            LocalDate today = LocalDate.now();
-            today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            try {
-                start = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
-                today.plusYears(1);
-                end = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            for(Date current = start; current.before(end); ){
-                DateEntity date = new DateEntity(current, newRoomTypeEntity);
-                date = dateEntityController.createNewDate(date);
-                dates.add(date);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(current);
-                calendar.add(Calendar.DATE, 1);
-                current = calendar.getTime();
-            }
-
-            newRoomTypeEntity.setDates(dates);
-        } catch (RoomTypeNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            start = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
+            today.plusYears(1);
+            end = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
+        for(Date current = start; current.before(end); ){
+            DateEntity date = new DateEntity(current, newRoomTypeEntity);
+            date = dateEntityController.createNewDate(date);
+            dates.add(date);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(current);
+            calendar.add(Calendar.DATE, 1);
+            current = calendar.getTime();
+        }
+
+        newRoomTypeEntity.setDates(dates);
+        
         return newRoomTypeEntity;
     }
     

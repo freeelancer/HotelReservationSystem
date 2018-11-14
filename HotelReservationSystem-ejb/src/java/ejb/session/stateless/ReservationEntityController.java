@@ -125,29 +125,23 @@ public class ReservationEntityController implements ReservationEntityControllerR
                 
         try {
             roomType = roomTypeEntityController.retrieveRoomTypeByName(roomTypeName);
-            roomRates = roomType.getRoomRateEntities();
+            
         } catch (RoomTypeNotFoundException e) {
             e.printStackTrace();
-        } 
-                        
-        Date start = new Date();
-        Date end = new Date();
-
+        }
+        roomRates = roomType.getRoomRateEntities();               
         Calendar calendar = Calendar.getInstance();
-        start = checkInDate;
-        end = checkOutDate;
-        calendar.setTime(end);
-        calendar.add(Calendar.DATE, 1);
-        end = calendar.getTime();
+        Date start = checkInDate;
+        Date end = checkOutDate;
 
-        BigDecimal sum = new BigDecimal("0");
-        sum.add(new BigDecimal("200")); // test
+        BigDecimal sum = BigDecimal.ZERO;
+        sum.add(BigDecimal.TEN); // test
         
         boolean condition=false;
 
         for(Date current = start; current.before(end); ){
             for(RoomRateEntity roomRate:roomRates){
-                if(roomRate.getRateTypeEnum() == RateTypeEnum.PEAK && roomRate.getValidityPeriod()!=null){
+                if(roomRate.getRateTypeEnum().equals(RateTypeEnum.PEAK) && roomRate.getValidityPeriod()!=null){
                     if(roomRate.getValidityPeriod().contains(current)){
                         sum.add(roomRate.getRatePerNight());
                         calendar.setTime(current);
