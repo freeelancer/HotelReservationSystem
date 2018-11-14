@@ -338,7 +338,7 @@ public class ReservationApp {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeEntity);
         
             if (datesUnavailable.isEmpty()){
                 System.out.println("Room is available. Confirm reservation for:");

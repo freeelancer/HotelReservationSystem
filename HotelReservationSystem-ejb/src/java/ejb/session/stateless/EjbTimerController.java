@@ -71,10 +71,10 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         for(ReservationEntity reservation:reservations){
             if(reservation.getCheckInDate().equals(today)){
                 RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity());
-                
+                RoomTypeEntity roomType = reservation.getRoomTypeEntity();
                 if(roomToAllocate == null){
                     while(true){
-                        RoomTypeEntity roomType = roomTypeEntityController.getNextHigherRoomType();
+                        roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
                         if (roomType == null){
                             AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
                             allocationException.setReservationEntity(reservation);

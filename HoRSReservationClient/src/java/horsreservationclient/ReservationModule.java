@@ -202,13 +202,13 @@ public class ReservationModule {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeEntity);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             
             if (datesUnavailable.isEmpty()){
                 
                 System.out.println("Room is available. Confirm reservation for:");
-                System.out.println("Room Type: " + roomTypeEntity.getName());
+                System.out.println("Room Type: " + roomTypeToBook.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
                 BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
@@ -221,16 +221,16 @@ public class ReservationModule {
                     // check if booking is done after 2AM
                     Calendar now = Calendar.getInstance();
                     Calendar c = new GregorianCalendar();
-                    c.set(Calendar.HOUR_OF_DAY, 2); //anything 0 - 23
+                    c.set(Calendar.HOUR_OF_DAY, 2); 
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
-                    Date deadline = c.getTime(); //the midnight, that's the first second of the day.
+                    Date deadline = c.getTime(); 
 
                     if (now.after(deadline)){
-                        reservationEntityController.allocateRoomManually(roomTypeEntity);
+                        reservationEntityController.allocateRoomManually(roomTypeToBook);
                     }
                     
-                    reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeEntity, null, null, checkInDate, checkOutDate);
+                    reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
                     System.out.println("Reservation Successful!");
                     return true;
                 } else {
