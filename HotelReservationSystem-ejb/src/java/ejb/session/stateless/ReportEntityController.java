@@ -6,11 +6,13 @@
 package ejb.session.stateless;
 
 import entity.RoomExceptionReportEntity;
+import java.util.Date;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,5 +33,16 @@ public class ReportEntityController implements ReportEntityControllerRemote, Rep
         em.refresh(newReport);
         
         return newReport;
+    }
+    
+    @Override
+    public RoomExceptionReportEntity retrieveReportByDate(Date date){
+        Query query = em.createQuery("SELECT r FROM RoomExceptionReportEntity r WHERE r.date = :inDate");
+        query.setParameter("inDate", date);
+        
+        RoomExceptionReportEntity report = (RoomExceptionReportEntity) query.getSingleResult();
+        report.getFirstExceptionList().size();
+        report.getSecondExceptionList().size();
+        return report;
     }
 }

@@ -5,6 +5,7 @@
         <group name="HotelReservationSystem"/>
         <group>
             <file>file:/D:/IS2103/HotelReservationSystem/HoRSReservationClient/src/java/horsreservationclient/ReservationModule.java</file>
+            <file>file:/D:/IS2103/HotelReservationSystem/HoRSReservationClient/src/java/horsreservationclient/ReservationApp.java</file>
         </group>
     </open-files>
 </project-private>

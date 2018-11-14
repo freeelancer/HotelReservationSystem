@@ -5,11 +5,16 @@
  */
 package horsmanagementclient;
 
+import ejb.session.stateless.ReportEntityControllerRemote;
 import ejb.session.stateless.RoomEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
+import entity.AllocationExceptionEntity;
 import entity.EmployeeEntity;
 import entity.RoomEntity;
+import entity.RoomExceptionReportEntity;
 import entity.RoomTypeEntity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import util.enumeration.BedTypeEnum;
@@ -28,6 +33,7 @@ class OperationManagerModule {
     private EmployeeEntity currentEmployeeEntity;
     private RoomTypeEntityControllerRemote roomTypeEntityController;
     private RoomEntityControllerRemote roomEntityController;
+    private ReportEntityControllerRemote reportEntityController;
 
     public OperationManagerModule() {
     }
@@ -103,7 +109,7 @@ class OperationManagerModule {
                 }
                 else if (response == 10)
                 {
-//                    viewRoomAllocationExceptionResultOperation();
+                    viewRoomAllocationExceptionResultOperation();
                 }
                 else if (response == 11)
                 {
@@ -402,5 +408,47 @@ class OperationManagerModule {
             printRoomDetails(room);
         }
         System.out.println();
+    }
+
+    private void viewRoomAllocationExceptionResultOperation() {
+        
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("*** Operation Manager Operations :: Room Allocation Exception Report ***\n");
+        System.out.println("Type date of report to retrieve ((dd/MM/yyyy)");
+        System.out.print("> ");
+        String response = scanner.nextLine();
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            } catch (Exception e){
+                System.out.println(e);
+            }
+        while(!response.matches("\\d{2}/\\d{2}/\\d{4}")) {
+            System.out.println("Invalid response! Please try again.");
+            System.out.print("> ");
+            response = scanner.nextLine();
+            try {
+                date = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            } catch (Exception e){
+                System.out.println(e);
+            }              
+        }
+        
+        RoomExceptionReportEntity report = reportEntityController.retrieveReportByDate(date);
+        
+        System.out.println("First Exceptions:");
+        List<AllocationExceptionEntity> firstExceptions = report.getFirstExceptionList();
+        System.out.printf("%10s%20s%20s", "Rev ID", "Reserved Room", "Allocated Room");
+        for(AllocationExceptionEntity exception:firstExceptions){
+            System.out.printf("%10s%20s%20s", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName(), exception.getAllocatedRoomType().getName());
+        }
+        
+        System.out.println("Second Exceptions:");
+        List<AllocationExceptionEntity> secondExceptions = report.getSecondExceptionList();
+        System.out.printf("%10s%20s", "Rev ID", "Reserved Room");
+        for(AllocationExceptionEntity exception:secondExceptions){
+            System.out.printf("%10s%20s", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName());
+        }
     }
 }

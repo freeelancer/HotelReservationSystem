@@ -5,6 +5,8 @@
  */
 package ejb.session.stateless;
 
+import entity.RoomExceptionReportEntity;
+import java.util.Date;
 import javax.ejb.Remote;
 
 /**
@@ -12,5 +14,7 @@ import javax.ejb.Remote;
  * @author Wai Kin
  */
 public interface ReportEntityControllerRemote {
-    
+
+    public RoomExceptionReportEntity retrieveReportByDate(Date date);
+
 }
