@@ -40,20 +40,31 @@ public class RoomRateEntity implements Serializable {
     private BigDecimal ratePerNight;
     private List<Date> validityPeriod; 
     @OneToMany(mappedBy = "roomRateEntity")
-    private List<ReservationEntity> reservation;
+    private List<ReservationEntity> reservations;
     @ManyToOne
     private RoomTypeEntity roomType;
+    @Column (nullable = false)
+    private Boolean disabled = Boolean.FALSE;
 
     public RoomRateEntity() {
     }
 
-    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, List<Date> validityPeriod, List<ReservationEntity> reservationEntities) {
+    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, List<Date> validityPeriod, List<ReservationEntity> reservationEntities, Boolean disabled) {
         this.roomType = roomTypeEntity;
         this.name = name;
         this.rateTypeEnum = rateTypeEnum;
         this.ratePerNight = ratePerNight;
         this.validityPeriod = validityPeriod;
-        this.reservation = reservationEntities;
+        this.reservations = reservationEntities;
+        this.disabled = disabled;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     public RoomTypeEntity getRoomType() {
@@ -100,12 +111,12 @@ public class RoomRateEntity implements Serializable {
         this.validityPeriod = validityPeriod;
     }
 
-    public List<ReservationEntity> getReservation() {
-        return reservation;
+    public List<ReservationEntity> getReservations() {
+        return reservations;
     }
 
-    public void setReservation(List<ReservationEntity> reservation) {
-        this.reservation = reservation;
+    public void setReservations(List<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
     
 }

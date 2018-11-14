@@ -403,12 +403,4 @@ class OperationManagerModule {
         }
         System.out.println();
     }
-
-//    private void viewRoomAllocationExceptionResultOperation() 
-//    {
-//        AllocationExceptionEntity exception = retrieveLatestException();
-//        
-//    }
-
-    
 }
