@@ -28,5 +28,5 @@ public interface RoomTypeEntityControllerRemote
 
     public List<RoomTypeEntity> retrieveAllRoomTypes();
 
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate);
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType);
 }

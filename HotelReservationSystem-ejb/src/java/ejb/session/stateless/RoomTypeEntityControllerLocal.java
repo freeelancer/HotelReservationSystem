@@ -27,8 +27,6 @@ public interface RoomTypeEntityControllerLocal
     public void updateRoomType(RoomTypeEntity roomType);
     
     public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException;
-    
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate);
 
-    public RoomTypeEntity getNextHigherRoomType();
+    public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomType);
 }

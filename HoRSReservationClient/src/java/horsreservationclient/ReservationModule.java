@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.ReservationNotFoundException;
@@ -201,13 +202,13 @@ public class ReservationModule {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeEntity);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             
             if (datesUnavailable.isEmpty()){
                 
                 System.out.println("Room is available. Confirm reservation for:");
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                System.out.println("Room Type: " + roomTypeToBook.getName());
+                System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
                 BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
@@ -216,13 +217,30 @@ public class ReservationModule {
                 System.out.print("> ");
                 response = scanner.nextLine();
                 System.out.println("-------------------");
-                if (!response.equals("c")){
-                    reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
+                if (!response.equals("c")){ 
+                    // check if booking is done after 2AM
+                    Calendar now = Calendar.getInstance();
+                    Calendar c = new GregorianCalendar();
+                    c.set(Calendar.HOUR_OF_DAY, 2); //anything 0 - 23
+                    c.set(Calendar.MINUTE, 0);
+                    c.set(Calendar.SECOND, 0);
+                    Date deadline = c.getTime(); //the midnight, that's the first second of the day.
+
+                    if (now.after(deadline)){
+                        reservationEntityController.allocateRoomManually(roomTypeEntity);
+                    }
+                    
+                    reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeEntity, null, null, checkInDate, checkOutDate);
                     System.out.println("Reservation Successful!");
                     return true;
                 } else {
                     System.out.println("Reservation cancelled.");
                     return false;
+                }
+            } else {
+                System.out.println("Room is unavailable on the following dates:");
+                for(Date date:datesUnavailable){
+                    System.out.println(dateFormat.format(date));
                 }
             }
         }

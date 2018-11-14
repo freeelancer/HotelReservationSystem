@@ -18,12 +18,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import util.exception.FirstAllocationException;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
-import util.exception.SecondAllocationException;
 
 /**
  *

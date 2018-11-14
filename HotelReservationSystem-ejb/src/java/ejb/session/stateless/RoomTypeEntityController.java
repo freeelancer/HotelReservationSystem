@@ -7,9 +7,7 @@ package ejb.session.stateless;
 
 import entity.DateEntity;
 import entity.RoomTypeEntity;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,17 +57,26 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         LocalDate today = LocalDate.now();
         today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         try {
-            start = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
-            today.plusYears(1);
-            end = new SimpleDateFormat("dd/MM/yyyy").parse(today.toString());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            newRoomTypeEntity = retrieveRoomTypeByName(newRoomTypeEntity.getName());
+            
+            List<DateEntity> dates = new ArrayList<DateEntity>();
+            Date start = new Date();
+            Date end = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(start);
+            calendar.add(Calendar.YEAR, 1);
+            end = calendar.getTime();
 
-        for(Date current = start; current.before(end); ){
-            DateEntity date = new DateEntity(current, newRoomTypeEntity);
-            date = dateEntityController.createNewDate(date);
-            dates.add(date);
+            for(Date current = start; current.before(end); ){
+                DateEntity date = new DateEntity(current, newRoomTypeEntity);
+                date = dateEntityController.createNewDate(date);
+                dates.add(date);
+
+                calendar = Calendar.getInstance();
+                calendar.setTime(current);
+                calendar.add(Calendar.DATE, 1);
+                current = calendar.getTime();
+            }
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(current);
@@ -150,14 +157,46 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         return query.getResultList();
     }
     
-    // Not done yet
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
+    @Override
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType){
+        
+        List<Date> unavailableDates = new ArrayList<Date>();
+        RoomTypeEntity roomTypeEntity = retrieveRoomTypeById(roomType.getRoomTypeId()); 
+        roomTypeEntity.getRoomEntities().size();
+        
+        for(Date current=checkInDate; current.before(checkOutDate); ){
+            
+            Query query = em.createQuery("SELECT d FROM DateEntity d WHERE d.dateTime = :inCurrent AND d.roomTypeEntity.roomTypeId = :inRoomTypeId");
+            query.setParameter("inCurrent", current);
+            query.setParameter("inRoomTypeId", roomType.getRoomTypeId());
+            
+            DateEntity date = (DateEntity)query.getSingleResult();
+            if(date.getNumReserved() >= roomType.getRoomEntities().size()){
+                unavailableDates.add(current);
+            }
+            
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(current);
+            calendar.add(Calendar.DATE, 1);
+            current = calendar.getTime();
+        }
+        
         return new ArrayList<Date>();
     }
     
     // Not done yet
     @Override
-    public RoomTypeEntity getNextHigherRoomType(){
+    public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomType){
+        List<RoomTypeEntity> roomTypes = retrieveAllRoomTypes();
+        BigDecimal currentRate = roomType.getRoomRateEntities().get(0).getRatePerNight();
+        RoomTypeEntity nextHigherRoomType = new RoomTypeEntity();
+        
+        for(RoomTypeEntity nextRoomType:roomTypes){
+            if(nextRoomType.getRoomRateEntities().get(0).getRatePerNight().compareTo(currentRate) == 1){
+                //if(next)
+            }
+        }
+        
         return new RoomTypeEntity();
     }
 }

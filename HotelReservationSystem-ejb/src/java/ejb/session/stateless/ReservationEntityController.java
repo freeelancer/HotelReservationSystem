@@ -88,8 +88,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         
         return reservationEntity;        
     }
-    
-    // Logic not done
+
     @Override
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException {
  
@@ -135,7 +134,6 @@ public class ReservationEntityController implements ReservationEntityControllerR
         Date end = checkOutDate;
 
         BigDecimal sum = BigDecimal.ZERO;
-        sum.add(BigDecimal.TEN); // test
         
         boolean condition=false;
 
@@ -143,7 +141,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
             for(RoomRateEntity roomRate:roomRates){
                 if(roomRate.getRateTypeEnum().equals(RateTypeEnum.PEAK) && roomRate.getValidityPeriod()!=null){
                     if(roomRate.getValidityPeriod().contains(current)){
-                        sum.add(roomRate.getRatePerNight());
+                        sum = sum.add(roomRate.getRatePerNight());
                         calendar.setTime(current);
                         calendar.add(Calendar.DATE, 1);
                         current = calendar.getTime();
@@ -156,7 +154,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
             for(RoomRateEntity roomRate:roomRates){
                 if(roomRate.getRateTypeEnum() == RateTypeEnum.PROMOTION && roomRate.getValidityPeriod()!=null){
                    if(roomRate.getValidityPeriod().contains(current)){
-                        sum.add(roomRate.getRatePerNight());
+                        sum = sum.add(roomRate.getRatePerNight());
                         calendar.setTime(current);
                         calendar.add(Calendar.DATE, 1);
                         current = calendar.getTime();
@@ -168,7 +166,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
             if(condition){ continue;}
             for(RoomRateEntity roomRate:roomRates){
                 if(roomRate.getRateTypeEnum() == RateTypeEnum.NORMAL){
-                    sum.add(roomRate.getRatePerNight());
+                    sum = sum.add(roomRate.getRatePerNight());
                     calendar.setTime(current);
                     calendar.add(Calendar.DATE, 1);
                     current = calendar.getTime();
@@ -235,5 +233,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
         Query query = em.createQuery("SELECT r FROM ReservationEntity r");
         
         return query.getResultList();
+    }
+    
+    @Override
+    public void allocateRoomManually(RoomTypeEntity roomType){
+        RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+        roomToAllocate.setAllocated(Boolean.TRUE);
     }
 }
