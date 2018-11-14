@@ -103,19 +103,20 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     }
     
     @Override
-    public void updateRoomRate(RoomRateEntity roomRate)
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate)
     {
-        RoomRateEntity roomRateToUpdate = new RoomRateEntity();
-        roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
         try {
-            roomRateToUpdate = retrieveRoomRateByName(roomRate.getName());
-        }catch (RoomRateNotFoundException ex){
-            ex.printStackTrace();
+            RoomRateEntity roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
+            roomRateToUpdate.setName(roomRate.getName());
+            roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
+            roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());
+            roomRateToUpdate.setValidityPeriod(roomRate.getValidityPeriod());
+            RoomTypeEntity roomTypeUpdate = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
+            roomRateToUpdate.setRoomType(roomTypeUpdate);
+            return roomRateToUpdate;
+        } catch (RoomTypeNotFoundException ex) {
         }
-        roomRateToUpdate.setName(roomRate.getName());
-        roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
-        roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());
-        roomRateToUpdate.setValidityPeriod(roomRate.getValidityPeriod());
+        return null;
     }
     
     public void deleteRoomRate(RoomRateEntity rate) throws RoomRateIsUsedException, RoomRateAlreadyDisabledException

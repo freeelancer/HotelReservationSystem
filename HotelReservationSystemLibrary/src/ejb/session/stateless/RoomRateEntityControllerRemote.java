@@ -24,7 +24,7 @@ public interface RoomRateEntityControllerRemote {
 
     public void deleteRoomRate(RoomRateEntity rate) throws RoomRateIsUsedException, RoomRateAlreadyDisabledException;
   
-    public void updateRoomRate(RoomRateEntity roomRate);
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
 
     public RoomRateEntity retrieveRoomRateByName(String rateName) throws RoomRateNotFoundException;
 

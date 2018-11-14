@@ -331,7 +331,7 @@ class OperationManagerModule {
             Integer response = 0;
             while(true){
                 for (i = 1; i <= numRoomType; i++){
-                    System.out.println("" + i + ": " + roomTypeList.get(i-1));
+                    System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
                 }
                 int lastOption = i+1;
                 System.out.println("" + lastOption + ": No Change\n");

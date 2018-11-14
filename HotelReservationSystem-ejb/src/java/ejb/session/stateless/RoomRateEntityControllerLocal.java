@@ -22,7 +22,7 @@ public interface RoomRateEntityControllerLocal {
 
     public List<RoomRateEntity> retrieveAllRoomRates();
 
-    public void updateRoomRate(RoomRateEntity roomRate);
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
 
     public void deleteRoomRate(Long roomRateId) throws DeleteRoomRateException;
 

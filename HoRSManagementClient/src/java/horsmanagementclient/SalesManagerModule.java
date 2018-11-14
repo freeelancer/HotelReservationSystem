@@ -6,8 +6,11 @@
 package horsmanagementclient;
 
 import ejb.session.stateless.RoomRateEntityControllerRemote;
+import ejb.session.stateless.RoomTypeEntityControllerRemote;
 import entity.EmployeeEntity;
 import entity.RoomRateEntity;
+import entity.RoomTypeEntity;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,15 +30,17 @@ import util.exception.RoomTypeNotFoundException;
 class SalesManagerModule {
     private EmployeeEntity currentEmployeeEntity;
     private RoomRateEntityControllerRemote roomRateEntityController;
+    private RoomTypeEntityControllerRemote roomTypeEntityController;
 
     public SalesManagerModule() 
     {
     }
 
-    public SalesManagerModule(EmployeeEntity currentEmployeeEntity, RoomRateEntityControllerRemote roomRateEntityController) 
+    public SalesManagerModule(EmployeeEntity currentEmployeeEntity, RoomRateEntityControllerRemote roomRateEntityController,RoomTypeEntityControllerRemote roomTypeEntityController) 
     {
         this.currentEmployeeEntity = currentEmployeeEntity;
         this.roomRateEntityController = roomRateEntityController;
+        this.roomTypeEntityController = roomTypeEntityController;
     }
 
     void salesManagerOperations() {
@@ -255,8 +260,137 @@ class SalesManagerModule {
         
     }
 
-    private void updateRoomRateOperations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void updateRoomRateOperations() 
+    {
+        Scanner sc = new Scanner(System.in);
+        String input;
+        System.out.println("*** Sales Manager Operations :: Update Room Rate ***\n");
+        try{
+            System.out.print("Enter Name Of Room Rate> ");
+            RoomRateEntity roomRate=roomRateEntityController.retrieveRoomRateByName(sc.nextLine().trim());
+            System.out.println("Current Details:");
+            printRoomRateDetails(roomRate);
+            System.out.print("Enter New Name Of Room Type (blank if no change)> ");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomRate.setName(input);
+            }
+            System.out.print("Enter New Rate Per Night (blank if no change)> ");
+            BigDecimal ratePerNight = sc.nextBigDecimal();
+            sc.nextLine();
+                   
+            if(ratePerNight.compareTo(BigDecimal.ZERO)!=0)
+            {
+                roomRate.setRatePerNight(ratePerNight);
+            }
+            System.out.print("Enter Name Of Associated Room Type (blank if no change)> ");
+            List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
+            int numRoomType = roomTypeList.size();
+            int i;
+            Integer response = 0;
+            while(true){
+                for (i = 1; i <= numRoomType; i++){
+                    System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
+                }
+                int lastOption = i+1;
+                System.out.println("" + lastOption + ": No Change\n");
+                System.out.print("> ");
+                response = sc.nextInt();
+                sc.nextLine().trim();
+                while (response < 1 || response > lastOption){
+                    System.out.println("Invalid response! Please try again.");
+                    System.out.print("> ");
+                    response = sc.nextInt();
+                    sc.nextLine();
+                }
+                if (response == lastOption){
+                    break;
+                }
+                else
+                {
+                    roomRate.setRoomType(roomTypeList.get(i-1));
+                }
+            }
+            System.out.print("Enter New Rate Type\n1: Published\n2: Normal\n3: Peak\n4: Promotion\n (blank if no change)\n>");
+            input=sc.nextLine().trim();
+            if(input.length()>0)
+            {
+                roomRate.setRateTypeEnum(RateTypeEnum.values()[Integer.parseInt(input)-1]);
+            }
+            System.out.print("Enter 'y' if there is a change in the Validity Period (blank if no change)\n>");
+            input = sc.nextLine().trim();
+            if(input.equals("y")){
+                Date validStart = new Date();
+                Date validEnd = new Date();
+                System.out.println("Type the dates (dd/MM/yyyy) for the validity period.");
+                System.out.println("Valid From:");
+                System.out.print("> ");
+                input = sc.nextLine().trim();
+                try {
+                    validStart = new SimpleDateFormat("dd/MM/yyyy").parse(input); 
+                } catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+
+                while(!input.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckIn(validStart)) {
+
+                    System.out.println("Invalid response! Please try again.");
+
+                    System.out.print("> ");
+                    input = sc.nextLine().trim();
+                    try {
+                        validStart = new SimpleDateFormat("dd/MM/yyyy").parse(input); 
+                    } catch (Exception ex){
+                        System.out.println(ex.getMessage());
+                    }              
+                } 
+
+                System.out.println("Valid Till:");
+
+                System.out.print("> ");
+                input = sc.nextLine();
+
+                try {
+                    validEnd = new SimpleDateFormat("dd/MM/yyyy").parse(input); 
+                } catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }  
+
+                while(!input.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckOut(validStart, validEnd)) {
+
+                    System.out.println("Invalid response! Please try again.");
+
+                    System.out.print("> ");
+                    input = sc.nextLine();
+
+                    try {
+                        validEnd = new SimpleDateFormat("dd/MM/yyyy").parse(input); 
+                    } catch (Exception ex){
+                        System.out.println(ex.getMessage());
+                    }                
+                }
+                List<Date> dates = new ArrayList<Date>();
+                for(Date current = validStart; current.before(validEnd); )
+                {
+                    dates.add(current);
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(current);
+                    calendar.add(Calendar.DATE, 1);
+                    current = calendar.getTime();
+
+                }
+                dates.add(validEnd);
+                roomRate.setValidityPeriod(dates);
+            }
+            roomRate = roomRateEntityController.updateRoomRate(roomRate);
+            System.out.println("Room Rate Updated Successfully!\n");
+            printRoomRateDetails(roomRate);
+            System.out.println();
+        }catch(RoomRateNotFoundException ex){
+            System.out.println(ex.getMessage()+"\n");
+        }
     }
 
     private void deleteRoomRateOperation() 
