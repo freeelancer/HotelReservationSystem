@@ -35,4 +35,6 @@ public interface ReservationEntityControllerRemote {
 
     public void checkOutGuest(Long reservationId);
 
+    public void allocateRoomManually(RoomTypeEntity roomType);
+
 }
