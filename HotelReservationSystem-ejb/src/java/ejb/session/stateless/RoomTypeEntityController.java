@@ -21,6 +21,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
 import util.exception.RoomTypeStillUsedException;
@@ -54,18 +55,12 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         List<DateEntity> dates = new ArrayList<DateEntity>();
         Date start = new Date();
         Date end = new Date();
-        LocalDate today = LocalDate.now();
-        today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start);
+        calendar.add(Calendar.YEAR, 1);
+        end = calendar.getTime();
         try {
             newRoomTypeEntity = retrieveRoomTypeByName(newRoomTypeEntity.getName());
-            
-            List<DateEntity> dates = new ArrayList<DateEntity>();
-            Date start = new Date();
-            Date end = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(start);
-            calendar.add(Calendar.YEAR, 1);
-            end = calendar.getTime();
 
             for(Date current = start; current.before(end); ){
                 DateEntity date = new DateEntity(current, newRoomTypeEntity);
@@ -77,11 +72,8 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
                 calendar.add(Calendar.DATE, 1);
                 current = calendar.getTime();
             }
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(current);
-            calendar.add(Calendar.DATE, 1);
-            current = calendar.getTime();
+        } catch (RoomTypeNotFoundException e) {
+            e.printStackTrace();
         }
 
         newRoomTypeEntity.setDates(dates);
@@ -184,7 +176,6 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         return new ArrayList<Date>();
     }
     
-    // Not done yet
     @Override
     public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomType){
         List<RoomTypeEntity> roomTypes = retrieveAllRoomTypes();
@@ -192,11 +183,18 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         RoomTypeEntity nextHigherRoomType = new RoomTypeEntity();
         
         for(RoomTypeEntity nextRoomType:roomTypes){
-            if(nextRoomType.getRoomRateEntities().get(0).getRatePerNight().compareTo(currentRate) == 1){
-                //if(next)
+            BigDecimal nextRoomRate = nextRoomType.getRoomRateEntities().get(0).getRatePerNight();
+            if(nextRoomRate.compareTo(currentRate) == 1){
+                if (nextHigherRoomType.getName() == null){
+                    nextHigherRoomType = nextRoomType;
+                } else {
+                    if (nextRoomRate.compareTo(nextHigherRoomType.getRoomRateEntities().get(0).getRatePerNight()) == -1){
+                        nextHigherRoomType = nextRoomType;
+                    }
+                }
             }
         }
         
-        return new RoomTypeEntity();
+        return nextHigherRoomType;
     }
 }
