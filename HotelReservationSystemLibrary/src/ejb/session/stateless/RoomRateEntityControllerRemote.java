@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.RoomRateEntity;
+import entity.RoomTypeEntity;
 import java.util.List;
 import util.exception.RoomRateAlreadyDisabledException;
 import util.exception.RoomRateIsUsedException;
@@ -24,7 +25,7 @@ public interface RoomRateEntityControllerRemote {
 
     public void deleteRoomRate(RoomRateEntity rate) throws RoomRateIsUsedException, RoomRateAlreadyDisabledException;
   
-    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate, String roomTypeName);
 
     public RoomRateEntity retrieveRoomRateByName(String rateName) throws RoomRateNotFoundException;
 

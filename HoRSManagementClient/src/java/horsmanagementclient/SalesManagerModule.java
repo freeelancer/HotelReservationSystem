@@ -289,6 +289,7 @@ class SalesManagerModule {
             int numRoomType = roomTypeList.size();
             int i;
             Integer response = 0;
+            RoomTypeEntity roomType = new RoomTypeEntity();
             while(true){
                 for (i = 1; i <= numRoomType; i++){
                     System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
@@ -309,7 +310,8 @@ class SalesManagerModule {
                 }
                 else
                 {
-                    roomRate.setRoomType(roomTypeList.get(i-1));
+                    roomType = roomTypeList.get(i-1);
+                    break;
                 }
             }
             System.out.print("Enter New Rate Type\n1: Published\n2: Normal\n3: Peak\n4: Promotion\n (blank if no change)\n>");
@@ -384,7 +386,7 @@ class SalesManagerModule {
                 dates.add(validEnd);
                 roomRate.setValidityPeriod(dates);
             }
-            roomRate = roomRateEntityController.updateRoomRate(roomRate);
+            roomRate = roomRateEntityController.updateRoomRate(roomRate,roomType.getName());
             System.out.println("Room Rate Updated Successfully!\n");
             printRoomRateDetails(roomRate);
             System.out.println();

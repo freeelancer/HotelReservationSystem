@@ -142,6 +142,8 @@ public class ReservationEntityController implements ReservationEntityControllerR
 
         BigDecimal sum = new BigDecimal("0");
         sum.add(new BigDecimal("200")); // test
+        
+        boolean condition=false;
 
         for(Date current = start; current.before(end); ){
             for(RoomRateEntity roomRate:roomRates){
@@ -151,10 +153,12 @@ public class ReservationEntityController implements ReservationEntityControllerR
                         calendar.setTime(current);
                         calendar.add(Calendar.DATE, 1);
                         current = calendar.getTime();
-                        continue;
+                        condition=true;
+                        break;
                     }
                 }
             }
+            if(condition){ continue;}
             for(RoomRateEntity roomRate:roomRates){
                 if(roomRate.getRateTypeEnum() == RateTypeEnum.PROMOTION && roomRate.getValidityPeriod()!=null){
                    if(roomRate.getValidityPeriod().contains(current)){
@@ -162,17 +166,19 @@ public class ReservationEntityController implements ReservationEntityControllerR
                         calendar.setTime(current);
                         calendar.add(Calendar.DATE, 1);
                         current = calendar.getTime();
-                        continue;
+                        condition=true;
+                        break;
                     }
                 }
             }
+            if(condition){ continue;}
             for(RoomRateEntity roomRate:roomRates){
                 if(roomRate.getRateTypeEnum() == RateTypeEnum.NORMAL){
                     sum.add(roomRate.getRatePerNight());
                     calendar.setTime(current);
                     calendar.add(Calendar.DATE, 1);
                     current = calendar.getTime();
-                    continue;
+                    break;
                 }
             }
         }
