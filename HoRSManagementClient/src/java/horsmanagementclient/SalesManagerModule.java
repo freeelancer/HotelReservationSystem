@@ -404,8 +404,9 @@ class SalesManagerModule {
         try{
             RoomRateEntity rate=roomRateEntityController.retrieveRoomRateByName(sc.nextLine().trim());
             printRoomRateDetails(rate);
-            System.out.print("Are you sure you want to delete? Enter y to confirm>");
+            System.out.print("Are you sure you want to delete? Enter y to confirm> ");
             input=sc.nextLine().trim();
+            System.out.println();
             if(input.equals("y"))
             {
                 try {
