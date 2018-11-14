@@ -124,20 +124,14 @@ public class ReservationEntityController implements ReservationEntityControllerR
                 
         try {
             roomType = roomTypeEntityController.retrieveRoomTypeByName(roomTypeName);
-            roomRates = roomType.getRoomRateEntities();
+            
         } catch (RoomTypeNotFoundException e) {
             e.printStackTrace();
-        } 
-                        
-        Date start = new Date();
-        Date end = new Date();
-
+        }
+        roomRates = roomType.getRoomRateEntities();               
         Calendar calendar = Calendar.getInstance();
-        start = checkInDate;
-        end = checkOutDate;
-        calendar.setTime(end);
-        calendar.add(Calendar.DATE, 1);
-        end = calendar.getTime();
+        Date start = checkInDate;
+        Date end = checkOutDate;
 
         BigDecimal sum = BigDecimal.ZERO;
         
@@ -145,7 +139,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
 
         for(Date current = start; current.before(end); ){
             for(RoomRateEntity roomRate:roomRates){
-                if(roomRate.getRateTypeEnum() == RateTypeEnum.PEAK && roomRate.getValidityPeriod()!=null){
+                if(roomRate.getRateTypeEnum().equals(RateTypeEnum.PEAK) && roomRate.getValidityPeriod()!=null){
                     if(roomRate.getValidityPeriod().contains(current)){
                         sum = sum.add(roomRate.getRatePerNight());
                         calendar.setTime(current);

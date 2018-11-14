@@ -50,7 +50,12 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
 //        Deal with this later
         em.persist(newRoomTypeEntity);
         em.flush();
-        
+        em.refresh(newRoomTypeEntity);
+        List<DateEntity> dates = new ArrayList<DateEntity>();
+        Date start = new Date();
+        Date end = new Date();
+        LocalDate today = LocalDate.now();
+        today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         try {
             newRoomTypeEntity = retrieveRoomTypeByName(newRoomTypeEntity.getName());
             
@@ -73,10 +78,14 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
                 current = calendar.getTime();
             }
 
-            newRoomTypeEntity.setDates(dates);
-        } catch (RoomTypeNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(current);
+            calendar.add(Calendar.DATE, 1);
+            current = calendar.getTime();
         }
+
+        newRoomTypeEntity.setDates(dates);
+        
         return newRoomTypeEntity;
     }
     

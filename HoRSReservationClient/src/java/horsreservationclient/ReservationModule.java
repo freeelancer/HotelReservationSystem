@@ -22,7 +22,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.ReservationNotFoundException;
-import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -126,26 +125,23 @@ public class ReservationModule {
     }
     
     private boolean reserveRoom(RoomTypeEntity roomTypeToBook){
-        
-        RoomTypeEntity roomTypeEntity = new RoomTypeEntity();
-                
-        try {
-            roomTypeEntity = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
-        } catch (RoomTypeNotFoundException e) {
-        
-        }
+//        try {
+//            roomTypeEntity = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
+//        } catch (RoomTypeNotFoundException ex) {
+//        
+//        }
         
         Scanner scanner = new Scanner(System.in);
        
         System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
-        System.out.println("Room Type: " + roomTypeEntity.getName());
-        System.out.println("Description: " + roomTypeEntity.getDescription());
-        System.out.println("Amenities: " + roomTypeEntity.getAmenities());
-        System.out.println("Room Size: " + roomTypeEntity.getSize() + " square meters");
-        System.out.println("Bed Type: " + roomTypeEntity.getBedTypeEnum());
-        System.out.println("Max Capacity: " + roomTypeEntity.getCapacity() + " pax");
+        System.out.println("Room Type: " + roomTypeToBook.getName());
+        System.out.println("Description: " + roomTypeToBook.getDescription());
+        System.out.println("Amenities: " + roomTypeToBook.getAmenities());
+        System.out.println("Room Size: " + roomTypeToBook.getSize() + " square meters");
+        System.out.println("Bed Type: " + roomTypeToBook.getBedTypeEnum());
+        System.out.println("Max Capacity: " + roomTypeToBook.getCapacity() + " pax");
         DecimalFormat df = new DecimalFormat("$#,###.00");
-        System.out.println("Normal Room Rate: " + df.format(roomTypeEntity.getRoomRateEntities().get(0).getRatePerNight()));
+        System.out.println("Normal Room Rate: " + df.format(roomTypeToBook.getRoomRateEntities().get(0).getRatePerNight()));
         System.out.println("-------------------");
         
         String response = "";
@@ -201,8 +197,8 @@ public class ReservationModule {
                 }
                 try {
                     checkOutDate = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
-                } catch (Exception e){
-                    System.out.println(e);
+                } catch (Exception ex){
+                    System.out.println(ex);
                 }                
             } 
             
@@ -215,14 +211,13 @@ public class ReservationModule {
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");
                 response = scanner.nextLine();
                 System.out.println("-------------------");
-                if (!response.equals("c")){
-                    
+                if (!response.equals("c")){ 
                     // check if booking is done after 2AM
                     Calendar now = Calendar.getInstance();
                     Calendar c = new GregorianCalendar();

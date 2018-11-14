@@ -147,18 +147,17 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     
     private boolean checkTheFuture(RoomRateEntity rate)
     {
-//        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
-//        query.setParameter("today", new Date(), TemporalType.DATE);
-//        List<ReservationEntity> reservations= query.getResultList();
-//        for(ReservationEntity reservation:reservations)
-//        {
-//            if(reservation.getRoomRateEntity().getName().equals(rate.getName()))
-//            {
-//                return true;
-//            }
-//        }
-//        return false;
-        return true;
+        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
+        query.setParameter("today", new Date());
+        List<ReservationEntity> reservations= query.getResultList();
+        for(ReservationEntity reservation:reservations)
+        {
+            if(reservation.getRoomRateEntity().getName().equals(rate.getName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
