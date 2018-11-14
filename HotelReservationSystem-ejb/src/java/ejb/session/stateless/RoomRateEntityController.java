@@ -50,6 +50,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
             em.persist(roomRate);
             em.flush();
             em.refresh(roomRate);
+            roomTypeToUpdate.getRoomRateEntities().add(roomRate);
             return roomRate;
         }catch(RoomTypeNotFoundException ex){
             throw new RoomTypeNotFoundException();
@@ -103,16 +104,22 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     }
     
     @Override
-    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate)
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate,String roomTypeName)
     {
         try {
             RoomRateEntity roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
+            RoomTypeEntity roomTypeUpdate = roomTypeController.retrieveRoomTypeByName(roomTypeName);
+            RoomTypeEntity roomTypePrevious = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
             roomRateToUpdate.setName(roomRate.getName());
             roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
             roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());
             roomRateToUpdate.setValidityPeriod(roomRate.getValidityPeriod());
-            RoomTypeEntity roomTypeUpdate = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
             roomRateToUpdate.setRoomType(roomTypeUpdate);
+            em.persist(roomRateToUpdate);
+            em.flush();
+            em.refresh(roomRateToUpdate);
+            roomTypePrevious.getRoomRateEntities().remove(roomRateToUpdate);
+            roomTypeUpdate.getRoomRateEntities().add(roomRateToUpdate);
             return roomRateToUpdate;
         } catch (RoomTypeNotFoundException ex) {
         }
@@ -140,17 +147,18 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     
     private boolean checkTheFuture(RoomRateEntity rate)
     {
-        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
-        query.setParameter("today", new Date(), TemporalType.DATE);
-        List<ReservationEntity> reservations= query.getResultList();
-        for(ReservationEntity reservation:reservations)
-        {
-            if(reservation.getRoomRateEntity().getName().equals(rate.getName()))
-            {
-                return true;
-            }
-        }
-        return false;
+//        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
+//        query.setParameter("today", new Date(), TemporalType.DATE);
+//        List<ReservationEntity> reservations= query.getResultList();
+//        for(ReservationEntity reservation:reservations)
+//        {
+//            if(reservation.getRoomRateEntity().getName().equals(rate.getName()))
+//            {
+//                return true;
+//            }
+//        }
+//        return false;
+        return true;
     }
     
     @Override
