@@ -103,9 +103,15 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     }
     
     @Override
-    public void updateRoomRate(RoomRateEntity roomRate){
+    public void updateRoomRate(RoomRateEntity roomRate)
+    {
         RoomRateEntity roomRateToUpdate = new RoomRateEntity();
         roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
+        try {
+            roomRateToUpdate = retrieveRoomRateByName(roomRate.getName());
+        }catch (RoomRateNotFoundException ex){
+            ex.printStackTrace();
+        }
         roomRateToUpdate.setName(roomRate.getName());
         roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
         roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());

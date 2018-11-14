@@ -8,7 +8,6 @@ package ejb.session.stateless;
 import entity.RoomRateEntity;
 import java.util.List;
 import util.exception.DeleteRoomRateException;
-import util.exception.RoomRateNotFoundException;
 import util.exception.RoomTypeNotFoundException;
 
 /**
