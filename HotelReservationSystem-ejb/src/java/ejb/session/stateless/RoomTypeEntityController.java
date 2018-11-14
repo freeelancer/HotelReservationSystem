@@ -95,7 +95,9 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         
         try
         {
-            return (RoomTypeEntity)query.getSingleResult();
+            RoomTypeEntity roomType = (RoomTypeEntity)query.getSingleResult();
+            roomType.getRoomRateEntities().size();
+            return roomType;
         }
         catch(NoResultException | NonUniqueResultException ex)
         {
@@ -156,5 +158,11 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     // Not done yet
     public List<Date> checkAvailability(Date checkInDate, Date checkOutDate){
         return new ArrayList<Date>();
+    }
+    
+    // Not done yet
+    @Override
+    public RoomTypeEntity getNextHigherRoomType(){
+        return new RoomTypeEntity();
     }
 }

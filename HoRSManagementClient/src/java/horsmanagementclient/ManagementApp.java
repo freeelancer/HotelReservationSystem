@@ -139,7 +139,7 @@ class ManagementApp {
         }
         else if(currAccessRights.equals(EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER))
         {
-            guestRelationModule = new GuestRelationModule(currentEmployeeEntity,reservationEntityController,customerEntityController);
+            guestRelationModule = new GuestRelationModule(currentEmployeeEntity,reservationEntityController,customerEntityController,roomTypeEntityController);
             guestRelationModule.guestRelationOperations();
         }
     }  

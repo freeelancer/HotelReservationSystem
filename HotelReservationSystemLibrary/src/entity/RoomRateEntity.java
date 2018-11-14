@@ -7,7 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -41,7 +40,7 @@ public class RoomRateEntity implements Serializable {
     private List<Date> validityPeriod; 
     @OneToMany(mappedBy = "roomRateEntity")
     private List<ReservationEntity> reservations;
-    @ManyToOne
+    @ManyToOne(optional=false)
     private RoomTypeEntity roomType;
     @Column (nullable = false)
     private Boolean disabled = Boolean.FALSE;
@@ -65,6 +64,7 @@ public class RoomRateEntity implements Serializable {
 
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
+
     }
 
     public RoomTypeEntity getRoomType() {
