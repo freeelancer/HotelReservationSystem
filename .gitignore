@@ -99,3 +99,4 @@ HoRSReservationClient/nbproject/private/private.properties
 nbproject/private/private.properties
 HotelReservationSystem-ejb/setup/glassfish-resources.xml
 HoRSReservationClient/nbproject/private/private.properties
+*.properties
