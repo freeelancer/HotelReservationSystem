@@ -42,17 +42,29 @@ public class RoomRateEntity implements Serializable {
     private List<ReservationEntity> reservations;
     @ManyToOne(optional=false)
     private RoomTypeEntity roomType;
+    @Column (nullable = false)
+    private Boolean disabled = Boolean.FALSE;
 
     public RoomRateEntity() {
     }
 
-    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, List<Date> validityPeriod, List<ReservationEntity> reservationEntities) {
+    public RoomRateEntity(RoomTypeEntity roomTypeEntity, String name, RateTypeEnum rateTypeEnum, BigDecimal ratePerNight, List<Date> validityPeriod, List<ReservationEntity> reservationEntities, Boolean disabled) {
         this.roomType = roomTypeEntity;
         this.name = name;
         this.rateTypeEnum = rateTypeEnum;
         this.ratePerNight = ratePerNight;
         this.validityPeriod = validityPeriod;
         this.reservations = reservationEntities;
+        this.disabled = disabled;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+
     }
 
     public RoomTypeEntity getRoomType() {

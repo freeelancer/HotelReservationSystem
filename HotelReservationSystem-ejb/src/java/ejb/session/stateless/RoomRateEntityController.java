@@ -5,17 +5,24 @@
  */
 package ejb.session.stateless;
 
+import entity.ReservationEntity;
 import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import util.exception.DeleteRoomRateException;
+import util.exception.RoomRateAlreadyDisabledException;
+import util.exception.RoomRateIsUsedException;
 import util.exception.RoomRateNotFoundException;
 import util.exception.RoomTypeNotFoundException;
 
@@ -35,34 +42,59 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     RoomTypeEntityControllerLocal roomTypeController;
     
     @Override
+    public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate, String roomTypeName) throws RoomTypeNotFoundException
+    {
+        try{
+            RoomTypeEntity roomTypeToUpdate = roomTypeController.retrieveRoomTypeByName(roomTypeName);
+            roomRate.setRoomType(roomTypeToUpdate);
+            em.persist(roomRate);
+            em.flush();
+            em.refresh(roomRate);
+            return roomRate;
+        }catch(RoomTypeNotFoundException ex){
+            throw new RoomTypeNotFoundException();
+        }  
+    }
+    
+    @Override
     public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate){
-        em.persist(roomRate);
-        em.flush();
-        em.refresh(roomRate);
-        
         try {
+            em.persist(roomRate);
+            em.flush();
+            em.refresh(roomRate);
             RoomTypeEntity roomTypeToUpdate = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
             List<RoomRateEntity> roomRates = roomTypeToUpdate.getRoomRateEntities();
             roomRates.add(roomRate);
             roomTypeToUpdate.setRoomRateEntities(roomRates);
             roomTypeController.updateRoomType(roomTypeToUpdate);
+            return roomRate;
         } catch (RoomTypeNotFoundException ex) {
-            ex.printStackTrace();
         }
-                
+        return roomRate;
+    }
+    
+    private RoomRateEntity retrieveRoomRateById(Long roomRateId) {
+        RoomRateEntity roomRate = em.find(RoomRateEntity.class, roomRateId);
         return roomRate;
     }
     
     @Override
-    public RoomRateEntity retrieveRoomRateById(Long roomRateId) throws RoomRateNotFoundException{
-        RoomRateEntity roomRate = em.find(RoomRateEntity.class, roomRateId);
-        
-        if (roomRate != null){
-            return roomRate;
-        } else {
-            throw new RoomRateNotFoundException("Room Rate " + roomRateId + " does not exis!");
+    public RoomRateEntity retrieveRoomRateByName(String rateName) throws RoomRateNotFoundException
+    {
+        Query query = em.createQuery("SELECT rr FROM RoomRateEntity rr WHERE rr.name = :inName");
+        query.setParameter("inName", rateName); 
+        try
+        {
+            RoomRateEntity rate = (RoomRateEntity)query.getSingleResult();
+            rate.getValidityPeriod().size();
+            return rate;
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new RoomRateNotFoundException("Room Rate " + rateName + " does not exist!");
         }
     }
+
     
     @Override
     public List<RoomRateEntity> retrieveAllRoomRates(){
@@ -71,27 +103,60 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     }
     
     @Override
-    public void updateRoomRate(RoomRateEntity roomRate){
-        RoomRateEntity roomRateToUpdate = new RoomRateEntity();
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate)
+    {
         try {
-            roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
-        } catch (RoomRateNotFoundException e){
-            e.printStackTrace();
+            RoomRateEntity roomRateToUpdate = retrieveRoomRateById(roomRate.getRoomRateId());
+            roomRateToUpdate.setName(roomRate.getName());
+            roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
+            roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());
+            roomRateToUpdate.setValidityPeriod(roomRate.getValidityPeriod());
+            RoomTypeEntity roomTypeUpdate = roomTypeController.retrieveRoomTypeByName(roomRate.getRoomType().getName());
+            roomRateToUpdate.setRoomType(roomTypeUpdate);
+            return roomRateToUpdate;
+        } catch (RoomTypeNotFoundException ex) {
         }
-        roomRateToUpdate.setName(roomRate.getName());
-        roomRateToUpdate.setRatePerNight(roomRate.getRatePerNight());
-        roomRateToUpdate.setRateTypeEnum(roomRate.getRateTypeEnum());
-        roomRateToUpdate.setValidityPeriod(roomRate.getValidityPeriod());
+        return null;
+    }
+    
+    public void deleteRoomRate(RoomRateEntity rate) throws RoomRateIsUsedException, RoomRateAlreadyDisabledException
+    {
+        RoomRateEntity roomRateToDelete = retrieveRoomRateById(rate.getRoomRateId());
+        boolean used = checkTheFuture(roomRateToDelete);
+        if(!used)
+        {
+            em.remove(roomRateToDelete);
+        }
+        else if(roomRateToDelete.getDisabled())
+        {
+            throw new RoomRateAlreadyDisabledException("Room Rate "+rate.getName()+" currently still has Reservation associated with it and is already disabled\n");        
+        }
+        else
+        {
+            roomRateToDelete.setDisabled(Boolean.TRUE);
+            throw new RoomRateIsUsedException("Room Rate "+rate.getName()+" currently still has Reservation associated with it. As such it is disabled from further use but not deleted\n");
+        }
+    }
+    
+    private boolean checkTheFuture(RoomRateEntity rate)
+    {
+        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
+        query.setParameter("today", new Date(), TemporalType.DATE);
+        List<ReservationEntity> reservations= query.getResultList();
+        for(ReservationEntity reservation:reservations)
+        {
+            if(reservation.getRoomRateEntity().getName().equals(rate.getName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     @Override
     public void deleteRoomRate(Long roomRateId) throws DeleteRoomRateException{
-         RoomRateEntity roomRateToDelete = new RoomRateEntity();
-        try {
-            roomRateToDelete = retrieveRoomRateById(roomRateId);
-        } catch (RoomRateNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+        RoomRateEntity roomRateToDelete = new RoomRateEntity();
+        roomRateToDelete = retrieveRoomRateById(roomRateId);
         if(roomRateToDelete.getReservations().isEmpty()){
             em.remove(roomRateToDelete);
         } else {

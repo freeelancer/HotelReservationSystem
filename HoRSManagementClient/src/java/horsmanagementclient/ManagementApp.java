@@ -73,8 +73,6 @@ class ManagementApp {
                     try
                     {
                         doLogin();
-                        //System.out.println("Login successful!\n");    
-                        //menuEmployeeOperations();
                     }
                     catch(InvalidLoginCredentialException ex) 
                     {
@@ -136,7 +134,7 @@ class ManagementApp {
         }
         else if(currAccessRights.equals(EmployeeAccessRightsEnum.SALES_MANAGER))
         {
-            salesManagerModule = new SalesManagerModule(currentEmployeeEntity,roomRateEntityController);
+            salesManagerModule = new SalesManagerModule(currentEmployeeEntity,roomRateEntityController,roomTypeEntityController);
             salesManagerModule.salesManagerOperations();
         }
         else if(currAccessRights.equals(EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER))

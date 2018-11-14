@@ -7,7 +7,10 @@ package ejb.session.stateless;
 
 import entity.RoomRateEntity;
 import java.util.List;
+import util.exception.RoomRateAlreadyDisabledException;
+import util.exception.RoomRateIsUsedException;
 import util.exception.RoomRateNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -15,16 +18,14 @@ import util.exception.RoomRateNotFoundException;
  */
 public interface RoomRateEntityControllerRemote {
 
-    public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate);
+    public RoomRateEntity createNewRoomRate(RoomRateEntity roomRate, String roomTypeName) throws RoomTypeNotFoundException;
 
-    public RoomRateEntity retrieveRoomRateById(Long roomRateId) throws RoomRateNotFoundException;
+    public List<RoomRateEntity> retrieveAllRoomRates();
 
-    public List<RoomRateEntity> retrieveAllRoomRates();    
+    public void deleteRoomRate(RoomRateEntity rate) throws RoomRateIsUsedException, RoomRateAlreadyDisabledException;
   
-//    public List<RoomRateEntity> retrieveAllRoomRates();
-//
-    public void updateRoomRate(RoomRateEntity roomRate);
-//
-//    public void deleteRoomRate(Long roomRateId) throws DeleteRoomRateException;
+    public RoomRateEntity updateRoomRate(RoomRateEntity roomRate);
+
+    public RoomRateEntity retrieveRoomRateByName(String rateName) throws RoomRateNotFoundException;
 
 }
