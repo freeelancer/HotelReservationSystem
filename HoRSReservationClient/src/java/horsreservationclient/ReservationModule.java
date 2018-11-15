@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.ReservationNotFoundException;
+import util.exception.RoomTypeNotFoundException;
 
 /**
  *
@@ -96,10 +97,15 @@ public class ReservationModule {
         Integer response = 0;
         
         while(true){
-            for (i = 1; i <= numRoomType; i++){
-                System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
+            int count=1;
+            while(count<=numRoomType){
+                if(!roomTypeList.get(count-1).getDisable())
+                {
+                    System.out.println("" + count + ": " + roomTypeList.get(count-1).getName());
+                }
+                count++;
             }
-            int lastOption = i;
+            int lastOption = numRoomType+1;
             System.out.println("" + lastOption + ": Back\n");
 
             System.out.print("> ");
@@ -125,11 +131,11 @@ public class ReservationModule {
     }
     
     private boolean reserveRoom(RoomTypeEntity roomTypeToBook){
-//        try {
-//            roomTypeEntity = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
-//        } catch (RoomTypeNotFoundException ex) {
-//        
-//        }
+        try {
+            roomTypeToBook = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
+        } catch (RoomTypeNotFoundException ex) {
+        
+        }
         
         Scanner scanner = new Scanner(System.in);
        

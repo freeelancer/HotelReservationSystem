@@ -19,7 +19,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import util.exception.DeleteRoomRateException;
 import util.exception.RoomRateAlreadyDisabledException;
 import util.exception.RoomRateIsUsedException;
@@ -120,6 +119,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
             em.refresh(roomRateToUpdate);
             roomTypePrevious.getRoomRateEntities().remove(roomRateToUpdate);
             roomTypeUpdate.getRoomRateEntities().add(roomRateToUpdate);
+            roomRateToUpdate.getValidityPeriod().size();
             return roomRateToUpdate;
         } catch (RoomTypeNotFoundException ex) {
         }
@@ -147,7 +147,7 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
     
     private boolean checkTheFuture(RoomRateEntity rate)
     {
-        Query query = em.createNamedQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.checkOutDate > :today");
         query.setParameter("today", new Date());
         List<ReservationEntity> reservations= query.getResultList();
         for(ReservationEntity reservation:reservations)

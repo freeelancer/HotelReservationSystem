@@ -133,7 +133,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         }
         else if(roomTypeToDelete.getUsed()==Boolean.TRUE)
         {
-            roomTypeToDelete.setUsed(Boolean.FALSE);
+            roomTypeToDelete.setDisable(Boolean.TRUE);
             throw new RoomTypeStillUsedException("Room Type "+roomType.getName()+" currently still has rooms with such Room Type. As such it is disabled from further use but not deleted\n");
         }
         else

@@ -276,7 +276,8 @@ class SalesManagerModule {
             {
                 roomRate.setName(input);
             }
-            System.out.print("Enter New Rate Per Night (blank if no change)> ");
+            System.out.print("Enter New Rate Per Night (0 if no change)> ");
+            
             BigDecimal ratePerNight = sc.nextBigDecimal();
             sc.nextLine();
                    
@@ -284,7 +285,7 @@ class SalesManagerModule {
             {
                 roomRate.setRatePerNight(ratePerNight);
             }
-            System.out.print("Enter Name Of Associated Room Type (blank if no change)> ");
+            System.out.print("Enter the Associated Room Type (6 if no change)>\n");
             List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
             int numRoomType = roomTypeList.size();
             int i;
@@ -294,7 +295,7 @@ class SalesManagerModule {
                 for (i = 1; i <= numRoomType; i++){
                     System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
                 }
-                int lastOption = i+1;
+                int lastOption = numRoomType+1;
                 System.out.println("" + lastOption + ": No Change\n");
                 System.out.print("> ");
                 response = sc.nextInt();
@@ -310,7 +311,7 @@ class SalesManagerModule {
                 }
                 else
                 {
-                    roomType = roomTypeList.get(i-1);
+                    roomType = roomTypeList.get(response-1);
                     break;
                 }
             }
@@ -335,7 +336,7 @@ class SalesManagerModule {
                     System.out.println(ex.getMessage());
                 }
 
-                while(!input.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckIn(validStart)) {
+                while(!input.matches("\\d{2}/\\d{2}/\\d{4}")) {
 
                     System.out.println("Invalid response! Please try again.");
 

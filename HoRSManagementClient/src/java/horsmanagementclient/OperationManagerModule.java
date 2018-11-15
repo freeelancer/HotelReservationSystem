@@ -5,6 +5,7 @@
  */
 package horsmanagementclient;
 
+import ejb.session.stateless.EjbTimerControllerRemote;
 import ejb.session.stateless.ReportEntityControllerRemote;
 import ejb.session.stateless.RoomEntityControllerRemote;
 import ejb.session.stateless.RoomTypeEntityControllerRemote;
@@ -34,15 +35,17 @@ class OperationManagerModule {
     private RoomTypeEntityControllerRemote roomTypeEntityController;
     private RoomEntityControllerRemote roomEntityController;
     private ReportEntityControllerRemote reportEntityController;
+    private EjbTimerControllerRemote timerController;
 
     public OperationManagerModule() {
     }
 
-    public OperationManagerModule(EmployeeEntity currentEmployeeEntity, RoomTypeEntityControllerRemote roomTypeEntityController, RoomEntityControllerRemote roomEntityController) 
+    public OperationManagerModule(EmployeeEntity currentEmployeeEntity, RoomTypeEntityControllerRemote roomTypeEntityController, RoomEntityControllerRemote roomEntityController, EjbTimerControllerRemote timerController) 
     {
         this.currentEmployeeEntity = currentEmployeeEntity;
         this.roomTypeEntityController = roomTypeEntityController;
         this.roomEntityController = roomEntityController;
+        this.timerController = timerController;
     }
 
     void operationModuleOperations() 
@@ -65,7 +68,7 @@ class OperationManagerModule {
             System.out.println("11: Logout\n");
             response = 0;
             
-            while(response < 1 || response > 11)
+            while(response < 1 || response > 12)
             {
                 System.out.print("> ");
 
@@ -113,6 +116,11 @@ class OperationManagerModule {
                 }
                 else if (response == 11)
                 {
+                    timerController.allocateRoom();
+                    System.out.println("Rooms Allocated!\n");
+                }
+                else if (response == 12)
+                {
                     break;
                 }
                 else
@@ -121,7 +129,7 @@ class OperationManagerModule {
                 }
             }
             
-            if(response == 11)
+            if(response == 12)
             {
                 break;
             }

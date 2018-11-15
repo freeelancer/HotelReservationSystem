@@ -10,5 +10,7 @@ package ejb.session.stateless;
  * @author Wai Kin
  */
 public interface EjbTimerControllerRemote {
+
+    public void allocateRoom();
     
 }
