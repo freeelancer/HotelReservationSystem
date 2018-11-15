@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import util.enumeration.EmployeeAccessRightsEnum;
 import util.enumeration.PartnerAccessRightsEnum;
 
 /**
