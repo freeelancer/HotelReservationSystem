@@ -104,8 +104,4 @@ public class ReservationWebService {
             return null;
         } 
     }
-    
-    public List<ReservationEntity> retrieveAllReservationsByPartnerId(Long partnerId){
-        return reservationEntityController.retrieveAllReservationsByPartnerId(partnerId);
-    }
 }

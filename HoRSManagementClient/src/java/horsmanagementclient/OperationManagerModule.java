@@ -40,12 +40,13 @@ class OperationManagerModule {
     public OperationManagerModule() {
     }
 
-    public OperationManagerModule(EmployeeEntity currentEmployeeEntity, RoomTypeEntityControllerRemote roomTypeEntityController, RoomEntityControllerRemote roomEntityController, EjbTimerControllerRemote timerController) 
+    public OperationManagerModule(EmployeeEntity currentEmployeeEntity, RoomTypeEntityControllerRemote roomTypeEntityController, RoomEntityControllerRemote roomEntityController, EjbTimerControllerRemote timerController, ReportEntityControllerRemote reportController) 
     {
         this.currentEmployeeEntity = currentEmployeeEntity;
         this.roomTypeEntityController = roomTypeEntityController;
         this.roomEntityController = roomEntityController;
         this.timerController = timerController;
+        this.reportEntityController = reportController;
     }
 
     void operationModuleOperations() 
@@ -65,7 +66,8 @@ class OperationManagerModule {
             System.out.println("8: Delete Room");
             System.out.println("9: View All Rooms");
             System.out.println("10: View Room Allocation Exception Report");
-            System.out.println("11: Logout\n");
+            System.out.println("11: Allocate Rooms for Today");
+            System.out.println("12: Logout\n");
             response = 0;
             
             while(response < 1 || response > 12)
@@ -423,7 +425,7 @@ class OperationManagerModule {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("*** Operation Manager Operations :: Room Allocation Exception Report ***\n");
-        System.out.println("Type date of report to retrieve ((dd/MM/yyyy)");
+        System.out.println("Type date of report to retrieve (dd/MM/yyyy)");
         System.out.print("> ");
         String response = scanner.nextLine();
         Date date = new Date();
@@ -447,16 +449,16 @@ class OperationManagerModule {
         
         System.out.println("First Exceptions:");
         List<AllocationExceptionEntity> firstExceptions = report.getFirstExceptionList();
-        System.out.printf("%10s%20s%20s", "Rev ID", "Reserved Room", "Allocated Room");
+        System.out.printf("%10s%20s%20s\n", "Rev ID", "Reserved Room", "Allocated Room");
         for(AllocationExceptionEntity exception:firstExceptions){
-            System.out.printf("%10s%20s%20s", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName(), exception.getAllocatedRoomType().getName());
+            System.out.printf("%10s%20s%20s\n", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName(), exception.getAllocatedRoomType().getName());
         }
         
         System.out.println("Second Exceptions:");
         List<AllocationExceptionEntity> secondExceptions = report.getSecondExceptionList();
-        System.out.printf("%10s%20s", "Rev ID", "Reserved Room");
+        System.out.printf("%10s%20s\n", "Rev ID", "Reserved Room");
         for(AllocationExceptionEntity exception:secondExceptions){
-            System.out.printf("%10s%20s", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName());
+            System.out.printf("%10s%20s\n", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName());
         }
     }
 }

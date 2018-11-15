@@ -9,6 +9,7 @@ import ejb.session.stateless.CustomerEntityControllerRemote;
 import ejb.session.stateless.EjbTimerControllerRemote;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import ejb.session.stateless.PartnerEntityControllerRemote;
+import ejb.session.stateless.ReportEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
 import ejb.session.stateless.RoomEntityControllerRemote;
 import ejb.session.stateless.RoomRateEntityControllerRemote;
@@ -45,9 +46,12 @@ public class Main {
     @EJB
     private static EmployeeEntityControllerRemote employeeEntityController;
     
+    @EJB
+    private static ReportEntityControllerRemote reportEntityController;
+    
     
     public static void main(String[] args) {
-        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController,timerController);
+        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController,timerController, reportEntityController);
         managementApp.runApp();
     }
     

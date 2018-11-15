@@ -90,7 +90,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     @Override
     public RoomEntity retrieveRoomById(Long roomId) throws RoomNotFoundException
     {
-        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.Id = :inRoomId");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomId = :inRoomId");
         query.setParameter("inRoomId", roomId);
         RoomEntity room = (RoomEntity)query.getSingleResult();
         if(room != null){
@@ -139,7 +139,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         List<RoomEntity> rooms = new ArrayList<RoomEntity>();      
    
         Long roomTypeId = roomType.getRoomTypeId();
-        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId AND r.allocated = FALSE AND r.occupied = FALSE");
         query.setParameter("inRoomTypeId", roomTypeId);
 
         rooms = query.getResultList();
@@ -147,17 +147,14 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         if (rooms == null){
             return null; 
         }
-        
-        RoomEntity roomToAllocate = new RoomEntity();
-                
+
         try {
-            roomToAllocate = retrieveRoomById(rooms.get(0).getRoomId());
+            RoomEntity roomToAllocate = retrieveRoomById(rooms.get(0).getRoomId());
+            roomToAllocate.setAllocated(Boolean.TRUE);
+            return roomToAllocate;
         } catch (RoomNotFoundException e){
-        
+            e.printStackTrace();
+            return null;
         }
-        
-        roomToAllocate.setAllocated(Boolean.TRUE);
-        return roomToAllocate;
     }
-    
 }
