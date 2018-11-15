@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.stateless.ws;
+package ejb.session.ws;
 
 import ejb.session.stateless.PartnerEntityControllerLocal;
 import ejb.session.stateless.ReservationEntityControllerLocal;
@@ -28,18 +28,18 @@ import util.exception.RoomTypeNotFoundException;
  *
  * @author Wai Kin
  */
-@WebService(serviceName = "HoRSWebService")
+@WebService(serviceName = "ReservationWebService")
 @Stateless()
-public class HoRSWebService {
+public class ReservationWebService {
+
+    @EJB(name = "PartnerEntityControllerLocal")
+    private PartnerEntityControllerLocal partnerEntityController;
 
     @EJB(name = "ReservationEntityControllerLocal")
     private ReservationEntityControllerLocal reservationEntityController;
 
     @EJB(name = "RoomTypeEntityControllerLocal")
     private RoomTypeEntityControllerLocal roomTypeEntityController;
-
-    @EJB(name = "PartnerEntityControllerLocal")
-    private PartnerEntityControllerLocal partnerEntityController;
 
     public List<RoomTypeEntity> retrieveAllRoomTypes(){
         return roomTypeEntityController.retrieveAllRoomTypes();
@@ -60,12 +60,22 @@ public class HoRSWebService {
         return reservationEntityController.createNewReservation(customerEntity, roomTypeEntity, employeeEntity, partnerEntity, checkInDate, checkOutDate);
     }
     
-    public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) throws ReservationNotFoundException{
-        return reservationEntityController.retrieveReservationDetails(reservationId, partnerEntity);
+    public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) {
+        try {
+            return reservationEntityController.retrieveReservationDetails(reservationId, partnerEntity);
+        } catch (ReservationNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
-    public List<ReservationEntity> retrieveAllReservations(Long partnerId) throws ReservationNotFoundException{
-        return partnerEntityController.retrieveAllReservations(partnerId);
+    public List<ReservationEntity> retrieveAllReservations(Long partnerId) {
+        try {
+            return partnerEntityController.retrieveAllReservations(partnerId);
+        } catch (ReservationNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public PartnerEntity partnerLogin(String username, String password){
@@ -79,15 +89,20 @@ public class HoRSWebService {
     
     public PartnerEntity retrievePartnerByUsername(String username){
         try {
-        return partnerEntityController.retrievePartnerByUsername(username);
+            return partnerEntityController.retrievePartnerByUsername(username);
         } catch (PartnerNotFoundException e) {
             e.printStackTrace();
             return null;
         }
     }
     
-    public RoomTypeEntity retrieveRoomTypeByName(String roomTypeName) throws RoomTypeNotFoundException{
-        return roomTypeEntityController.retrieveRoomTypeByName(roomTypeName);
+    public RoomTypeEntity retrieveRoomTypeByName(String roomTypeName) {
+        try {
+            return roomTypeEntityController.retrieveRoomTypeByName(roomTypeName);
+        } catch (RoomTypeNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } 
     }
     
     public List<ReservationEntity> retrieveAllReservationsByPartnerId(Long partnerId){

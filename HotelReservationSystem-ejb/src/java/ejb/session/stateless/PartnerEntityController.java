@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import entity.CustomerEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
 import java.util.List;
