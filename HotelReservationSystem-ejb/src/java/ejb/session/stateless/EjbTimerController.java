@@ -90,8 +90,6 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
                         break;
                     }
                 }
-                    
-                
                 roomToAllocate.setAllocated(Boolean.TRUE);
             }
         }

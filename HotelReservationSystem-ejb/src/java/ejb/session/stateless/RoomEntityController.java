@@ -144,7 +144,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
 
         rooms = query.getResultList();
 
-        if (rooms != null){
+        if (rooms == null){
             return null; 
         }
         
