@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import entity.DateEntity;
 import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
@@ -40,6 +41,9 @@ import util.exception.RoomTypeNotFoundException;
 @Remote(ReservationEntityControllerRemote.class)
 public class ReservationEntityController implements ReservationEntityControllerRemote, ReservationEntityControllerLocal 
 {
+
+    @EJB
+    private DateEntityControllerLocal dateEntityController;
     
 
     @PersistenceContext(unitName = "HotelReservationSystem-ejbPU")
@@ -53,6 +57,8 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     @EJB
     RoomEntityControllerLocal roomEntityController;
+    
+    
     
     // Logic not done
     @Override
@@ -80,6 +86,29 @@ public class ReservationEntityController implements ReservationEntityControllerR
         em.persist(reservationEntity);
         em.flush();
         em.refresh(reservationEntity);
+        
+//        adding the number reserved into the Date Entity
+        List<DateEntity> dateEntitys = dateEntityController.retrieveAllDateEntitysForRoomTypeId(reservationEntity.getRoomTypeEntity().getRoomTypeId());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(checkInDate);
+        for(Date curr = checkInDate;curr.before(checkOutDate);)
+        {
+            for(DateEntity dateEntity:dateEntitys)
+            {
+                if(dateEntity.getDateTime().equals(curr))
+                {
+                    dateEntity.setNumReserved(dateEntity.getNumReserved()+1);
+                }
+                if(dateEntity.getDateTime().equals(checkOutDate)||dateEntity.getDateTime().after(curr))
+                {
+                    break;
+                }
+            }
+            calendar = Calendar.getInstance();
+            calendar.setTime(curr);
+            calendar.add(Calendar.DATE, 1);
+            curr = calendar.getTime();
+        }
         
         List<ReservationEntity> reservations = customerToUpdate.getReservationEntities();
         reservations.add(reservationEntity);

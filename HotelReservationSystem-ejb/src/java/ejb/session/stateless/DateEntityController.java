@@ -6,11 +6,13 @@
 package ejb.session.stateless;
 
 import entity.DateEntity;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,5 +32,13 @@ public class DateEntityController implements DateEntityControllerRemote, DateEnt
         em.flush();
         em.refresh(date);
         return date; 
+    }
+    
+    @Override
+    public List<DateEntity> retrieveAllDateEntitysForRoomTypeId(Long roomTypeId)
+    {
+        Query query = em.createQuery("SELECT d FROM DateEntity d WHERE d.roomTypeEntity.roomTypeId = :inRoomTypeId");
+        query.setParameter("inRoomTypeId", roomTypeId);
+        return query.getResultList();
     }
 }
