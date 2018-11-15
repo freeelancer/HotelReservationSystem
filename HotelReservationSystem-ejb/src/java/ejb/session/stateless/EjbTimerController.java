@@ -57,48 +57,49 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         
         List<ReservationEntity> reservations = reservationEntityController.retrieveAllReservations();
         
-        for(ReservationEntity reservation:reservations){
-            if(reservation.getCheckOutDate().before(today)){
-                RoomEntity roomToUnallocate = new RoomEntity(); 
-                try {
-                    roomToUnallocate = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                roomToUnallocate.setAllocated(Boolean.FALSE);
-            }
-        }
+//        for(ReservationEntity reservation:reservations){
+//            if(reservation.getCheckOutDate().before(today)){
+//                RoomEntity roomToUnallocate = new RoomEntity(); 
+//                try {
+//                    roomToUnallocate = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                roomToUnallocate.setAllocated(Boolean.FALSE);
+//            }
+//        }
         
         List<AllocationExceptionEntity> firstExceptions = new ArrayList<AllocationExceptionEntity>();
         List<AllocationExceptionEntity> secondExceptions = new ArrayList<AllocationExceptionEntity>();
         
         for(ReservationEntity reservation:reservations){
             if(reservation.getCheckInDate().equals(today)){
-                RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity());
-                RoomTypeEntity roomType = reservation.getRoomTypeEntity();
+                RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity()); 
                 if(roomToAllocate == null){
-                    while(true){
-                        roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
-                        if (roomType == null){
-                            AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
-                            allocationException.setReservationEntity(reservation);
-                            allocationException = allocationExceptionEntityController.createNewException(allocationException); 
-                            secondExceptions.add(allocationException);
-                            break;
-                        }
-                        roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
-                        if (roomToAllocate != null){
-                            AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
-                            allocationException.setReservedRoomType(reservation.getRoomTypeEntity());
-                            allocationException.setAllocatedRoomType(roomType);
-                            allocationException.setReservationEntity(reservation);
-                            allocationException = allocationExceptionEntityController.createNewException(allocationException); 
-                            firstExceptions.add(allocationException);
-                            break;
-                        }
-                    }
-                    
+                    break;
                 }
+//                    RoomTypeEntity roomType = reservation.getRoomTypeEntity();
+//                    while(true){
+//                        roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
+//                        if (roomType == null){
+//                            AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
+//                            allocationException.setReservationEntity(reservation);
+//                            allocationException = allocationExceptionEntityController.createNewException(allocationException); 
+//                            secondExceptions.add(allocationException);
+//                            break;
+//                        }
+//                        roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+//                        if (roomToAllocate != null){
+//                            AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
+//                            allocationException.setReservedRoomType(reservation.getRoomTypeEntity());
+//                            allocationException.setAllocatedRoomType(roomType);
+//                            allocationException.setReservationEntity(reservation);
+//                            allocationException = allocationExceptionEntityController.createNewException(allocationException); 
+//                            firstExceptions.add(allocationException);
+//                            break;
+//                        }
+//                    }
+//                }
                 roomToAllocate.setAllocated(Boolean.TRUE);
             }
         }

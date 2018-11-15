@@ -135,14 +135,12 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     
     @Override
     public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType){
-        
-        List<RoomEntity> rooms = new ArrayList<RoomEntity>();      
-   
+
         Long roomTypeId = roomType.getRoomTypeId();
-        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId");
         query.setParameter("inRoomTypeId", roomTypeId);
 
-        rooms = query.getResultList();
+        List<RoomEntity> rooms = query.getResultList();
 
         if (rooms != null){
             return null; 
@@ -156,7 +154,6 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
         
         }
         
-        roomToAllocate.setAllocated(Boolean.TRUE);
         return roomToAllocate;
     }
     

@@ -65,7 +65,8 @@ class OperationManagerModule {
             System.out.println("8: Delete Room");
             System.out.println("9: View All Rooms");
             System.out.println("10: View Room Allocation Exception Report");
-            System.out.println("11: Logout\n");
+            System.out.println("11: Allocate Rooms for Current Day");
+            System.out.println("12: Logout\n");
             response = 0;
             
             while(response < 1 || response > 12)
