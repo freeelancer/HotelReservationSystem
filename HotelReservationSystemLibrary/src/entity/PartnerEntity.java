@@ -58,6 +58,10 @@ public class PartnerEntity implements Serializable {
         return partnerId;
     }
 
+    public void setPartnerId(Long partnerId) {
+        this.partnerId = partnerId;
+    }
+
     public String getFirstName() {
         return firstName;
     }

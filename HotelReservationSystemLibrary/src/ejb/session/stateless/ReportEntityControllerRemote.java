@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.RoomExceptionReportEntity;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,9 @@ import java.util.Date;
 public interface ReportEntityControllerRemote {
 
     public RoomExceptionReportEntity retrieveReportByDate(Date date);
+
+    public RoomExceptionReportEntity retrieveReportById(Long reportId);
+
+    public List<RoomExceptionReportEntity> retrieveAllReports();
 
 }

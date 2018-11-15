@@ -8,12 +8,10 @@ package ejb.session.stateless;
 import entity.RoomEntity;
 import entity.RoomTypeEntity;
 import java.util.List;
-import util.exception.FirstAllocationException;
 import util.exception.RoomAlreadyDisabledException;
 import util.exception.RoomIsUsedException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
-import util.exception.SecondAllocationException;
 
 /**
  *

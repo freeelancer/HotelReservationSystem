@@ -14,6 +14,8 @@ import entity.RoomEntity;
 import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -301,9 +303,15 @@ public class ReservationEntityController implements ReservationEntityControllerR
     @Override
     public List<ReservationEntity> retrieveAllReservationsForToday()
     {
-        Date today = new Date();
-        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.checkInDate = :inCheckIndate");
-        query.setParameter("inCheckInDate", today);
-        return query.getResultList();
+        try {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date today = df.parse(df.format(new Date()));
+            Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.checkInDate = :inCheckInDate");
+            query.setParameter("inCheckInDate", today, TemporalType.DATE);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

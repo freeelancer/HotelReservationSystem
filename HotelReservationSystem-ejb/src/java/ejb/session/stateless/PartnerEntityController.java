@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import entity.CustomerEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
 import java.util.List;
@@ -89,8 +88,8 @@ public class PartnerEntityController implements PartnerEntityControllerRemote, P
     
     @Override
     public List<ReservationEntity> retrieveAllReservations(Long partnerId) throws ReservationNotFoundException{
-        Query query = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.customerId = :inPartnerId");
-        query.setParameter("inCustomerId", partnerId);
+        Query query = em.createQuery("SELECT p FROM PartnerEntity p WHERE p.partnerId = :inPartnerId");
+        query.setParameter("inPartnerId", partnerId);
         PartnerEntity partner = (PartnerEntity) query.getSingleResult();
         
         List<ReservationEntity> reservations = partner.getReservationEntities();

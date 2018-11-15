@@ -92,9 +92,6 @@ public class ReservationEntity implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public Long getReservationId() {
-        return reservationId;
-    }
 
     public CustomerEntity getCustomerEntity() {
         return customerEntity;
@@ -142,5 +139,13 @@ public class ReservationEntity implements Serializable {
 
     public void setRoomEntity(RoomEntity roomEntity) {
         this.roomEntity = roomEntity;
+    }
+
+    public Long getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(Long reservationId) {
+        this.reservationId = reservationId;
     }
 }
