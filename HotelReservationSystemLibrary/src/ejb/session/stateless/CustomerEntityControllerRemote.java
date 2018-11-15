@@ -8,7 +8,6 @@ package ejb.session.stateless;
 import entity.CustomerEntity;
 import entity.ReservationEntity;
 import java.util.List;
-import util.exception.UsernameExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.ReservationNotFoundException;

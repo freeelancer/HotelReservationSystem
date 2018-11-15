@@ -6,7 +6,7 @@
 package ejb.session.stateless;
 
 import entity.DateEntity;
-import javax.ejb.Local;
+import java.util.List;
 
 /**
  *
@@ -15,5 +15,7 @@ import javax.ejb.Local;
 public interface DateEntityControllerLocal {
 
     public DateEntity createNewDate(DateEntity date);
+    
+    public List<DateEntity> retrieveAllDateEntitysForRoomTypeId(Long roomTypeId);
     
 }
