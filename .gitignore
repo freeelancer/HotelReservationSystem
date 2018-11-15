@@ -101,3 +101,14 @@ HotelReservationSystem-ejb/nbproject/private/private.properties
 HoRSReservationClient/nbproject/private/private.xml
 HoRSManagementClient/nbproject/private/private.xml
 HoRSManagementClient/nbproject/private/private.properties
+/HoRSWebApplication/nbproject/private/
+/HoRSWebApplication/build/
+/HoRSWebApplication/dist/
+nbproject/build-impl.xml
+nbproject/genfiles.properties
+nbproject/project.properties
+nbproject/project.xml
+HoRSManagementClient/nbproject/private/private.xml
+HoRSManagementClient/nbproject/private/private.properties
+HoRSWebApplication/src/conf/MANIFEST.MF
+HotelReservationSystem-ejb/nbproject/private/private.properties

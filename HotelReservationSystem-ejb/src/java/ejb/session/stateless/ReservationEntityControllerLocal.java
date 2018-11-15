@@ -10,6 +10,7 @@ import entity.EmployeeEntity;
 import entity.PartnerEntity;
 import entity.ReservationEntity;
 import entity.RoomTypeEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import util.exception.ReservationNotFoundException;
@@ -26,10 +27,16 @@ public interface ReservationEntityControllerLocal {
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
 
-//    public void allocateRooms();
+    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate);
 
     public List<ReservationEntity> retrieveAllReservations();
     
     public List<ReservationEntity> retrieveAllReservationsForToday();
+
+    public void allocateRoomManually(RoomTypeEntity roomType);
+
+    public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) throws ReservationNotFoundException;
+
+    public List<ReservationEntity> retrieveAllReservationsByPartnerId(Long partnerId);
     
 }

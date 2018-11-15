@@ -55,7 +55,7 @@ public class ReservationApp {
         this.customerEntityController = customerEntityController;
     }
     
-     public void runApp()
+    public void runApp()
     {
         Scanner sc = new Scanner(System.in);
         Integer response = 0;
@@ -347,7 +347,7 @@ public class ReservationApp {
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
                 BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate);
-                DecimalFormat df = new DecimalFormat("#,###.00");
+                DecimalFormat df = new DecimalFormat("$#,###.00");
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.println("Login to reserve. Press Enter to return to main page");
                 System.out.print("> ");
