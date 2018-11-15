@@ -6,6 +6,7 @@
 package horsmanagementclient;
 
 import ejb.session.stateless.CustomerEntityControllerRemote;
+import ejb.session.stateless.EjbTimerControllerRemote;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import ejb.session.stateless.PartnerEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
@@ -34,11 +35,12 @@ class ManagementApp {
     private OperationManagerModule operationManagerModule;
     private SalesManagerModule salesManagerModule;
     private GuestRelationModule guestRelationModule;
+    private EjbTimerControllerRemote timerController;
             
     public ManagementApp() {
     }
 
-    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, RoomEntityControllerRemote roomEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController) {
+    public ManagementApp(EmployeeEntityControllerRemote employeeEntityController, PartnerEntityControllerRemote partnerEntityController, RoomTypeEntityControllerRemote roomTypeEntityController, RoomRateEntityControllerRemote roomRateEntityController, RoomEntityControllerRemote roomEntityController, ReservationEntityControllerRemote reservationEntityController, CustomerEntityControllerRemote customerEntityController, EjbTimerControllerRemote timerController) {
         this.employeeEntityController = employeeEntityController;
         this.partnerEntityController = partnerEntityController;
         this.roomTypeEntityController = roomTypeEntityController;
@@ -46,6 +48,7 @@ class ManagementApp {
         this.roomEntityController = roomEntityController;
         this.reservationEntityController = reservationEntityController;
         this.customerEntityController = customerEntityController;
+        this.timerController = timerController;
     }
 
 
@@ -129,7 +132,7 @@ class ManagementApp {
         }
         else if(currAccessRights.equals(EmployeeAccessRightsEnum.OPERATION_MANAGER))
         {
-            operationManagerModule = new OperationManagerModule(currentEmployeeEntity,roomTypeEntityController,roomEntityController);
+            operationManagerModule = new OperationManagerModule(currentEmployeeEntity,roomTypeEntityController,roomEntityController,timerController);
             operationManagerModule.operationModuleOperations();
         }
         else if(currAccessRights.equals(EmployeeAccessRightsEnum.SALES_MANAGER))

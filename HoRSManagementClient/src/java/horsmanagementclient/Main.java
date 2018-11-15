@@ -6,6 +6,7 @@
 package horsmanagementclient;
 
 import ejb.session.stateless.CustomerEntityControllerRemote;
+import ejb.session.stateless.EjbTimerControllerRemote;
 import ejb.session.stateless.EmployeeEntityControllerRemote;
 import ejb.session.stateless.PartnerEntityControllerRemote;
 import ejb.session.stateless.ReservationEntityControllerRemote;
@@ -19,6 +20,9 @@ import javax.ejb.EJB;
  * @author Lance
  */
 public class Main {
+
+    @EJB
+    private static EjbTimerControllerRemote timerController;
 
     @EJB
     private static RoomTypeEntityControllerRemote roomTypeEntityController;
@@ -41,8 +45,9 @@ public class Main {
     @EJB
     private static EmployeeEntityControllerRemote employeeEntityController;
     
+    
     public static void main(String[] args) {
-        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController);
+        ManagementApp managementApp = new ManagementApp(employeeEntityController,partnerEntityController,roomTypeEntityController,roomRateEntityController,roomEntityController,reservationEntityController,customerEntityController,timerController);
         managementApp.runApp();
     }
     

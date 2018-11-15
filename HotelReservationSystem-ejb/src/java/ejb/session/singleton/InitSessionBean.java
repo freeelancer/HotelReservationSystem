@@ -89,7 +89,7 @@ public class InitSessionBean
         roomRate1=roomRateEntityController.createNewRoomRate(roomRate1);
         
         RoomRateEntity roomRate1a = new RoomRateEntity();
-        roomRate1a.setName("Deluxe Peak");
+        roomRate1a.setName("Deluxe Published");
         roomRate1a.setRatePerNight(new BigDecimal(150.00));
         roomRate1a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate1a.setRoomType(roomType1);
@@ -118,7 +118,7 @@ public class InitSessionBean
         roomRate2=roomRateEntityController.createNewRoomRate(roomRate2);
         
         RoomRateEntity roomRate2a = new RoomRateEntity();
-        roomRate2a.setName("Premier Peak");
+        roomRate2a.setName("Premier Published");
         roomRate2a.setRatePerNight(new BigDecimal(250.00));
         roomRate2a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate2a.setRoomType(roomType2);
@@ -147,7 +147,7 @@ public class InitSessionBean
         roomRate3=roomRateEntityController.createNewRoomRate(roomRate3);  
         
         RoomRateEntity roomRate3a = new RoomRateEntity();
-        roomRate3a.setName("Family Peak");
+        roomRate3a.setName("Family Published");
         roomRate3a.setRatePerNight(new BigDecimal(350.00));
         roomRate3a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate3a.setRoomType(roomType3);
@@ -176,7 +176,7 @@ public class InitSessionBean
         roomRate4=roomRateEntityController.createNewRoomRate(roomRate4);   
         
         RoomRateEntity roomRate4a = new RoomRateEntity();
-        roomRate4a.setName("Junior Suite Peak");
+        roomRate4a.setName("Junior Suite Published");
         roomRate4a.setRatePerNight(new BigDecimal(450.00));
         roomRate4a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate4a.setRoomType(roomType4);
@@ -205,7 +205,7 @@ public class InitSessionBean
         roomRate5=roomRateEntityController.createNewRoomRate(roomRate5);
         
         RoomRateEntity roomRate5a = new RoomRateEntity();
-        roomRate5a.setName("Grand Suite Peak");
+        roomRate5a.setName("Grand Suite Published");
         roomRate5a.setRatePerNight(new BigDecimal(550.00));
         roomRate5a.setRateTypeEnum(RateTypeEnum.PUBLISHED);
         roomRate5a.setRoomType(roomType5);

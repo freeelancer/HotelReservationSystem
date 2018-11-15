@@ -7,7 +7,6 @@ package ejb.session.stateless;
 
 import entity.RoomExceptionReportEntity;
 import java.util.Date;
-import javax.ejb.Remote;
 
 /**
  *

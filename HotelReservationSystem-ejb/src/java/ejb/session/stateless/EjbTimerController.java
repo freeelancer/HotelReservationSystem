@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 
@@ -23,7 +25,8 @@ import javax.ejb.Stateless;
  * @author Wai Kin
  */
 @Stateless
-
+@Local(EjbTimerControllerLocal.class)
+@Remote(EjbTimerControllerRemote.class)
 public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerControllerLocal {
 
     @EJB
@@ -42,6 +45,7 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
     ReportEntityControllerLocal reportEntityController;
     
     @Schedule(hour = "2", info = "allocateRoom")
+    @Override
     public void allocateRoom(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         
