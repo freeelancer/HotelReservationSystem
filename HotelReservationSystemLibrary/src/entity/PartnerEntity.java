@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import util.enumeration.EmployeeAccessRightsEnum;
 import util.enumeration.PartnerAccessRightsEnum;
@@ -23,9 +25,6 @@ import util.enumeration.PartnerAccessRightsEnum;
  */
 @Entity
 public class PartnerEntity implements Serializable {
-
-    @OneToOne(mappedBy = "partnerEntity")
-    private ReservationEntity reservationEntity;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,12 +40,14 @@ public class PartnerEntity implements Serializable {
     private String password;
     @Enumerated(EnumType.STRING)
     private PartnerAccessRightsEnum accessRightsEnum;
+    @OneToMany(mappedBy = "partnerEntity")
+    private List<ReservationEntity> reservationEntities;
 
     public PartnerEntity() {
     }
 
-    public PartnerEntity(ReservationEntity reservationEntity, String firstName, String lastName, String username, String password, PartnerAccessRightsEnum accessRightEnum) {
-        this.reservationEntity = reservationEntity;
+    public PartnerEntity(List<ReservationEntity> reservationEntities, String firstName, String lastName, String username, String password, PartnerAccessRightsEnum accessRightEnum) {
+        this.reservationEntities = reservationEntities;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -98,11 +99,12 @@ public class PartnerEntity implements Serializable {
         this.accessRightsEnum = accessRightsEnum;
     }
 
-    public ReservationEntity getReservationEntity() {
-        return reservationEntity;
+    public List<ReservationEntity> getReservationEntities() {
+        return reservationEntities;
     }
 
-    public void setReservationEntity(ReservationEntity reservationEntity) {
-        this.reservationEntity = reservationEntity;
+    public void setReservationEntities(List<ReservationEntity> reservationEntities) {
+        this.reservationEntities = reservationEntities;
     }
+
 }

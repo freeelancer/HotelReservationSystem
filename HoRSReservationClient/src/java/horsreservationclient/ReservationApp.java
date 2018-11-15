@@ -55,7 +55,7 @@ public class ReservationApp {
         this.customerEntityController = customerEntityController;
     }
     
-     public void runApp()
+    public void runApp()
     {
         Scanner sc = new Scanner(System.in);
         Integer response = 0;

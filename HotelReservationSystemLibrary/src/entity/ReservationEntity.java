@@ -27,9 +27,9 @@ public class ReservationEntity implements Serializable {
     private CustomerEntity customerEntity;
     @OneToOne (optional = true)
     private EmployeeEntity employeeEntity;
-    @OneToOne (optional = true)
+    @ManyToOne (optional = true)
     private PartnerEntity partnerEntity;
-    @ManyToOne
+    @ManyToOne (optional = true)
     private RoomRateEntity roomRateEntity;
     @OneToOne
     private RoomTypeEntity roomTypeEntity;

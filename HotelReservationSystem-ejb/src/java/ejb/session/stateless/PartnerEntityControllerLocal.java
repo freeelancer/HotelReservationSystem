@@ -6,9 +6,11 @@
 package ejb.session.stateless;
 
 import entity.PartnerEntity;
+import entity.ReservationEntity;
 import java.util.List;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PartnerNotFoundException;
+import util.exception.ReservationNotFoundException;
 
 /**
  *
@@ -23,5 +25,7 @@ public interface PartnerEntityControllerLocal
     public PartnerEntity createNewPartner(PartnerEntity newPartnerEntity);
 
     public List<PartnerEntity> retrieveAllPartners();
+
+    public List<ReservationEntity> retrieveAllReservations(Long partnerId) throws ReservationNotFoundException;
     
 }

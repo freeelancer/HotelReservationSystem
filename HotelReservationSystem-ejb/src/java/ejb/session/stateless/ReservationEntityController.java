@@ -107,9 +107,37 @@ public class ReservationEntityController implements ReservationEntityControllerR
     }
     
     @Override
+    public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) throws ReservationNotFoundException {
+ 
+        ReservationEntity reservationEntity = em.find(ReservationEntity.class, reservationId);
+        
+        if (reservationEntity != null){
+            System.out.println("Reservation Found!");
+            if (reservationEntity.getPartnerEntity().getPartnerId().equals(partnerEntity.getPartnerId())){
+                return reservationEntity;  
+            } else {
+            throw new ReservationNotFoundException("Error 2: Reservation " + reservationId + " does not exist!");
+            }
+        } else {
+            throw new ReservationNotFoundException("Error 1: Reservation " + reservationId + " does not exist!");
+        }
+    }    
+    
+    @Override
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId){
 
-        Query query = em.createQuery("SELECT r FROM ReservationEntity r");
+        Query query = em.createQuery("SELECT r FROM ReservationEntity WHERE r.customerId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        
+        return query.getResultList();
+        
+    }
+    
+    @Override
+    public List<ReservationEntity> retrieveAllReservationsByPartnerId(Long partnerId){
+
+        Query query = em.createQuery("SELECT r FROM ReservationEntity WHERE r.partnerId = :inPartnerId");
+        query.setParameter("inPartnerId", partnerId);
         
         return query.getResultList();
         
