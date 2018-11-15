@@ -73,13 +73,9 @@ HoRSReservationClient/nbproject/private/private.xml
 nbproject/project.properties
 nbproject/private/private.properties
 HoRSReservationClient/nbproject/private/private.xml
-
-<<<<<<< HEAD
 HoRSManagementClient/nbproject/project.properties
 *.xml
 *.xml
-=======
->>>>>>> d4ef4f1fba298fbe98da9df84400ef052974f5d3
 *.properties
 nbproject/project.properties
 nbproject/private/private.properties

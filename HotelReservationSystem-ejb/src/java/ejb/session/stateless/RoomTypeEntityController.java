@@ -114,11 +114,10 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     
     private RoomTypeEntity retrieveRoomTypeById(Long roomTypeId)
     {
-//        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
-//        query.setParameter("inRoomTypeId", roomTypeId);
-//        RoomTypeEntity roomType = (RoomTypeEntity) query.getSingleResult();
-        RoomTypeEntity roomType = em.find(RoomTypeEntity.class, roomTypeId);
-        
+        Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
+        query.setParameter("inRoomTypeId", roomTypeId);
+        RoomTypeEntity roomType = (RoomTypeEntity) query.getSingleResult();
+//        RoomTypeEntity roomType = em.find(RoomTypeEntity.class, roomTypeId);
         return roomType;
     }
     
@@ -176,8 +175,14 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     }
     
     @Override
-    public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomType){
+    public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomTypeEntity){
+        
+        System.out.println("Upgrading from " + roomTypeEntity.getName());
+        
+        RoomTypeEntity roomType = retrieveRoomTypeById(roomTypeEntity.getRoomTypeId());
+        
         List<RoomTypeEntity> roomTypes = retrieveAllRoomTypes();
+        
         BigDecimal currentRate = roomType.getRoomRateEntities().get(0).getRatePerNight();
         RoomTypeEntity nextHigherRoomType = new RoomTypeEntity();
         

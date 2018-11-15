@@ -59,7 +59,6 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         } catch (Exception e){
             e.printStackTrace();
         }
-        
         List<ReservationEntity> reservations = reservationEntityController.retrieveAllReservationsForToday();
         List<RoomEntity> rooms = roomEntityController.retrieveAllRooms();
         for(RoomEntity room:rooms)
@@ -70,6 +69,7 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
                 }
             }
         }
+
         List<AllocationExceptionEntity> firstExceptions = new ArrayList<AllocationExceptionEntity>();
         List<AllocationExceptionEntity> secondExceptions = new ArrayList<AllocationExceptionEntity>();
         
