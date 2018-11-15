@@ -268,13 +268,15 @@ public class ReservationModule {
         } catch (ReservationNotFoundException ex) {
             System.out.println("Sorry, the reservation ID you entered is not found.");
             return;
+        
         }
+        DecimalFormat df = new DecimalFormat("$#,###.00");
         
         System.out.println("Reservation ID: " + reservationId);
         System.out.println("Room Type: " + reservationEntity.getRoomTypeEntity().getName());
         System.out.println("Check-in Date: " + reservationEntity.getCheckInDate());
         System.out.println("Check-out Date: " + reservationEntity.getCheckOutDate());
-        System.out.println("Total Amount: " + reservationEntity.getTotalAmount());
+        System.out.println("Total Amount: " + df.format(reservationEntity.getTotalAmount()));
         
         System.out.println("Press Enter to continue: ");
         System.out.print("> ");
