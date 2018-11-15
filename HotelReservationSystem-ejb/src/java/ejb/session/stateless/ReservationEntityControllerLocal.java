@@ -31,6 +31,8 @@ public interface ReservationEntityControllerLocal {
 
     public List<ReservationEntity> retrieveAllReservations();
     
+    public List<ReservationEntity> retrieveAllReservationsForToday();
+
     public void allocateRoomManually(RoomTypeEntity roomType);
 
     public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) throws ReservationNotFoundException;

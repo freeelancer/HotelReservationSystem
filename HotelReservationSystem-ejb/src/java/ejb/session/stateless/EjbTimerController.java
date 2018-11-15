@@ -54,25 +54,21 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         try {
             today = dateFormat.parse(todayStr);
         } catch (Exception e){}
-        
-        List<ReservationEntity> reservations = reservationEntityController.retrieveAllReservations();
-        
-//        for(ReservationEntity reservation:reservations){
-//            if(reservation.getCheckOutDate().before(today)){
-//                RoomEntity roomToUnallocate = new RoomEntity(); 
-//                try {
-//                    roomToUnallocate = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                roomToUnallocate.setAllocated(Boolean.FALSE);
-//            }
-//        }
-        
+
+        List<ReservationEntity> reservations = reservationEntityController.retrieveAllReservationsForToday();
+        List<RoomEntity> rooms = roomEntityController.retrieveAllRooms();
+        for(RoomEntity room:rooms)
+        {
+            if(!room.getReservationEntity().getCheckOutDate().after(today)){
+                room.setAllocated(Boolean.FALSE);
+            }
+        }
+
         List<AllocationExceptionEntity> firstExceptions = new ArrayList<AllocationExceptionEntity>();
         List<AllocationExceptionEntity> secondExceptions = new ArrayList<AllocationExceptionEntity>();
         
         for(ReservationEntity reservation:reservations){
+
             if(reservation.getCheckInDate().equals(today)){
                 RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity()); 
                 if(roomToAllocate == null){
