@@ -154,16 +154,16 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         
         List<Date> unavailableDates = new ArrayList<Date>();
         RoomTypeEntity roomTypeEntity = retrieveRoomTypeById(roomType.getRoomTypeId()); 
-        roomTypeEntity.getRoomEntities().size();
+        int max = roomTypeEntity.getRoomEntities().size();
         
         for(Date current=checkInDate; current.before(checkOutDate); ){
             
             Query query = em.createQuery("SELECT d FROM DateEntity d WHERE d.dateTime = :inCurrent AND d.roomTypeEntity.roomTypeId = :inRoomTypeId");
             query.setParameter("inCurrent", current);
-            query.setParameter("inRoomTypeId", roomType.getRoomTypeId());
+            query.setParameter("inRoomTypeId", roomTypeEntity.getRoomTypeId());
             
             DateEntity date = (DateEntity)query.getSingleResult();
-            if(date.getNumReserved() >= roomType.getRoomEntities().size()){
+            if(date.getNumReserved() >= max){
                 unavailableDates.add(current);
             }
             
@@ -173,7 +173,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
             current = calendar.getTime();
         }
         
-        return new ArrayList<Date>();
+        return unavailableDates;
     }
     
     @Override

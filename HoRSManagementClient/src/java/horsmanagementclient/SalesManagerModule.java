@@ -315,7 +315,7 @@ class SalesManagerModule {
                     break;
                 }
             }
-            System.out.print("Enter New Rate Type\n1: Published\n2: Normal\n3: Peak\n4: Promotion\n (blank if no change)\n>");
+            System.out.print("Enter New Rate Type\n1: Published\n2: Normal\n3: Peak\n4: Promotion\n (Enter if no change)\n>");
             input=sc.nextLine().trim();
             if(input.length()>0)
             {

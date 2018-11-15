@@ -93,11 +93,11 @@ public class ReservationModule {
         
         List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
         int numRoomType = roomTypeList.size();
-        int i;
+        int count;
         Integer response = 0;
         
         while(true){
-            int count=1;
+            count=1;
             while(count<=numRoomType){
                 if(!roomTypeList.get(count-1).getDisable())
                 {

@@ -6,10 +6,12 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.EmployeeEntityControllerLocal;
+import ejb.session.stateless.PartnerEntityControllerLocal;
 import ejb.session.stateless.RoomEntityControllerLocal;
 import ejb.session.stateless.RoomRateEntityControllerLocal;
 import ejb.session.stateless.RoomTypeEntityControllerLocal;
 import entity.EmployeeEntity;
+import entity.PartnerEntity;
 import entity.RoomEntity;
 import entity.RoomRateEntity;
 import entity.RoomTypeEntity;
@@ -23,6 +25,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import util.enumeration.BedTypeEnum;
 import util.enumeration.EmployeeAccessRightsEnum;
+import util.enumeration.PartnerAccessRightsEnum;
 import util.enumeration.RateTypeEnum;
 import util.exception.EmployeeNotFoundException;
 import util.exception.RoomTypeNotFoundException;
@@ -38,6 +41,9 @@ public class InitSessionBean
 {
 
     @EJB
+    private PartnerEntityControllerLocal partnerEntityController;
+
+    @EJB
     private RoomEntityControllerLocal roomEntityController;
 
     @EJB
@@ -48,6 +54,7 @@ public class InitSessionBean
     
     @EJB
     private RoomRateEntityControllerLocal roomRateEntityController;
+    
     
     public InitSessionBean() {
     }
@@ -70,7 +77,7 @@ public class InitSessionBean
         employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Operation", "Manager", "Operation","password",EmployeeAccessRightsEnum.OPERATION_MANAGER));
         employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Sales", "Manager", "Sales","password",EmployeeAccessRightsEnum.SALES_MANAGER));
         employeeEntityController.createNewEmployee(new EmployeeEntity(null, "Guest", "Relations Officer", "Guest","password",EmployeeAccessRightsEnum.GUEST_RELATION_OFFICER));
-
+        partnerEntityController.createNewPartner(new PartnerEntity(null, "Partner1","Parnter1","Partner1","password",PartnerAccessRightsEnum.MANAGER));
 //     initialize roomtypes
         RoomTypeEntity roomType1 = new RoomTypeEntity();
         roomType1.setName("Deluxe");
