@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerEntity;
 import entity.PartnerEntity;
+import entity.ReservationEntity;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -17,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PartnerNotFoundException;
+import util.exception.ReservationNotFoundException;
 
 /**
  *
@@ -82,6 +85,24 @@ public class PartnerEntityController implements PartnerEntityControllerRemote, P
     {
        Query query = em.createQuery("SELECT p FROM PartnerEntity p");
        return query.getResultList();
+    }
+    
+    @Override
+    public List<ReservationEntity> retrieveAllReservations(Long partnerId) throws ReservationNotFoundException{
+        Query query = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.customerId = :inPartnerId");
+        query.setParameter("inCustomerId", partnerId);
+        PartnerEntity partner = (PartnerEntity) query.getSingleResult();
+        
+        List<ReservationEntity> reservations = partner.getReservationEntities();
+
+        if(reservations.size() != 0)
+        {
+            return reservations;
+        } 
+        else 
+        {
+            throw new ReservationNotFoundException("There are no reservations!");
+        }
     }
     
 }
