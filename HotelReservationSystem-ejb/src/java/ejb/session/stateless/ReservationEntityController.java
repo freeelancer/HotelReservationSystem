@@ -297,4 +297,13 @@ public class ReservationEntityController implements ReservationEntityControllerR
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
         roomToAllocate.setAllocated(Boolean.TRUE);
     }
+    
+    @Override
+    public List<ReservationEntity> retrieveAllReservationsForToday()
+    {
+        Date today = new Date();
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.checkInDate = :inCheckIndate");
+        query.setParameter("inCheckInDate", today);
+        return query.getResultList();
+    }
 }
