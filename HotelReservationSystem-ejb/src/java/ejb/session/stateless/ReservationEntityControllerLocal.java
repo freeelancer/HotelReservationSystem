@@ -30,4 +30,6 @@ public interface ReservationEntityControllerLocal {
 
     public List<ReservationEntity> retrieveAllReservations();
     
+    public List<ReservationEntity> retrieveAllReservationsForToday();
+    
 }
