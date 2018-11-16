@@ -123,10 +123,15 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     
     @Override
     public void deleteRoomType(RoomTypeEntity roomType) throws RoomTypeStillUsedException, RoomTypeAlreadyDisabledException
-    {
+    {        
         RoomTypeEntity roomTypeToDelete = retrieveRoomTypeById(roomType.getRoomTypeId());
-        if(roomTypeToDelete.getRoomEntities().size()==0)
+        if(roomTypeToDelete.getRoomEntities().isEmpty() || roomTypeToDelete.getRoomEntities() == null)
         {
+            List<DateEntity> dates = roomTypeToDelete.getDates();
+            for (DateEntity date:dates){
+                em.remove(date);
+            }
+            
             em.remove(roomTypeToDelete);
         }
         else if(roomTypeToDelete.getUsed()==Boolean.TRUE)

@@ -120,6 +120,10 @@ class OperationManagerModule {
                 {
                     timerController.allocateRoom();
                     System.out.println("Rooms Allocated!\n");
+                    scanner.nextLine();
+                    System.out.println("Enter to continue...");
+                    System.out.print("> ");
+                    scanner.nextLine();
                 }
                 else if (response == 12)
                 {
@@ -285,9 +289,14 @@ class OperationManagerModule {
         {
             System.out.println();
             printRoomTypeDetails(roomType);
+            System.out.println("---------------------");
         }
         System.out.println();
         
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter to continue...");
+        System.out.print("> ");
+        scanner.nextLine();
     }
 
     private void createNewRoomOperation() {
@@ -308,13 +317,17 @@ class OperationManagerModule {
             System.out.print("Room Number invalid, input again> ");
             input=sc.nextLine().trim();           
         }
-        System.out.println("Enter Name Of Room Type For Room> ");
+        System.out.print("Enter Name Of Room Type For Room> ");
         try{
             String roomTypeName = sc.nextLine().trim();
             roomEntityController.createNewRoom(room, roomTypeName);
+            System.out.println("Room created!");
         }catch(RoomTypeNotFoundException ex){
             System.out.println("Error in creating new Room: "+ex.getMessage()+"\n"); 
         }
+        System.out.println("Enter to continue...");
+        System.out.print("> ");
+        sc.nextLine();
     }
 
     private void updateRoomOperation() {
@@ -340,7 +353,7 @@ class OperationManagerModule {
                 }
                 System.out.print("Room Number invalid, input again (blank if no change)> "); 
             }
-            System.out.print("Enter New Room Type of Room (blank if no change)> ");
+            System.out.println("Enter New Room Type of Room (blank if no change)> ");
             List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
             int numRoomType = roomTypeList.size();
             int i;
@@ -349,8 +362,8 @@ class OperationManagerModule {
                 for (i = 1; i <= numRoomType; i++){
                     System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
                 }
-                int lastOption = i+1;
-                System.out.println("" + lastOption + ": No Change\n");
+                int lastOption = i;
+                System.out.println("" + lastOption + ": No Change");
                 System.out.print("> ");
                 response = sc.nextInt();
                 sc.nextLine().trim();
@@ -367,13 +380,16 @@ class OperationManagerModule {
                 }
 
                 else{
-                    room.setRoomTypeEntity(roomTypeList.get(i-1));
+                    roomEntityController.updateRoom(room,roomTypeList.get(response-1));
                     break;
                 }
             }
         }catch(RoomNotFoundException ex){
             System.out.println(ex.getMessage());
         }
+        System.out.println("Enter to continue:");
+        System.out.print("> ");
+        sc.nextLine();
     }
 
     private void deleteRoomOperation()
@@ -418,6 +434,11 @@ class OperationManagerModule {
             printRoomDetails(room);
         }
         System.out.println();
+        
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter to continue:");
+        System.out.print("> ");
+        sc.nextLine();
     }
 
     private void viewRoomAllocationExceptionResultOperation() {
@@ -460,5 +481,9 @@ class OperationManagerModule {
         for(AllocationExceptionEntity exception:secondExceptions){
             System.out.printf("%10s%20s\n", exception.getReservationEntity().getReservationId(), exception.getReservedRoomType().getName());
         }
+        
+        System.out.println("Enter to continue...");
+        System.out.print("> ");
+        scanner.nextLine();
     }
 }

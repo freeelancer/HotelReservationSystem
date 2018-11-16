@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import util.exception.ReservationNotFoundException;
+import util.exception.RoomNotFoundException;
 
 /**
  *
@@ -31,12 +32,12 @@ public interface ReservationEntityControllerRemote {
 
     public ReservationEntity retrieveReservationById(Long reservationId);
 
-    public String checkInGuest(Long reservationId);
-
     public void checkOutGuest(Long reservationId);
 
-    public void allocateRoomManually(RoomTypeEntity roomType);
-    
     public List<ReservationEntity> retrieveAllReservationsForToday();
+
+    public String checkInGuest(Long reservationId) throws RoomNotFoundException;
+
+    public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType);
 
 }

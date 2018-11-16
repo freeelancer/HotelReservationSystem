@@ -126,11 +126,11 @@ public class ReservationModule {
             if(reserveRoom(roomTypeList.get(response-1))){
                 break;
             }
-            
         }
     }
     
     private boolean reserveRoom(RoomTypeEntity roomTypeToBook){
+        
         try {
             roomTypeToBook = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
         } catch (RoomTypeNotFoundException ex) {
@@ -232,11 +232,10 @@ public class ReservationModule {
                     c.set(Calendar.SECOND, 0);
                     Date deadline = c.getTime(); 
 
+                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
                     if (now.after(deadline)){
-                        reservationEntityController.allocateRoomManually(roomTypeToBook);
+                        reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
-                    
-                    reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
                     System.out.println("Reservation Successful!");
                     return true;
                 } else {

@@ -73,6 +73,15 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         List<AllocationExceptionEntity> firstExceptions = new ArrayList<AllocationExceptionEntity>();
         List<AllocationExceptionEntity> secondExceptions = new ArrayList<AllocationExceptionEntity>();
         
+        RoomExceptionReportEntity newReport = new RoomExceptionReportEntity();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            newReport.setDate(df.parse(df.format(new Date())));
+            newReport = reportEntityController.createNewReport(newReport);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         System.out.println("--- Allocation ---");
         System.out.printf("%10s%10s\n", "Resv Num", "Room Num");
         
@@ -84,39 +93,36 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
                 while(true){
                     roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
                     if (roomType == null){
-                        AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
-                        allocationException.setReservationEntity(reservation);
-                        allocationException = allocationExceptionEntityController.createNewException(allocationException); 
-                        secondExceptions.add(allocationException);
+                        AllocationExceptionEntity allocationException2 = new AllocationExceptionEntity();
+                        allocationException2.setReservationEntity(reservation);
+                        allocationException2 = allocationExceptionEntityController.createNewException(allocationException2); 
+                        secondExceptions.add(allocationException2);
                         roomToAllocate = null;
                         break;
                     }
                     roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
                     if (roomToAllocate != null){
-                        AllocationExceptionEntity allocationException = new AllocationExceptionEntity();
-                        allocationException.setReservedRoomType(reservation.getRoomTypeEntity());
-                        allocationException.setAllocatedRoomType(roomType);
-                        allocationException.setReservationEntity(reservation);
-                        allocationException = allocationExceptionEntityController.createNewException(allocationException); 
-                        firstExceptions.add(allocationException);
+                        AllocationExceptionEntity allocationException1 = new AllocationExceptionEntity();
+                        allocationException1.setReservedRoomType(reservation.getRoomTypeEntity());
+                        allocationException1.setAllocatedRoomType(roomType);
+                        allocationException1.setReservationEntity(reservation);
+                        allocationException1 = allocationExceptionEntityController.createNewException(allocationException1); 
+                        firstExceptions.add(allocationException1);
                         break;
                     }
                 }    
             }
             if (roomToAllocate != null){
                 roomToAllocate.setAllocated(Boolean.TRUE);
+                reservation.setRoomEntity(roomToAllocate);
+                reservationEntityController.updateReservation(reservation);
                 System.out.printf("%10s%10s\n", reservation.getReservationId(), roomToAllocate.getRoomNumber());
             }
         }
-        RoomExceptionReportEntity newReport = new RoomExceptionReportEntity();
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            newReport.setDate(df.parse(df.format(new Date())));
-            newReport.setFirstExceptionList(firstExceptions);
-            newReport.setSecondExceptionList(secondExceptions);
-            newReport = reportEntityController.createNewReport(newReport);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        newReport.setFirstExceptionList(firstExceptions);
+        newReport.setSecondExceptionList(secondExceptions);
+        
+        reportEntityController.updateReport(newReport);
     }
 }

@@ -15,5 +15,7 @@ import javax.ejb.Local;
 public interface ReportEntityControllerLocal {
 
     public RoomExceptionReportEntity createNewReport(RoomExceptionReportEntity newReport);
+
+    public void updateReport(RoomExceptionReportEntity newReport);
     
 }
