@@ -235,17 +235,6 @@ public class ReservationEntityController implements ReservationEntityControllerR
         }
         return sum;
     }
-    
-//    @Override
-//    public void allocateRooms()
-//    {
-//        List<ReservationEntity> reservations = retrieveAllReservationByDate();
-//        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
-//        for(RoomTypeEntity roomType:roomTypes)
-//        {
-//            List<RoomTypeEntity> roomType.getName() = room
-//        }
-//    }
 
     private List<ReservationEntity> retrieveAllReservationByDate() 
     {
@@ -283,6 +272,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         try{
             room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
             room.setOccupied(Boolean.FALSE);
+            room.setReservationEntity(null);
             roomEntityController.updateRoom(room);
         } catch (RoomNotFoundException e) {
             e.printStackTrace();
@@ -299,8 +289,10 @@ public class ReservationEntityController implements ReservationEntityControllerR
     @Override
     public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType){
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+        ReservationEntity reservationToUpdate = retrieveReservationById(reservation.getReservationId());
         roomToAllocate.setAllocated(Boolean.TRUE);
-        reservation.setRoomEntity(roomToAllocate);
+        roomToAllocate.setReservationEntity(reservationToUpdate);
+        reservationToUpdate.setRoomEntity(roomToAllocate);
     }
     
     @Override

@@ -125,4 +125,12 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         
         reportEntityController.updateReport(newReport);
     }
+    
+    public void allocate(RoomEntity roomToAllocate,ReservationEntity reservation)
+    {
+        roomToAllocate.setAllocated(Boolean.TRUE);
+        reservation.setRoomEntity(roomToAllocate);
+        reservationEntityController.updateReservation(reservation);
+        System.out.printf("%10s%10s\n", reservation.getReservationId(), roomToAllocate.getRoomNumber());
+    }
 }
