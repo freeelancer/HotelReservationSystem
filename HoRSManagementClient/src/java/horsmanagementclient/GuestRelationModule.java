@@ -283,6 +283,9 @@ class GuestRelationModule {
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
+        calendar.add(Calendar.DATE, -1);
+        today = calendar.getTime();
+        calendar.setTime(today);
         calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();
         if (date.after(today) && date.before(latest)){
