@@ -153,10 +153,10 @@ public class RoomRateEntityController implements RoomRateEntityControllerRemote,
         {
             if(reservation.getCheckOutDate().after(now))
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
     
     @Override

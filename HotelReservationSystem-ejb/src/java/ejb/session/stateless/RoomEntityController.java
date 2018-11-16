@@ -9,6 +9,8 @@ import entity.RoomEntity;
 import entity.RoomTypeEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -54,16 +56,28 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
             throw new RoomTypeNotFoundException(ex.getMessage());
         }       
     }
-    
-    @Override
+//    specifically for checkin checkout
     public void updateRoom(RoomEntity room) 
     {
         try {
+            RoomEntity updateRoom = retrieveRoomById(room.getRoomId());
+            updateRoom.setOccupied(room.getOccupied());
+        } catch (RoomNotFoundException ex) {
+            Logger.getLogger(RoomEntityController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void updateRoom(RoomEntity room, RoomTypeEntity roomType) 
+    {
+        try {
+            RoomTypeEntity oldRoomType = roomTypeEntityController.retrieveRoomTypeByName(room.getRoomTypeEntity().getName());
+            RoomTypeEntity newRoomType = roomTypeEntityController.retrieveRoomTypeByName(roomType.getName());
             RoomEntity roomToUpdate = retrieveRoomById(room.getRoomId());
-            roomToUpdate.getRoomTypeEntity().getRoomEntities().remove(roomToUpdate);
-            RoomTypeEntity roomTypeNew = roomTypeEntityController.retrieveRoomTypeByName(room.getRoomTypeEntity().getName());
-            roomTypeNew.getRoomEntities().add(roomToUpdate);
+            oldRoomType.getRoomEntities().remove(roomToUpdate);
+            newRoomType.getRoomEntities().add(roomToUpdate);
             roomToUpdate.setRoomNumber(room.getRoomNumber());
+            roomToUpdate.setRoomTypeEntity(newRoomType);
         } catch (RoomTypeNotFoundException ex) {
         
         } catch (RoomNotFoundException ex){
@@ -74,7 +88,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     @Override
     public RoomEntity retrieveRoomByNumber(String roomNumber) throws RoomNotFoundException
     {
-        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.name = :inRoomNumber");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomNumber = :inRoomNumber");
         query.setParameter("inRoomNumber", roomNumber);
         
         try
@@ -137,12 +151,12 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType){
 
         Long roomTypeId = roomType.getRoomTypeId();
-        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId AND r.allocated = FALSE AND r.occupied = FALSE");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId AND r.allocated = FALSE AND r.occupied = FALSE AND r.disabled = FALSE");
         query.setParameter("inRoomTypeId", roomTypeId);
-
+         
         List<RoomEntity> rooms = query.getResultList();
-
-        if (rooms == null){
+        
+        if (rooms == null || rooms.isEmpty()){
             return null; 
         }
 

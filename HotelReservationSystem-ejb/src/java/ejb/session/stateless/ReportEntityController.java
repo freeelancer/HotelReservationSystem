@@ -43,6 +43,7 @@ public class ReportEntityController implements ReportEntityControllerRemote, Rep
         query.setParameter("inDate", date, TemporalType.DATE);
         
         RoomExceptionReportEntity report = (RoomExceptionReportEntity) query.getSingleResult();
+        
         report.getFirstExceptionList().size();
         report.getSecondExceptionList().size();
         return report;
@@ -60,5 +61,10 @@ public class ReportEntityController implements ReportEntityControllerRemote, Rep
     public List<RoomExceptionReportEntity> retrieveAllReports(){
         Query query = em.createQuery("SELECT r FROM RoomExceptionReportEntity r");
         return query.getResultList();
+    }
+    
+    @Override
+    public void updateReport(RoomExceptionReportEntity newReport){
+        em.merge(newReport);
     }
 }

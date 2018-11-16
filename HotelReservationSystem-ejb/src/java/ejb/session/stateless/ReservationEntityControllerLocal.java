@@ -33,10 +33,10 @@ public interface ReservationEntityControllerLocal {
     
     public List<ReservationEntity> retrieveAllReservationsForToday();
 
-    public void allocateRoomManually(RoomTypeEntity roomType);
-
     public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) throws ReservationNotFoundException;
 
     public List<ReservationEntity> retrieveAllReservationsByPartnerId(Long partnerId);
+
+    public void updateReservation(ReservationEntity reservation);
     
 }

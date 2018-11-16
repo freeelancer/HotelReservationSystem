@@ -256,21 +256,23 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     @Override   
     public ReservationEntity retrieveReservationById(Long reservationId){
-        ReservationEntity reservation = em.find(ReservationEntity.class, reservationId);
-        return reservation;
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.reservationId = :inReservationId");
+        query.setParameter("inReservationId", reservationId);
+        
+        return (ReservationEntity)query.getSingleResult();
     }
     
     @Override
-    public String checkInGuest(Long reservationId){
+    public String checkInGuest(Long reservationId) throws RoomNotFoundException {
         ReservationEntity reservation = retrieveReservationById(reservationId);
         RoomEntity room = new RoomEntity();
-        try{
-            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
-            room.setOccupied(Boolean.TRUE);
-            roomEntityController.updateRoom(room);
-        } catch (RoomNotFoundException e) {
-            e.printStackTrace();
+       
+        room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+        if (room == null){
+            throw new RoomNotFoundException("Room not allocated!");
         }        
+        room.setOccupied(Boolean.TRUE);
+        roomEntityController.updateRoom(room);      
         return room.getRoomNumber();
     }
     
@@ -295,9 +297,10 @@ public class ReservationEntityController implements ReservationEntityControllerR
     }
     
     @Override
-    public void allocateRoomManually(RoomTypeEntity roomType){
+    public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType){
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
         roomToAllocate.setAllocated(Boolean.TRUE);
+        reservation.setRoomEntity(roomToAllocate);
     }
     
     @Override
@@ -313,5 +316,16 @@ public class ReservationEntityController implements ReservationEntityControllerR
             e.printStackTrace();
             return null;
         }
+    }
+    
+    @Override
+    public void updateReservation(ReservationEntity reservation){
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.reservationId = :inReservationId");
+        query.setParameter("inReservationId", reservation.getReservationId());
+        
+        ReservationEntity reservationToUpdate = (ReservationEntity)query.getSingleResult();
+        
+        reservationToUpdate.setRoomEntity(reservation.getRoomEntity());
+        reservationToUpdate.setRoomTypeEntity(reservation.getRoomTypeEntity());
     }
 }

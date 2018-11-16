@@ -20,5 +20,4 @@ public interface ReportEntityControllerRemote {
     public RoomExceptionReportEntity retrieveReportById(Long reportId);
 
     public List<RoomExceptionReportEntity> retrieveAllReports();
-
 }

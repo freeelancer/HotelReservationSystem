@@ -23,7 +23,7 @@ public interface RoomEntityControllerLocal {
 
     public RoomEntity retrieveRoomByNumber(String roomNumber) throws RoomNotFoundException;
 
-    public void updateRoom(RoomEntity room);    
+    public void updateRoom(RoomEntity room, RoomTypeEntity roomType);    
     
     public void deleteRoom(RoomEntity room) throws RoomIsUsedException, RoomAlreadyDisabledException;
     
@@ -32,5 +32,7 @@ public interface RoomEntityControllerLocal {
     public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType);
     
     public List<RoomEntity> retrieveAllRooms();
+
+    public void updateRoom(RoomEntity room);
 
 }

@@ -238,12 +238,12 @@ public class ReservationApp {
             return;
         }
 
-        reserveRoom(roomTypeList.get(response-1));
+        searchRoom(roomTypeList.get(response-1));
         
         return;
     }
     
-    private void reserveRoom(RoomTypeEntity roomTypeToBook){
+    private void searchRoom(RoomTypeEntity roomTypeToBook){
         
         RoomTypeEntity roomTypeEntity = new RoomTypeEntity();
         
