@@ -16,21 +16,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class RetrieveAllRoomTypesResp {
     
-    private List<RoomTypeEntity> roomTypeEntities;
-    
+    private List<RoomTypeEntity> roomTypes;
+
+    public List<RoomTypeEntity> getRoomTypes() {
+        return roomTypes;
+    }
+
+    public void setRoomTypes(List<RoomTypeEntity> roomTypes) {
+        this.roomTypes = roomTypes;
+    }
+
     public RetrieveAllRoomTypesResp() {
     }
 
-    public RetrieveAllRoomTypesResp(List<RoomTypeEntity> roomTypeEntities) {
-        this.roomTypeEntities = roomTypeEntities;
+    public RetrieveAllRoomTypesResp(List<RoomTypeEntity> roomTypes) {
+        this.roomTypes = roomTypes;
     }
-
-    public List<RoomTypeEntity> getRoomTypeEntities() {
-        return roomTypeEntities;
-    }
-
-    public void setRoomTypeEntities(List<RoomTypeEntity> roomTypeEntities) {
-        this.roomTypeEntities = roomTypeEntities;
-    }
+    
     
 }

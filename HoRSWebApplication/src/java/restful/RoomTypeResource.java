@@ -7,7 +7,6 @@ package restful;
 
 import datamodel.RetrieveAllRoomTypesResp;
 import ejb.session.stateless.RoomTypeEntityControllerLocal;
-import entity.RoomTypeEntity;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,24 +25,28 @@ import javax.ws.rs.core.Response;
  *
  * @author Wai Kin
  */
-@Path("Reservation")
-public class ReservationResource {
+@Path("RoomType")
+public class RoomTypeResource {
+
+    RoomTypeEntityControllerLocal roomTypeEntityController = lookupRoomTypeEntityControllerLocal();
 
     @Context
     private UriInfo context;
 
-    private RoomTypeEntityControllerLocal roomTypeEntityController = lookupRoomTypeEntityControllerLocal();
-    
-    
-    public ReservationResource() {
+    /**
+     * Creates a new instance of RecordResource
+     */
+    public RoomTypeResource() {
     }
 
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Response retrieveAllRoomTypes() {
-        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
-        RetrieveAllRoomTypesResp retrieveAllRoomTypesRsp = new RetrieveAllRoomTypesResp(roomTypes);
-        return Response.status(Response.Status.OK).entity(retrieveAllRoomTypesRsp).build();
+    public Response retrieveAllRecordEntities() {
+        List<entity.RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
+        
+        RetrieveAllRoomTypesResp retrieveAllRecordEntitiesResp = new RetrieveAllRoomTypesResp(roomTypes);
+        
+        return Response.status(Response.Status.OK).entity(retrieveAllRecordEntitiesResp).build();
     }
 
     private RoomTypeEntityControllerLocal lookupRoomTypeEntityControllerLocal() {
@@ -55,5 +58,6 @@ public class ReservationResource {
             throw new RuntimeException(ne);
         }
     }
-
+    
+    
 }

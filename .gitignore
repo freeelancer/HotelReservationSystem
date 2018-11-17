@@ -122,3 +122,11 @@ HoRSManagementClient/nbproject/private/private.xml
 *.xml
 *.xml
 *.properties
+nbproject/project.xml
+nbproject/project.properties
+nbproject/genfiles.properties
+nbproject/build-impl.xml
+HotelReservationSystemLibrary/nbproject/private/private.properties
+HotelReservationSystem-ejb/setup/glassfish-resources.xml
+HotelReservationSystem-ejb/nbproject/private/private.properties
+HoRSReservationClient/nbproject/private/private.xml
