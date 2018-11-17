@@ -285,6 +285,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             for(RoomEntity roomToCheckOut:roomsToCheckOut)
             {
                 roomToCheckOut.setOccupied(Boolean.FALSE);
@@ -294,6 +295,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
                     throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
                 }
             }
+=======
+            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+            room.setOccupied(Boolean.FALSE);
+            roomEntityController.updateRoom(room);
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
 =======
             room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
             room.setOccupied(Boolean.FALSE);
@@ -332,6 +338,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         ReservationEntity reservationM = retrieveReservationById(reservation.getReservationId());
         for(int i=0;i<reservationM.getNumRooms();i++)
         {
@@ -353,6 +360,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
 >>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
 =======
 >>>>>>> parent of fd2cf61... changed validity period
+=======
+        RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+        roomToAllocate.setAllocated(Boolean.TRUE);
+        reservation.setRoomEntity(roomToAllocate);
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
 =======
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
         roomToAllocate.setAllocated(Boolean.TRUE);
