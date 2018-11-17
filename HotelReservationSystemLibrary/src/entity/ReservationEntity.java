@@ -25,7 +25,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class ReservationEntity implements Serializable {
 
-    @ManyToOne
+    @ManyToOne (optional = true)
     private CustomerEntity customerEntity;
     @OneToOne (optional = true)
     private EmployeeEntity employeeEntity;
