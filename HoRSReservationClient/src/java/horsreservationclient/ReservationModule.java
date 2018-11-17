@@ -225,16 +225,15 @@ public class ReservationModule {
                 System.out.println("-------------------");
                 if (!response.equals("c")){ 
                     // check if booking is done after 2AM
-                    Calendar c = Calendar.getInstance();
+                    Calendar now = Calendar.getInstance();
+                    Calendar c = new GregorianCalendar();
                     c.set(Calendar.HOUR_OF_DAY, 2); 
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     Date deadline = c.getTime(); 
-                    Date now = new Date();
-                    c.add(Calendar.DATE, 1);
-                    Date endOfDay = c.getTime();
 
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                     if (now.after(deadline) && now.before(endOfDay)){
@@ -243,9 +242,11 @@ public class ReservationModule {
 >>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
                     if (now.after(deadline)){
 >>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
+=======
+                    if (now.after(deadline)){
+>>>>>>> parent of fd2cf61... changed validity period
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
-                    
                     System.out.println("Reservation Successful!");
                     return true;
                 } else {

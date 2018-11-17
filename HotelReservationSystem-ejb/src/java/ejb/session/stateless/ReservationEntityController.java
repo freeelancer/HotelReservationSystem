@@ -235,6 +235,17 @@ public class ReservationEntityController implements ReservationEntityControllerR
         }
         return sum;
     }
+    
+//    @Override
+//    public void allocateRooms()
+//    {
+//        List<ReservationEntity> reservations = retrieveAllReservationByDate();
+//        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
+//        for(RoomTypeEntity roomType:roomTypes)
+//        {
+//            List<RoomTypeEntity> roomType.getName() = room
+//        }
+//    }
 
     private List<ReservationEntity> retrieveAllReservationByDate() 
     {
@@ -324,7 +335,10 @@ public class ReservationEntityController implements ReservationEntityControllerR
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
         roomToAllocate.setAllocated(Boolean.TRUE);
         reservation.setRoomEntity(roomToAllocate);
+<<<<<<< HEAD
 >>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
+=======
+>>>>>>> parent of fd2cf61... changed validity period
     }
     
     @Override
