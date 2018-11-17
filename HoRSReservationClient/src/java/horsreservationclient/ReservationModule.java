@@ -233,6 +233,8 @@ public class ReservationModule {
                     Date deadline = c.getTime(); 
 
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
+                    if (now.after(deadline)){
+
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
                     System.out.println("Reservation Successful!");
