@@ -13,6 +13,7 @@ import entity.RoomTypeEntity;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import util.exception.ReservationDoesNotMatchException;
 import util.exception.ReservationNotFoundException;
 import util.exception.RoomNotFoundException;
 
@@ -32,7 +33,7 @@ public interface ReservationEntityControllerRemote {
 
     public ReservationEntity retrieveReservationById(Long reservationId);
 
-    public void checkOutGuest(Long reservationId);
+    public void checkOutGuest(Long reservationId) throws ReservationDoesNotMatchException;
 
     public List<ReservationEntity> retrieveAllReservationsForToday();
 

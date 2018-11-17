@@ -21,8 +21,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.util.Pair;
 import util.exception.CustomerNotFoundException;
+import util.exception.ReservationDoesNotMatchException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
 
@@ -454,8 +457,12 @@ class GuestRelationModule {
         if(response.equals("c")){
             return;
         } else {
-            reservationEntityController.checkOutGuest(reservationId);
-            System.out.println("Check-out successful!");
+            try {
+                reservationEntityController.checkOutGuest(reservationId);
+                System.out.println("Check-out successful!");
+            } catch (ReservationDoesNotMatchException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
     

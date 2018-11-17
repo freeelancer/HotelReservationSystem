@@ -353,7 +353,23 @@ class OperationManagerModule {
                 }
                 System.out.print("Room Number invalid, input again (blank if no change)> "); 
             }
-            System.out.println("Enter New Room Type of Room (blank if no change)> ");
+            System.out.println("Enter if room is usable\n1: YES\n2: NO\n> ");
+            int usable = 0;
+            while(usable<1||usable>2)
+            {
+                usable=sc.nextInt();
+                sc.nextLine();
+                if(usable==1){
+                    room.setUsable(Boolean.TRUE);
+                    break;
+                }else if(usable==2){
+                    room.setUsable(Boolean.FALSE);
+                    break;
+                }
+                System.out.print("Invalid Input, Key in again> ");
+            }
+            
+            System.out.println("Enter New Room Type of Room (Last Option if no change)> ");
             List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
             int numRoomType = roomTypeList.size();
             int i;
@@ -376,11 +392,14 @@ class OperationManagerModule {
                 }
 
                 if (response == lastOption){
+                    roomEntityController.updateRoom(room,room.getRoomTypeEntity());
+                    System.out.println("Updated Room Successfully!");
                     break;
                 }
 
                 else{
                     roomEntityController.updateRoom(room,roomTypeList.get(response-1));
+                    System.out.println("Updated Room Successfully!");
                     break;
                 }
             }

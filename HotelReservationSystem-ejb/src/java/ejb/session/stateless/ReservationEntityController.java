@@ -30,6 +30,7 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import util.enumeration.RateTypeEnum;
 import util.exception.CustomerNotFoundException;
+import util.exception.ReservationDoesNotMatchException;
 import util.exception.ReservationNotFoundException;
 import util.exception.RoomNotFoundException;
 import util.exception.RoomTypeNotFoundException;
@@ -285,17 +286,23 @@ public class ReservationEntityController implements ReservationEntityControllerR
     }
     
     @Override
-    public void checkOutGuest(Long reservationId){
+    public void checkOutGuest(Long reservationId) throws ReservationDoesNotMatchException{
         ReservationEntity reservation = retrieveReservationById(reservationId);
         List<RoomEntity> roomsToCheckOut = reservation.getRoomEntitys();
         try{
             for(RoomEntity roomToCheckOut:roomsToCheckOut)
             {
-                
-                roomToCheckOut.setOccupied(Boolean.TRUE);
-                roomEntityController.updateRoom(roomToCheckOut);
-                if (roomToCheckOut == null){
-                    throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
+                if(roomToCheckOut.getReservationEntity().getReservationId()==reservationId)
+                {
+                    roomToCheckOut = roomEntityController.retrieveRoomById(roomToCheckOut.getRoomId());
+                    roomToCheckOut.setOccupied(Boolean.FALSE);
+                    roomEntityController.updateRoom(roomToCheckOut);
+                    if (roomToCheckOut == null){
+                        throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
+                    }
+                }
+                else{
+                    throw new ReservationDoesNotMatchException("Reservation ID does not match with that of Room!");
                 }
             }
         } catch (RoomNotFoundException e) {
