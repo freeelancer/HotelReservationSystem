@@ -236,17 +236,6 @@ public class ReservationEntityController implements ReservationEntityControllerR
         }
         return sum.multiply(new BigDecimal(numRooms));
     }
-    
-//    @Override
-//    public void allocateRooms()
-//    {
-//        List<ReservationEntity> reservations = retrieveAllReservationByDate();
-//        List<RoomTypeEntity> roomTypes = roomTypeEntityController.retrieveAllRoomTypes();
-//        for(RoomTypeEntity roomType:roomTypes)
-//        {
-//            List<RoomTypeEntity> roomType.getName() = room
-//        }
-//    }
 
     private List<ReservationEntity> retrieveAllReservationByDate() 
     {
@@ -291,8 +280,8 @@ public class ReservationEntityController implements ReservationEntityControllerR
         try{
             for(RoomEntity roomToCheckOut:roomsToCheckOut)
             {
-                
-                roomToCheckOut.setOccupied(Boolean.TRUE);
+                roomToCheckOut.setOccupied(Boolean.FALSE);
+                roomToCheckOut.setReservationEntity(null);
                 roomEntityController.updateRoom(roomToCheckOut);
                 if (roomToCheckOut == null){
                     throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
@@ -317,6 +306,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         {
             RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
             roomToAllocate.setAllocated(Boolean.TRUE);
+            roomToAllocate.setReservationEntity(reservationM)
             reservationM.getRoomEntitys().add(roomToAllocate);
         }
     }
