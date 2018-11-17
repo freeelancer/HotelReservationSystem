@@ -330,24 +330,9 @@ class GuestRelationModule {
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     Date deadline = c.getTime(); 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    Date now = new Date();
-                    c.add(Calendar.DATE, 1);
-                    Date endOfDay = c.getTime();
-                            
-                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
-                    if (now.after(deadline) && now.before(endOfDay)){
-=======
 
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
                     if (now.after(deadline)){
->>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
-=======
-
-                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
-                    if (now.after(deadline)){
->>>>>>> parent of fd2cf61... changed validity period
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
                     

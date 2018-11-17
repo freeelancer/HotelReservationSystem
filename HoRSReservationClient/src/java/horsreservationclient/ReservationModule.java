@@ -233,18 +233,6 @@ public class ReservationModule {
                     Date deadline = c.getTime(); 
 
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    if (now.after(deadline) && now.before(endOfDay)){
-=======
-=======
->>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
-                    if (now.after(deadline)){
->>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
-=======
-                    if (now.after(deadline)){
->>>>>>> parent of fd2cf61... changed validity period
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
                     System.out.println("Reservation Successful!");
@@ -259,7 +247,7 @@ public class ReservationModule {
                     System.out.println(dateFormat.format(date));
                 }
             }
-        }
+        
     }
     
     private void viewReservationDetails(){
