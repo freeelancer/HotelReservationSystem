@@ -77,6 +77,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
             oldRoomType.getRoomEntities().remove(roomToUpdate);
             newRoomType.getRoomEntities().add(roomToUpdate);
             roomToUpdate.setRoomNumber(room.getRoomNumber());
+            roomToUpdate.setUsable(room.getUsable());
             roomToUpdate.setRoomTypeEntity(newRoomType);
         } catch (RoomTypeNotFoundException ex) {
         
