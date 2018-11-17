@@ -292,7 +292,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
             for(RoomEntity roomToCheckOut:roomsToCheckOut)
             {
                 
-                roomToCheckOut.setOccupied(Boolean.TRUE);
+                roomToCheckOut.setOccupied(Boolean.FALSE);
                 roomEntityController.updateRoom(roomToCheckOut);
                 if (roomToCheckOut == null){
                     throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
