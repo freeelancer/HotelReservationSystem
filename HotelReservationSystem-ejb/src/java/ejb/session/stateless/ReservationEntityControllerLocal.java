@@ -39,4 +39,6 @@ public interface ReservationEntityControllerLocal {
 
     public void updateReservation(ReservationEntity reservation);
     
+    public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType);
+    
 }

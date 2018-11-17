@@ -150,7 +150,7 @@ public class RoomEntityController implements RoomEntityControllerRemote, RoomEnt
     public RoomEntity retrieveAvailableRoomByRoomType(RoomTypeEntity roomType){
 
         Long roomTypeId = roomType.getRoomTypeId();
-        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId AND r.allocated = FALSE AND r.occupied = FALSE AND r.disabled = FALSE");
+        Query query = em.createQuery("SELECT r FROM RoomEntity r WHERE r.roomTypeEntity.roomTypeId = :inRoomTypeId AND r.allocated = FALSE AND r.occupied = FALSE AND r.disabled = FALSE AND r.usable = TRUE");
         query.setParameter("inRoomTypeId", roomTypeId);
          
         List<RoomEntity> rooms = query.getResultList();
