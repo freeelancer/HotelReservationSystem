@@ -91,6 +91,9 @@ public class ReservationModule {
         
         System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
         
+        System.out.println("Input number of rooms you wish to book> ");
+        Integer numRooms=scanner.nextInt();
+        scanner.nextLine();
         List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
         int numRoomType = roomTypeList.size();
         int count;
@@ -123,13 +126,13 @@ public class ReservationModule {
                 break;
             }
             
-            if(reserveRoom(roomTypeList.get(response-1))){
+            if(reserveRoom(roomTypeList.get(response-1),numRooms)){
                 break;
             }
         }
     }
     
-    private boolean reserveRoom(RoomTypeEntity roomTypeToBook){
+    private boolean reserveRoom(RoomTypeEntity roomTypeToBook, Integer numRooms){
         
         try {
             roomTypeToBook = roomTypeEntityController.retrieveRoomTypeByName(roomTypeToBook.getName());
@@ -141,6 +144,7 @@ public class ReservationModule {
        
         System.out.println("*** HoRS Reservation System :: Reserve Room ***\n");
         System.out.println("Room Type: " + roomTypeToBook.getName());
+        System.out.println("Number Of Rooms: "+numRooms);
         System.out.println("Description: " + roomTypeToBook.getDescription());
         System.out.println("Amenities: " + roomTypeToBook.getAmenities());
         System.out.println("Room Size: " + roomTypeToBook.getSize() + " square meters");
@@ -208,7 +212,7 @@ public class ReservationModule {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook, numRooms);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             
             if (datesUnavailable.isEmpty()){
@@ -217,7 +221,7 @@ public class ReservationModule {
                 System.out.println("Room Type: " + roomTypeToBook.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate,numRooms);
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");
@@ -246,7 +250,7 @@ public class ReservationModule {
                     return false;
                 }
             } else {
-                System.out.println("Room is unavailable on the following dates:");
+                System.out.println("Room/s is/are unavailable on the following dates:");
                 for(Date date:datesUnavailable){
                     System.out.println(dateFormat.format(date));
                 }

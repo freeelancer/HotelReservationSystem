@@ -33,4 +33,5 @@ public interface RoomTypeEntityControllerRemote
 
     public List<Pair<RoomTypeEntity, Integer>> searchRoomTypesByDate(Date dateToSearch);
 
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType, Integer numRooms);
 }

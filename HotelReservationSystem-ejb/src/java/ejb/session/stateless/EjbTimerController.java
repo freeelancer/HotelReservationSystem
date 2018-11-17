@@ -87,36 +87,39 @@ public class EjbTimerController implements EjbTimerControllerRemote, EjbTimerCon
         
         for(ReservationEntity reservation:reservations){
             //System.out.println("Processing reservation: " + reservation.getReservationId());
-            RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity());
-            RoomTypeEntity roomType = reservation.getRoomTypeEntity();
-            if(roomToAllocate == null){
-                while(true){
-                    roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
-                    if (roomType == null){
-                        AllocationExceptionEntity allocationException2 = new AllocationExceptionEntity();
-                        allocationException2.setReservationEntity(reservation);
-                        allocationException2 = allocationExceptionEntityController.createNewException(allocationException2); 
-                        secondExceptions.add(allocationException2);
-                        roomToAllocate = null;
-                        break;
-                    }
-                    roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
-                    if (roomToAllocate != null){
-                        AllocationExceptionEntity allocationException1 = new AllocationExceptionEntity();
-                        allocationException1.setReservedRoomType(reservation.getRoomTypeEntity());
-                        allocationException1.setAllocatedRoomType(roomType);
-                        allocationException1.setReservationEntity(reservation);
-                        allocationException1 = allocationExceptionEntityController.createNewException(allocationException1); 
-                        firstExceptions.add(allocationException1);
-                        break;
-                    }
-                }    
-            }
-            if (roomToAllocate != null){
-                roomToAllocate.setAllocated(Boolean.TRUE);
-                reservation.setRoomEntity(roomToAllocate);
-                reservationEntityController.updateReservation(reservation);
-                System.out.printf("%10s%10s\n", reservation.getReservationId(), roomToAllocate.getRoomNumber());
+            for(int i=0;i<reservation.getNumRooms();i++)
+            {
+                RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(reservation.getRoomTypeEntity());
+                RoomTypeEntity roomType = reservation.getRoomTypeEntity();
+                if(roomToAllocate == null){
+                    while(true){
+                        roomType = roomTypeEntityController.getNextHigherRoomType(roomType);
+                        if (roomType == null){
+                            AllocationExceptionEntity allocationException2 = new AllocationExceptionEntity();
+                            allocationException2.setReservationEntity(reservation);
+                            allocationException2 = allocationExceptionEntityController.createNewException(allocationException2); 
+                            secondExceptions.add(allocationException2);
+                            roomToAllocate = null;
+                            break;
+                        }
+                        roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+                        if (roomToAllocate != null){
+                            AllocationExceptionEntity allocationException1 = new AllocationExceptionEntity();
+                            allocationException1.setReservedRoomType(reservation.getRoomTypeEntity());
+                            allocationException1.setAllocatedRoomType(roomType);
+                            allocationException1.setReservationEntity(reservation);
+                            allocationException1 = allocationExceptionEntityController.createNewException(allocationException1); 
+                            firstExceptions.add(allocationException1);
+                            break;
+                        }
+                    }    
+                }
+                if (roomToAllocate != null){
+                    roomToAllocate.setAllocated(Boolean.TRUE);
+                    reservation.getRoomEntitys().add(roomToAllocate);
+                    reservationEntityController.updateReservation(reservation);
+                    System.out.printf("%10s%10s\n", reservation.getReservationId(), roomToAllocate.getRoomNumber());
+                }
             }
         }
 

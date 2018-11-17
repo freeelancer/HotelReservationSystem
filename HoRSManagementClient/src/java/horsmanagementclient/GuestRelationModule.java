@@ -206,6 +206,10 @@ class GuestRelationModule {
         System.out.println("Normal Room Rate: " + df.format(roomTypeToBook.getRoomRateEntities().get(0).getRatePerNight()));
         System.out.println("-------------------");
         
+        System.out.println("Input Number Of Rooms> ");
+        Integer numRooms = scanner.nextInt();
+        scanner.nextLine();
+        
         String response = "";
         Date checkInDate = new Date();
         Date checkOutDate = new Date();
@@ -264,7 +268,7 @@ class GuestRelationModule {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook, numRooms);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             
             if (datesUnavailable.isEmpty()){
@@ -273,7 +277,7 @@ class GuestRelationModule {
                 System.out.println("Room Type: " + roomTypeToBook.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate, numRooms);
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");
@@ -421,8 +425,8 @@ class GuestRelationModule {
             return;
         } else {
             try {
-                roomNumber = reservationEntityController.checkInGuest(reservationId);
-                System.out.println("Check-in successful! Room number: " + roomNumber);
+                List<String> roomsCheckedIn = reservationEntityController.checkInGuest(reservationId);
+                System.out.println("Check-in successful! Room number/s: " + roomsCheckedIn.toString());
             } catch (RoomNotFoundException e) {
                 e.printStackTrace();
             }

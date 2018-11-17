@@ -153,7 +153,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     }
     
     @Override
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType){
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType, Integer numRooms){
         
         List<Date> unavailableDates = new ArrayList<Date>();
         RoomTypeEntity roomTypeEntity = retrieveRoomTypeById(roomType.getRoomTypeId()); 
@@ -166,7 +166,7 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
             query.setParameter("inRoomTypeId", roomTypeEntity.getRoomTypeId());
             
             DateEntity date = (DateEntity)query.getSingleResult();
-            if(date.getNumReserved() >= max){
+            if(date.getNumReserved()+numRooms > max){
                 unavailableDates.add(current);
             }
             
