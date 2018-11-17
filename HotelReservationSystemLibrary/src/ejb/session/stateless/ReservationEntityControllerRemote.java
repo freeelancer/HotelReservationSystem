@@ -22,13 +22,13 @@ import util.exception.RoomNotFoundException;
  */
 public interface ReservationEntityControllerRemote {
     
-    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate, Integer numRooms);
+    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate);
     
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException;
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
 
-    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate, Integer numRooms);
+    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate);
 
     public ReservationEntity retrieveReservationById(Long reservationId);
 
@@ -36,7 +36,7 @@ public interface ReservationEntityControllerRemote {
 
     public List<ReservationEntity> retrieveAllReservationsForToday();
 
-    public List<String> checkInGuest(Long reservationId) throws RoomNotFoundException;
+    public String checkInGuest(Long reservationId) throws RoomNotFoundException;
 
     public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType);
 

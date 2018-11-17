@@ -195,10 +195,6 @@ class GuestRelationModule {
         System.out.println("Normal Room Rate: " + df.format(roomTypeToBook.getRoomRateEntities().get(0).getRatePerNight()));
         System.out.println("-------------------");
         
-        System.out.println("Input Number Of Rooms> ");
-        Integer numRooms = scanner.nextInt();
-        scanner.nextLine();
-        
         String response = "";
         Date checkInDate = new Date();
         Date checkOutDate = new Date();
@@ -257,7 +253,7 @@ class GuestRelationModule {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook, numRooms);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeToBook);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             
             if (datesUnavailable.isEmpty()){
@@ -266,7 +262,7 @@ class GuestRelationModule {
                 System.out.println("Room Type: " + roomTypeToBook.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate, numRooms);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeToBook.getName(), checkInDate, checkOutDate);
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.print("Type Enter to confirm. Type 'c' to cancel");
                 System.out.print("> ");
@@ -333,12 +329,18 @@ class GuestRelationModule {
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     Date deadline = c.getTime(); 
+<<<<<<< HEAD
                     Date now = new Date();
                     c.add(Calendar.DATE, 1);
                     Date endOfDay = c.getTime();
                             
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
                     if (now.after(deadline) && now.before(endOfDay)){
+=======
+
+                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
+                    if (now.after(deadline)){
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
                     
@@ -535,8 +537,8 @@ class GuestRelationModule {
             return;
         } else {
             try {
-                List<String> roomsCheckedIn = reservationEntityController.checkInGuest(reservationId);
-                System.out.println("Check-in successful! Room number/s: " + roomsCheckedIn.toString());
+                roomNumber = reservationEntityController.checkInGuest(reservationId);
+                System.out.println("Check-in successful! Room number: " + roomNumber);
             } catch (RoomNotFoundException e) {
                 e.printStackTrace();
             }

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -20,7 +21,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class RoomEntity implements Serializable {
 
-    @ManyToOne(optional=true)
+    @OneToOne(mappedBy = "roomEntity", optional=true)
     private ReservationEntity reservationEntity;
     @ManyToOne (optional=false)
     private RoomTypeEntity roomTypeEntity;
@@ -44,10 +45,14 @@ public class RoomEntity implements Serializable {
     public RoomEntity() {
     }
 
-    public RoomEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, String roomNumber) {
+    public RoomEntity(ReservationEntity reservationEntity, RoomTypeEntity roomTypeEntity, String roomNumber, Boolean used, Boolean disabled, Boolean occupied, Boolean allocated) {
         this.reservationEntity = reservationEntity;
         this.roomTypeEntity = roomTypeEntity;
         this.roomNumber = roomNumber;
+        this.usable = used;
+        this.disabled = disabled;
+        this.occupied = occupied;
+        this.allocated = allocated;
     }
 
     public Boolean getOccupied() {

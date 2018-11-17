@@ -338,7 +338,7 @@ public class ReservationApp {
                 }                
             } 
             
-            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeEntity,numRooms);
+            List<Date> datesUnavailable = roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomTypeEntity);
         
             if (datesUnavailable.isEmpty()){
                 System.out.println("Room is available. Confirm reservation for:");
@@ -346,7 +346,7 @@ public class ReservationApp {
                 System.out.println("Room Type: " + roomTypeEntity.getName());
                 System.out.println("Check-in date: " + dateFormat.format(checkInDate));
                 System.out.println("Check-out date: " + dateFormat.format(checkOutDate));
-                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate,numRooms);
+                BigDecimal totalAmount = reservationEntityController.calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate);
                 DecimalFormat df = new DecimalFormat("$#,###.00");
                 System.out.println("Total Amount: " + df.format(totalAmount));
                 System.out.println("Login to reserve. Press Enter to return to main page");
