@@ -45,20 +45,20 @@ public class ReservationWebService {
         return roomTypeEntityController.retrieveAllRoomTypes();
     }
     
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType){
-        return roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomType);
-    }
-    
-    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate){
-        return reservationEntityController.calculateTotalAmount(roomTypeName, checkInDate, checkOutDate);
-    }
-    
-    public void allocateRoomManually(RoomTypeEntity roomType){
-    }
-    
-    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate){
-        return reservationEntityController.createNewReservation(customerEntity, roomTypeEntity, employeeEntity, partnerEntity, checkInDate, checkOutDate);
-    }
+//    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType){
+//        return roomTypeEntityController.checkAvailability(checkInDate, checkOutDate, roomType);
+//    }
+//    
+//    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate){
+//        return reservationEntityController.calculateTotalAmount(roomTypeName, checkInDate, checkOutDate);
+//    }
+//    
+//    public void allocateRoomManually(RoomTypeEntity roomType){
+//    }
+//    
+//    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate){
+//        return reservationEntityController.createNewReservation(customerEntity, roomTypeEntity, employeeEntity, partnerEntity, checkInDate, checkOutDate);
+//    }
     
     public ReservationEntity retrieveReservationDetails(Long reservationId, PartnerEntity partnerEntity) {
         try {

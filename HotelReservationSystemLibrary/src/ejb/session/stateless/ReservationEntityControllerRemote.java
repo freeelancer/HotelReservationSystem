@@ -39,5 +39,5 @@ public interface ReservationEntityControllerRemote {
     public List<String> checkInGuest(Long reservationId) throws RoomNotFoundException;
 
     public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType);
-
+    
 }
