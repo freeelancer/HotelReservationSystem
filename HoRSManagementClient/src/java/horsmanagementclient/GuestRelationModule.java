@@ -331,17 +331,15 @@ class GuestRelationModule {
                     } 
 
                     // check if booking is done after 2AM
-                    Calendar c = Calendar.getInstance();
+                    Calendar now = Calendar.getInstance();
+                    Calendar c = new GregorianCalendar();
                     c.set(Calendar.HOUR_OF_DAY, 2); 
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     Date deadline = c.getTime(); 
-                    Date now = new Date();
-                    c.add(Calendar.DATE, 1);
-                    Date endOfDay = c.getTime();
-                            
-                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate);
-                    if (now.after(deadline) && now.before(endOfDay)){
+
+                    ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, currentEmployeeEntity, null, checkInDate, checkOutDate, numRooms);
+                    if (now.after(deadline)){
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);
                     }
                     
@@ -485,7 +483,7 @@ class GuestRelationModule {
         Date today = Calendar.getInstance().getTime();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
-        calendar.add(Calendar.DATE, -2);
+        calendar.add(Calendar.DATE, -1);
         today = calendar.getTime();
         calendar.setTime(today);
         calendar.add(Calendar.YEAR, 1);
@@ -530,7 +528,6 @@ class GuestRelationModule {
         System.out.println("Press Enter to continue with check-in or cancel by entering 'c'...");
         System.out.print("> ");
         
-        sc.nextLine();
         String response = sc.nextLine();
         String roomNumber = "";
         
@@ -565,7 +562,6 @@ class GuestRelationModule {
         System.out.println("Press Enter to continue with check-out or cancel by entering 'c'...");
         System.out.print("> ");
         
-        sc.nextLine();
         String response = sc.nextLine();
         
         if(response.equals("c")){

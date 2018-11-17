@@ -238,7 +238,7 @@ class SalesManagerModule {
         calendar.setTime(today);
         calendar.add(Calendar.YEAR, 1);
         Date latest = calendar.getTime();
-        if ((checkOutDate.equals(checkInDate) || checkOutDate.after(checkInDate)) && checkOutDate.after(today) && checkOutDate.before(latest)){
+        if (checkOutDate.after(checkInDate) && checkOutDate.after(today) && checkOutDate.before(latest)){
             return true;
         }
         return false;

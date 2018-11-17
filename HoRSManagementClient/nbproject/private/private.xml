@@ -4,7 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="HotelReservationSystem"/>
         <group>
+<<<<<<< HEAD
             <file>file:/D:/IS2103/HotelReservationSystem/HoRSManagementClient/src/java/horsmanagementclient/GuestRelationModule.java</file>
+=======
+            <file>file:/D:/IS2103/HotelReservationSystem/HoRSManagementClient/src/java/horsmanagementclient/OperationManagerModule.java</file>
+            <file>file:/D:/IS2103/HotelReservationSystem/HoRSManagementClient/src/java/horsmanagementclient/SystemAdminModule.java</file>
+>>>>>>> parent of 33240ee... Merge remote-tracking branch 'origin/waikin9' into lance4
         </group>
     </open-files>
 </project-private>
