@@ -236,8 +236,11 @@ public class ReservationModule {
 
                     ReservationEntity reservation = reservationEntityController.createNewReservation(currentCustomerEntity, roomTypeToBook, null, null, checkInDate, checkOutDate);
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if (now.after(deadline) && now.before(endOfDay)){
 =======
+=======
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
                     if (now.after(deadline)){
 >>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
                         reservationEntityController.allocateRoomManually(reservation, roomTypeToBook);

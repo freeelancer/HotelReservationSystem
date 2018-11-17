@@ -271,6 +271,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
          RoomEntity room = new RoomEntity();
         try{
 <<<<<<< HEAD
+<<<<<<< HEAD
             for(RoomEntity roomToCheckOut:roomsToCheckOut)
             {
                 roomToCheckOut.setOccupied(Boolean.FALSE);
@@ -280,6 +281,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
                     throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
                 }
             }
+=======
+            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
+            room.setOccupied(Boolean.FALSE);
+            roomEntityController.updateRoom(room);
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
 =======
             room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
             room.setOccupied(Boolean.FALSE);
@@ -300,6 +306,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
     @Override
     public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType){
 <<<<<<< HEAD
+<<<<<<< HEAD
         ReservationEntity reservationM = retrieveReservationById(reservation.getReservationId());
         for(int i=0;i<reservationM.getNumRooms();i++)
         {
@@ -308,6 +315,11 @@ public class ReservationEntityController implements ReservationEntityControllerR
             roomToAllocate.setReservationEntity(reservationM)
             reservationM.getRoomEntitys().add(roomToAllocate);
         }
+=======
+        RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+        roomToAllocate.setAllocated(Boolean.TRUE);
+        reservation.setRoomEntity(roomToAllocate);
+>>>>>>> parent of 66c6b27... allow more than one room to be booked in one reservation
 =======
         RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
         roomToAllocate.setAllocated(Boolean.TRUE);
