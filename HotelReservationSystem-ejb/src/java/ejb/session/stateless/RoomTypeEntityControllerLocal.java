@@ -30,5 +30,5 @@ public interface RoomTypeEntityControllerLocal
 
     public RoomTypeEntity getNextHigherRoomType(RoomTypeEntity roomType);
     
-    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType);
+    public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType, Integer numRooms);
 }

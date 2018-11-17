@@ -21,13 +21,13 @@ import util.exception.ReservationNotFoundException;
  */
 public interface ReservationEntityControllerLocal {
 
-    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate);
+    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate, Integer numRooms);
     
     public ReservationEntity retrieveReservationDetails(Long reservationId, CustomerEntity customerEntity) throws ReservationNotFoundException;
 
     public List<ReservationEntity> retrieveAllReservationsByCustomerId(Long customerId);
 
-    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate);
+    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate, Integer numRooms);
 
     public List<ReservationEntity> retrieveAllReservations();
     

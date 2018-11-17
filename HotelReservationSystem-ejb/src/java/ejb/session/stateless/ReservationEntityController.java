@@ -64,7 +64,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     // Logic not done
     @Override
-    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate){
+    public ReservationEntity createNewReservation(CustomerEntity customerEntity, RoomTypeEntity roomTypeEntity, EmployeeEntity employeeEntity, PartnerEntity partnerEntity, Date checkInDate, Date checkOutDate, Integer numRooms){
         
         ReservationEntity reservationEntity = new ReservationEntity();
         
@@ -74,8 +74,9 @@ public class ReservationEntityController implements ReservationEntityControllerR
         reservationEntity.setPartnerEntity(partnerEntity);
         reservationEntity.setCheckInDate(checkInDate);
         reservationEntity.setCheckOutDate(checkOutDate);
+        reservationEntity.setNumRooms(numRooms);
        
-        reservationEntity.setTotalAmount(calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate)); // hardcoded for now
+        reservationEntity.setTotalAmount(calculateTotalAmount(roomTypeEntity.getName(), checkInDate, checkOutDate,numRooms)); // hardcoded for now
         
         CustomerEntity customerToUpdate = new CustomerEntity();
         
@@ -99,7 +100,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
             {
                 if(dateEntity.getDateTime().equals(curr))
                 {
-                    dateEntity.setNumReserved(dateEntity.getNumReserved()+1);
+                    dateEntity.setNumReserved(dateEntity.getNumReserved()+numRooms);
                 }
                 if(dateEntity.getDateTime().equals(checkOutDate)||dateEntity.getDateTime().after(curr))
                 {
@@ -176,7 +177,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     // Doesn't work
     @Override
-    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate) {
+    public BigDecimal calculateTotalAmount(String roomTypeName, Date checkInDate, Date checkOutDate, Integer numRooms) {
         
         RoomTypeEntity roomType = new RoomTypeEntity();
         List<RoomRateEntity> roomRates = new ArrayList<RoomRateEntity>();
@@ -233,7 +234,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
                 }
             }
         }
-        return sum;
+        return sum.multiply(new BigDecimal(numRooms));
     }
     
 //    @Override
@@ -263,27 +264,40 @@ public class ReservationEntityController implements ReservationEntityControllerR
     }
     
     @Override
-    public String checkInGuest(Long reservationId) throws RoomNotFoundException {
+    public List<String> checkInGuest(Long reservationId) throws RoomNotFoundException {
         ReservationEntity reservation = retrieveReservationById(reservationId);
         RoomEntity room = new RoomEntity();
-       
-        room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
-        if (room == null){
-            throw new RoomNotFoundException("Room not allocated!");
-        }        
-        room.setOccupied(Boolean.TRUE);
-        roomEntityController.updateRoom(room);      
-        return room.getRoomNumber();
+        List<String> roomsCheckedIn = new ArrayList<String>();
+        for(RoomEntity roomToCheckIn:reservation.getRoomEntitys())
+        {
+            room = roomEntityController.retrieveRoomById(roomToCheckIn.getRoomId());
+            room.setOccupied(Boolean.TRUE);
+            roomEntityController.updateRoom(room);
+            roomsCheckedIn.add(roomToCheckIn.getRoomNumber());
+            if (room == null){
+                throw new RoomNotFoundException("Room "+roomToCheckIn.getRoomId()+" not allocated!");
+            }
+        }
+        
+        
+        
+        return roomsCheckedIn;
     }
     
     @Override
     public void checkOutGuest(Long reservationId){
         ReservationEntity reservation = retrieveReservationById(reservationId);
-         RoomEntity room = new RoomEntity();
+        List<RoomEntity> roomsToCheckOut = reservation.getRoomEntitys();
         try{
-            room = roomEntityController.retrieveRoomById(reservation.getRoomEntity().getRoomId());
-            room.setOccupied(Boolean.FALSE);
-            roomEntityController.updateRoom(room);
+            for(RoomEntity roomToCheckOut:roomsToCheckOut)
+            {
+                
+                roomToCheckOut.setOccupied(Boolean.TRUE);
+                roomEntityController.updateRoom(roomToCheckOut);
+                if (roomToCheckOut == null){
+                    throw new RoomNotFoundException("Room "+roomToCheckOut.getRoomId()+" not there!");
+                }
+            }
         } catch (RoomNotFoundException e) {
             e.printStackTrace();
         }        
@@ -298,9 +312,13 @@ public class ReservationEntityController implements ReservationEntityControllerR
     
     @Override
     public void allocateRoomManually(ReservationEntity reservation, RoomTypeEntity roomType){
-        RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
-        roomToAllocate.setAllocated(Boolean.TRUE);
-        reservation.setRoomEntity(roomToAllocate);
+        ReservationEntity reservationM = retrieveReservationById(reservation.getReservationId());
+        for(int i=0;i<reservationM.getNumRooms();i++)
+        {
+            RoomEntity roomToAllocate = roomEntityController.retrieveAvailableRoomByRoomType(roomType);
+            roomToAllocate.setAllocated(Boolean.TRUE);
+            reservationM.getRoomEntitys().add(roomToAllocate);
+        }
     }
     
     @Override
@@ -325,7 +343,7 @@ public class ReservationEntityController implements ReservationEntityControllerR
         
         ReservationEntity reservationToUpdate = (ReservationEntity)query.getSingleResult();
         
-        reservationToUpdate.setRoomEntity(reservation.getRoomEntity());
+        reservationToUpdate.setRoomEntitys(reservation.getRoomEntitys());
         reservationToUpdate.setRoomTypeEntity(reservation.getRoomTypeEntity());
     }
 }
