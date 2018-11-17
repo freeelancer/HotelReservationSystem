@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javafx.util.Pair;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -21,6 +22,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
 import util.exception.RoomTypeStillUsedException;
@@ -47,7 +49,6 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
     @Override
     public RoomTypeEntity createNewRoomType(RoomTypeEntity newRoomTypeEntity)
     {
-//        Deal with this later
         em.persist(newRoomTypeEntity);
         em.flush();
         em.refresh(newRoomTypeEntity);
@@ -117,7 +118,6 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         Query query = em.createQuery("SELECT rt FROM RoomTypeEntity rt WHERE rt.roomTypeId = :inRoomTypeId");
         query.setParameter("inRoomTypeId", roomTypeId);
         RoomTypeEntity roomType = (RoomTypeEntity) query.getSingleResult();
-//        RoomTypeEntity roomType = em.find(RoomTypeEntity.class, roomTypeId);
         return roomType;
     }
     
@@ -205,5 +205,23 @@ public class RoomTypeEntityController implements RoomTypeEntityControllerRemote,
         }
         
         return nextHigherRoomType;
+    }
+    
+    @Override
+    public List<Pair<RoomTypeEntity,Integer>> searchRoomTypesByDate(Date dateToSearch){
+       Query query = em.createQuery("SELECT d FROM DateEntity d WHERE d.dateTime = :inDate");
+       query.setParameter("inDate", dateToSearch, TemporalType.DATE);
+       
+       List<DateEntity> dates = query.getResultList();
+       List<Pair<RoomTypeEntity,Integer>> availableRoomTypes = new ArrayList<Pair<RoomTypeEntity,Integer>>();
+       for(DateEntity date:dates){
+           Integer max = date.getRoomTypeEntity().getRoomEntities().size();
+           if(date.getNumReserved() < max){
+               Integer roomsLeft = max - date.getNumReserved(); 
+               RoomTypeEntity roomType = date.getRoomTypeEntity();
+               availableRoomTypes.add(new Pair<RoomTypeEntity,Integer>(roomType,roomsLeft));
+           }
+       }
+       return availableRoomTypes;
     }
 }

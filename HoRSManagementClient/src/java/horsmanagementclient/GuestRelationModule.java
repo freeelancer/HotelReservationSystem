@@ -18,7 +18,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.CustomerNotFoundException;
@@ -103,33 +102,37 @@ class GuestRelationModule {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("*** Reservation System :: Search for Hotel Room ***\n");
-        List<RoomTypeEntity> roomTypeList = roomTypeEntityController.retrieveAllRoomTypes();
-        int numRoomType = roomTypeList.size();
-        int i;
-        Integer response = 0;
- 
-        for (i = 1; i <= numRoomType; i++){
-            System.out.println("" + i + ": " + roomTypeList.get(i-1).getName());
-        }
-        int lastOption = i;
-        System.out.println("" + lastOption + ": Back\n");
+        System.out.println("Type the dates (dd/MM/yyyy) you wish to reserve.");
+        System.out.println("Type in a date:");
 
-        System.out.print("> ");
-        response = scanner.nextInt();
-        scanner.nextLine();
-
-        while (response < 1 || response > lastOption){
-            System.out.println("Invalid response! Please try again.");
-            System.out.print("> ");
-            response = scanner.nextInt();
-            scanner.nextLine();
-        }
-
-        if (response == lastOption){
-            return;
-        }
+        String response;
+        Date date ;
         
-        searchRoom(roomTypeList.get(response-1));
+        System.out.print("> ");
+        response = scanner.nextLine();
+
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+            while(!response.matches("\\d{2}/\\d{2}/\\d{4}") || !validateCheckIn(date)) {
+
+                System.out.println("Invalid response! Please try again.");
+                System.out.print("> ");
+                response = scanner.nextLine();
+
+                try {
+                    date = new SimpleDateFormat("dd/MM/yyyy").parse(response); 
+                } catch (Exception e){
+                    System.out.println(e);
+                }              
+            }
+            List<RoomTypeEntity> availableRoomTypes = roomTypeEntityController.searchRoomTypesByDate(date);
+            System.out.println("Following rooms are available on " + response);            
+            for(RoomTypeEntity roomType:availableRoomTypes){
+                System.out.println(roomType.getName());
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     private void walkInReserveRoom() {

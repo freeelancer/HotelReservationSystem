@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.RoomTypeEntity;
 import java.util.Date;
 import java.util.List;
+import javafx.util.Pair;
 import util.exception.RoomTypeAlreadyDisabledException;
 import util.exception.RoomTypeNotFoundException;
 import util.exception.RoomTypeStillUsedException;
@@ -29,4 +30,7 @@ public interface RoomTypeEntityControllerRemote
     public List<RoomTypeEntity> retrieveAllRoomTypes();
 
     public List<Date> checkAvailability(Date checkInDate, Date checkOutDate, RoomTypeEntity roomType);
+
+    public List<Pair<RoomTypeEntity, Integer>> searchRoomTypesByDate(Date dateToSearch);
+
 }
